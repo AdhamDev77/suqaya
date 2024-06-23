@@ -1,0 +1,35 @@
+.view_cons{
+    width: 100%;
+    min-height: 80vh;
+    padding: 30px 0 30px 0;
+}
+.view_cons_container{
+    display: flex;
+    flex-direction: row-reverse;
+    width: 85%;
+    margin: 0 auto;
+}
+.view_cons .sign_form{
+    margin-left: 30px;
+    min-height: 50vh;
+}
+.sign_form_con{
+    gap: 10px;
+}
+.show_row{
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    font-weight: 400;
+    
+}
+.show_row_title{
+    font-size: 16px;
+    flex: 1;
+}
+.show_row_content{
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--green);
+    flex: 1;
+}

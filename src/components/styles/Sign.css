@@ -1,0 +1,161 @@
+.sign_body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: 100vh;
+    padding: 100px 0;
+}
+.sign_con{
+    display: none;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+    min-height: 70vh;
+    margin: 0 auto;
+}
+.show{
+    display: flex;
+}
+.sign_form{
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    min-height: 80vh;
+    width: 55%;
+    border: 1px solid #ccc;
+    overflow: hidden;
+    border-radius: 20px;
+    padding: 20px 30px;
+}
+.sign_form_con{
+    display: flex;
+    text-align: right;
+    flex-direction: column;
+    padding: 20px 0;
+    gap: 25px;
+}
+.sign_header{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #ccc;
+}
+.sign_title{
+    font-size: 26px;
+    font-weight: 600;
+}
+.sign_header img{
+    height: 70px;
+}
+.sign_element{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 5px;
+    flex: 1;
+}
+.sign_label{
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--black);
+}
+.sign_input{
+    background: #f2f2f2;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    padding: 10px;
+    width: 100%;
+}
+.sign_element_multi{
+    width: 100%;
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 30px;
+}
+.inner_boolean{
+    box-shadow: 0 0 0 1px #ccc;
+}
+.selected{
+    background: var(--light_green) !important;
+    box-shadow: 0 0 0 2px var(--green);
+}
+.selected label{
+    color: var(--green);
+    font-weight: 600;
+}
+
+.submit_btn{
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: 600;
+    padding: 10px;
+    background: var(--green);
+    border: none;
+    color: #fff;
+    text-align: center;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: .2s ease;
+}
+.submit_btn:hover{
+    background: none;
+    color: var(--green);
+    box-shadow: 0 0 0 2px var(--green);
+}
+.sign_switch{
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--non_hover);
+}
+.sign_switch a{
+    color: rgb(61, 83, 54);
+    text-decoration: underline;
+}
+.no_min_height{
+    min-height: max-content;
+    background: #fff;
+}
+.admin_sign{
+    justify-content: center;
+}
+
+.card_container_admin{
+    display: flex !important;
+}
+.admin_table_con{
+    flex: 1;
+}
+.admin_table_title{
+    display: flex;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 25px !important;
+    margin-bottom: 20px;
+}
+.cons_comment_form{
+    width: 50%;
+}
+.cons_comment_form .add_btn{
+    align-self: flex-end;
+    width: max-content;
+}
+.cons_comment_form .add_btn i{
+    color: #fff;
+    transition: .2s ease;
+}
+.cons_comment_form .add_btn:hover i{
+    color: var(--green);
+}
+.cons_comment_form .sign_form{
+    width: 100%;
+    min-height: auto;
+}
+.cons_comment_form .sign_form textarea{
+    height: 100px !important;
+}

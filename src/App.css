@@ -1,0 +1,41 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Cairo", sans-serif;
+    color: #374151;
+    scroll-behavior: smooth;
+}
+
+:root{
+    --light_green : #F5FFEB;
+    --non_hover_green:#00ab1f9f;
+    --green: #019939;
+    --dark-green: #00372a;
+    --yellow: #ffce00;
+    --dark-yellow: #e0b800;
+    --gray: #666;
+    --light-gray: #f8f9fa;
+    --blue : #3a82c5;
+    --red : #FF3347;
+    --black : #1A1A1A;
+    --non_hover_light: #d9d9d9;
+    --non_hover: #8F8F8F;
+    --text: #374151;
+}
+option{
+    color: #222;
+}
+
+input, select, textarea{
+    text-align: right;
+}
+textarea{
+    height: 200px !important;
+}
+a{
+    text-decoration: none;
+}
+ul{
+    list-style: none;
+}
