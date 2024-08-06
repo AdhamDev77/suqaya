@@ -2,7 +2,7 @@ import "./styles/Sign.css";
 import green_logo from "../assets/green_logo.svg";
 import sign_img from "../assets/sign_img.svg";
 import sign_image_comm from "../assets/sign_image_comm.svg";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link ,useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -12,6 +12,13 @@ function MosReq() {
   const navigate = useNavigate();
     const [formType, setFormType] = useState('single');
     const [userInfo, setUserInfo] = useState({cv: "", image: ""});
+
+    useEffect(() => {
+      const id = localStorage.getItem("_id");
+      if(!id){
+        navigate('/')
+      }
+    }, []);
 
     const id = localStorage.getItem("_id")
 

@@ -1,8 +1,8 @@
-import React from 'react';
-import "./App.css"
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import React from "react";
+import "./App.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Home from "./components/Home";
@@ -19,17 +19,20 @@ import Makal from "./components/Makal";
 import Single_profile from "./components/Single_profile";
 import Mos_profile from "./components/Mos_profile";
 import Comm_profile from "./components/Comm_profile";
+import Comm_view from "./components/Comm_view";
 import Admin_login from "./components/Admin_login";
 import Admin from "./components/Admin";
 import MosReq from "./components/MosReq";
 import Comm_wait from "./components/wait/Comm_wait";
 import User_wait from "./components/wait/User_wait";
-import Kyas_asar_settings from './components/Kyas_asar_settings';
-
+import Kyas_asar_settings from "./components/Kyas_asar_settings";
+import Feedback from "./components/Feedback";
+import { Tooltip } from "react-tooltip";
+import "react-tooltip/dist/react-tooltip.css";
 function App() {
   return (
     <BrowserRouter>
-    <Navbar />
+      <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/sign" element={<Sign />} />
@@ -39,12 +42,17 @@ function App() {
         <Route path="/asar/:id" element={<Kyas_asar_show />} />
         <Route path="/asar/cons/:id" element={<Kyas_asar_cons />} />
         <Route path="/asar/cons/show/:id" element={<Kyas_asar_cons_show />} />
-        <Route path="/asar/settings/:asar_id" element={<Kyas_asar_settings />} />
+        <Route
+          path="/comm/:comm_id/asar/settings/:asar_id"
+          element={<Kyas_asar_settings />}
+        />
         <Route path="/cons" element={<Cons />} />
+        <Route path="/feedback" element={<Feedback />} />
         <Route path="/view/mos/:id" element={<Cons_manage />} />
         <Route path="/makalat" element={<Makal />} />
         <Route path="/profile/:id" element={<Single_profile />} />
         <Route path="/comm/profile/:id" element={<Comm_profile />} />
+        <Route path="/comm/view/:id" element={<Comm_view />} />
         <Route path="/mos/profile" element={<Mos_profile />} />
         <Route path="/mos/req" element={<MosReq />} />
         <Route path="/admin/login" element={<Admin_login />} />
@@ -54,6 +62,7 @@ function App() {
       </Routes>
       <Footer />
       <ToastContainer />
+      <Tooltip id="my-tooltip" />
     </BrowserRouter>
   );
 }

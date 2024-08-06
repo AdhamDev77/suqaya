@@ -1,193 +1,187 @@
-import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useRef } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Home_img from "../assets/Home_img.svg";
+import Home_img_2 from "../assets/Home_img_2.png";
+import Home_img_3 from "../assets/Home_img_3.png";
 import book from "../assets/book.svg";
 import question from "../assets/question.svg";
 import arrow from "../assets/arrow.svg";
 import "./styles/Home.css";
 import AwesomeTestimonial from "react-awesome-testimonials";
+import Testimonials from "react-testimonials";
+import khalid from "../assets/khalid.jpeg";
+import laith from "../assets/laith.jpeg";
+import ramona from "../assets/ramona.jpeg";
+import salam from "../assets/salam.jpeg";
+import saed from "../assets/saed.jpeg";
+import bahaa from "../assets/bahaa.jpeg";
 
 function Home() {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-  const img1 = "";
-  const img2 = "";
-  const img3 = "";
-  const img4 = "";
-  const img5 = "";
-  const img6 = "";
+  const navigate = useNavigate();
+  // const testimonials = [
+  //   {
+  //     name: "سيد محمد",
+  //     company: "مستشار",
+  //     img_src: saed,
+  //     review:
+  //       "من خلال مكتبة أعمق، نحن نسعى لتوفير مصادر معرفية قيمة تسهم في تعزيز الفهم لدى العاملين في مجال الأثر الاجتماعي",
+  //   },
+  //   {
+  //     name: "خالد الغنام",
+  //     company: "مستشار",
+  //     img_src: khalid,
+  //     review:
+  //       "كمؤسس لعيادة أعمق، أرى أن المجلس يمثل خطوة كبيرة نحو تعزيز القياس وإدارة الأثر الاجتماعي في العالم العربي بطريقة منهجية وعلمية",
+  //   },
+  //   {
+  //     name: "سلام الخطيب",
+  //     company: "مستشار",
+  //     img_src: salam,
+  //     review:
+  //       "تجربتي في تقديم الاستشارات عبر أعمق أظهرت لي مدى حاجة القطاع الاجتماعي في منطقتنا لهذه الأدوات والمنهجيات",
+  //   },
+  //   {
+  //     name: "بهاء عبدالعظيم",
+  //     company: "سفير المجلس العربي",
+  //     img_src: bahaa,
+  //     review:
+  //       "عيادة أعمق تساعدنا في تقديم خدمات تقييم الأثر الاجتماعي بأسلوب علمي ومتقدم، وهذا يساهم في تطوير مشاريعنا الاجتماعية",
+  //   },
+  //   {
+  //     name: "رامونا الدنف",
+  //     company: "دكتورة",
+  //     img_src: ramona,
+  //     review:
+  //       "أعتبر المجلس العربي للأثر الاجتماعي منصة حيوية لنشر الوعي بالمعايير العالمية وإضافة القيمة للقطاع الاجتماعي في المنطقة",
+  //   },
+  // {
+  //   name: "ليث أبو جليل",
+  //   company: "...",
+  //   img_src: laith,
+  //   review:
+  //     "عيادة أعمق تساعدنا في تقديم خدمات تقييم الأثر الاجتماعي بأسلوب علمي ومتقدم، وهذا يساهم في تطوير مشاريعنا الاجتماعية",
+  // },
+  // ];
 
   const review1 = [
-    img1,
-    "Put The Names here",
-    "Put the Designations here",
-    "Put the reviews here",
-  ];
-  const review2 = [
-    img2,
-    "Put The Names here",
-    "Put the Designations here",
-    "Put the reviews here",
+    salam,
+    "سلام الخطيب",
+    "من خلال مكتبة أعمق، نحن نسعى لتوفير مصادر معرفية قيمة تسهم في تعزيز الفهم لدى العاملين في مجال الأثر الاجتماعي",
+    "مستشار بالمجلس",
   ];
   const review3 = [
-    img3,
-    "Put The Names here",
-    "Put the Designations here",
-    "Put the reviews here",
+    khalid,
+    "خالد الغنام",
+    "أعتبر المجلس العربي للأثر الاجتماعي منصة حيوية لنشر الوعي بالمعايير العالمية وإضافة القيمة للقطاع الاجتماعي في المنطقة",
+    "مستشار بالمجلس",
+  ];
+  const review2 = [
+    saed,
+    "سيد محمد",
+    "كمؤسس لعيادة أعمق، أرى أن المجلس يمثل خطوة كبيرة نحو تعزيز القياس وإدارة الأثر الاجتماعي في العالم العربي بطريقة منهجية",
+    "مستشار بالمجلس",
   ];
   const review4 = [
-    img4,
-    "Put The Names here",
-    "Put the Designations here",
-    "Put the reviews here",
+    laith,
+    "ليث أبو جليل",
+    "كخبير في تقييم الأثر الاجتماعي، أعتبر أن أدوات ومنهجيات أعمق تسهم بشكل كبير في تحسين ممارساتنا وتقديم نتائج أكثر دقة وفعالية",
+    "مستشار بالمجلس",
   ];
   const review5 = [
-    img5,
-    "Put The Names here",
-    "Put the Designations here",
-    "Put the reviews here",
+    bahaa,
+    "بهاء عبدالعظيم",
+    "عيادة أعمق تساعدنا في تقديم خدمات تقييم الأثر الاجتماعي بأسلوب علمي ومتقدم، وهذا يساهم في تطوير مشاريعنا الاجتماعية",
+    "سفير المجلس",
   ];
   const review6 = [
-    img6,
-    "Put The Names here",
-    "Put the Designations here",
-    "Put the reviews here",
+    ramona,
+    "رامونا الدنف",
+    "تجربتي في تقديم الاستشارات عبر أعمق أظهرت لي مدى حاجة القطاع الاجتماعي في منطقتنا لهذه الأدوات والمنهجيات",
+    "دكتورة بالمجلس",
   ];
 
   const items = [review1, review2, review3, review4, review5, review6];
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    const id = localStorage.getItem("_id");
+    let isComm = localStorage.getItem("comm_file");
+    if (id && isComm) {
+      navigate(`/comm/profile/${id}`);
+    } else if (id && !isComm) {
+      navigate(`/profile/${id}`);
+    }
+  }, [navigate]);
+
   return (
-    <div className="home_body">
-      <div className="home_con">
-        <div className="hero_section">
-          <div className="blur_circle"></div>
-          <div className="hero_section_text">
-            <h1 className="hero_title">
-              أهلاً بك في <br />
-              <span>عيادة أعمق</span>
-            <p className="hero_slogan">لأن أثرك أعمق من مجرد مؤشر</p>
-            </h1>
+    <div className="home">
+      <section className="hero">
+        <div className="hero-text">
+          <h1>
+            أهلاً بك في <br />
+            <span className="cool_text">عيادة أعمق</span>
+            {/* <p className="hero_slogan">لأن أثرك أعمق من مجرد مؤشر</p> */}
+          </h1>
+          <p>
+            هل ترغب في معرفة الأثر الاجتماعي لمشروعك؟
+            <br /> هل تريد أن تتأكد من أن مبادرتك تترك أثراً إيجابياً في
+            المجتمع؟ <br />
+            عيادة أعمق تفتح لك بوابة عالم قياس الأثر الاجتماعي وإدارته
+          </p>
+          <Link to="/sign" className="btn">
+            سجل الآن
+          </Link>
+        </div>
+        <div className="hero-img">
+          <img src={Home_img_2} alt="Home" />
+        </div>
+      </section>
+
+      <section className="services">
+        <h2>خدماتنا</h2>
+        <p className="section_desc">
+          المجلس العربي للأثر الاجتماعي (أعمق) شبكة مهنية تأسست لبناء منظومة
+          الأثر الاجتماعي في المنطقة العربية، والتوعية بالأدوات والمنهجيات
+          والمعايير العالمية، ونشر المعرفة والاسهام في الإضافة النوعية لهذا
+          الحقل المعرفي
+        </p>
+        <div className="cards">
+          <Link to="/sign" className="card">
+            <img src={arrow} alt="Clinic" />
+            <h3>عيادة أعمق</h3>
             <p>
-              هل ترغب في معرفة الأثر الاجتماعي لمشروعك؟
-              <br /> هل تريد أن تتأكد من أن مبادرتك تترك أثراً إيجابياً في
-              المجتمع؟ <br />
-              عيادة أعمق تفتح لك بوابة عالم قياس الأثر الاجتماعي وإدارته
+              بوابتك لعالم قياس وإدارة الأثر الاجتماعي بطريقة منهجية وفق
+              المعايير العالمية
             </p>
-            <Link to="/sign">سجل الآن</Link>
-          </div>
-          <div className="hero_section_img">
-            <img className="hero_section_img" src={Home_img} />
-          </div>
-        </div>
-        <div className="service_section">
-          <div className="section_info">
-            <h1 className="section_title">خدماتنا</h1>
-            <p className="section_desc">
-            المجلس العربي للأثر الاجتماعي (أعمق) شبكة مهنية تأسست لبناء منظومة الأثر الاجتماعي في المنطقة العربية، والتوعية بالأدوات والمنهجيات والمعايير العالمية، ونشر المعرفة والاسهام في الإضافة النوعية لهذا الحقل المعرفي
+          </Link>
+            <Link to="/feedback" className="card">
+              <img src={question} alt="Consulting" />
+              <h3>استشارات أعمق</h3>
+              <p>
+                خدمات استشارية متخصصة عبر مستشارينا ممن لديهم الخبرة المحلية
+                والعالمية في مجال الأثر الاجتماعي في القطاعات الثلاثة
+              </p>
+            </Link>
+          <Link to="/makalat" className="card">
+            <img src={book} alt="Library" />
+            <h3>مكتبة أعمق</h3>
+            <p>
+              مكتبة معرفية تتيح لك التعلم والتعمق في مجال قياس وإدارة الأثر
+              الاجتماعي
             </p>
-          </div>
-          <div className="cards_container">
-            <a href="/sign" className="card">
-              <img src={arrow} />
-              <h2 className="card_title">عيادة أعمق</h2>
-              <p className="card_desc">
-              بوابتك لعالم قياس وإدارة الأثر الاجتماعي بطريقة منهجية وفق المعايير العالمية
-              </p>
-            </a>
-            <a className="card">
-              <img src={question} />
-              <h2 className="card_title">استشارات أعمق</h2>
-              <p className="card_desc">
-              خدمات استشارية متخصصة عبر مستشارينا ممن لديهم الخبرة المحلية والعالمية في مجال الأثر الاجتماعي في القطاعات الثلاثة
-              </p>
-            </a>
-            <a href="/makalat" className="card">
-              <img src={book} />
-              <h2 className="card_title">مكتبة أعمق</h2>
-              <p className="card_desc">
-              مكتبة معرفية تتيح لك التعلم والتعمق في مجال قياس وإدارة الأثر الاجتماعي
-              </p>
-            </a>
-          </div>
+          </Link>
         </div>
-        <div className="service_section">
-          <div className="section_info">
-            <h1 className="section_title">مستشارو أعمق</h1>
-            <p className="section_desc">
-            يضم المجلس العربي للأثر الاجتماعي  نخبة من المتخصصن ممن لديهم الخبرة المحلية والعالمية في مجال الأثر الاجتماعي في القطاعات الثلاثة
-            </p>
-          </div>
-          <div className="cards_container">
-            <AwesomeTestimonial
-              testimonials={[
-                {
-                  name: "Eva",
-                  company: "Amazon",
-                  img_src: "https://i.ibb.co/84h8svL/eight.png",
-                  review:
-                    "Lorem 1 ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede.",
-                },
-                {
-                  name: "Evelyn",
-                  company: "Netflix",
-                  img_src: "https://i.ibb.co/k8Jnx61/five.png",
-                  review:
-                    "Lorem 2 ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede.",
-                },
-                {
-                  name: "Jack",
-                  company: "Google",
-                  img_src: "https://i.ibb.co/Yj8pMF8/four.png",
-                  review:
-                    "Lorem 3 ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede.",
-                },
-                {
-                  name: "Sam",
-                  company: "Microsoft",
-                  img_src: "https://i.ibb.co/ph360c6/nine.png",
-                  review:
-                    "Lorem 4 ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede.",
-                },
-                {
-                  name: "Abigail",
-                  company: "Netflix",
-                  img_src: "https://i.ibb.co/gwNmrLn/one.png",
-                  review:
-                    "Lorem 5 ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede.",
-                },
-                {
-                  name: "Mortal",
-                  company: "Google",
-                  img_src: "https://i.ibb.co/6PF0kMg/seven.png",
-                  review:
-                    "Lorem 6 ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede.",
-                },
-                {
-                  name: "Bruno",
-                  company: "Netflix",
-                  img_src: "https://i.ibb.co/7G9rtfD/six.png",
-                  review:
-                    "Lorem 7 ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede.",
-                },
-                {
-                  name: "Vernoica",
-                  company: "Facebook",
-                  img_src: "https://i.ibb.co/pXMvXhK/three.png",
-                  review:
-                    "Lorem 8 ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede.",
-                },
-                {
-                  name: "Astro",
-                  company: "Netflix",
-                  img_src: "https://i.ibb.co/WzJD5sj/two.png",
-                  review:
-                    "Lorem 9 ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede.",
-                },
-              ]}
-            />
-          </div>
-        </div>
-      </div>
+      </section>
+
+      <section className="team">
+        <h2>فريق عيادة أعمق</h2>
+        <p className="section_desc">
+          يضم المجلس العربي للأثر الاجتماعي نخبة من المتخصصن ممن لديهم الخبرة
+          المحلية والعالمية في مجال الأثر الاجتماعي في القطاعات الثلاثة
+        </p>
+        {/* <AwesomeTestimonial testimonials={testimonials} /> */}
+        <Testimonials items={items} />
+      </section>
     </div>
   );
 }

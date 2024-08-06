@@ -144,7 +144,7 @@ function Sign() {
     <>
       {comms ? (
         <div className="sign_body">
-          <div className="sign_con show" id="single">
+          <div className="sign_con signup_con show" id="single">
             <form onSubmit={handleUserPost} className="sign_form">
               <div className="sign_header">
                 <h1 className="sign_title">إنشاء حساب</h1>
@@ -279,11 +279,11 @@ function Sign() {
               </p>
               <input className="submit_btn" type="submit" value="تسجيل" />
             </form>
-            <div>
+            {/* <div>
               <img className="sign_vector" src={sign_img} alt="Logo" />
-            </div>
+            </div> */}
           </div>
-          <div className="sign_con" id="comm">
+          <div className="sign_con signup_con" id="comm">
             <form onSubmit={handleCommPost} className="sign_form">
               <div className="sign_header">
                 <h1 className="sign_title">إنشاء حساب</h1>
@@ -353,9 +353,9 @@ function Sign() {
               </p>
               <input className="submit_btn" type="submit" value="تسجيل" />
             </form>
-            <div>
+            {/* <div>
               <img className="sign_vector" src={sign_image_comm} alt="Logo" />
-            </div>
+            </div> */}
           </div>
           <ToastContainer />
         </div>

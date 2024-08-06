@@ -1,7 +1,7 @@
 import "./styles/Sign.css";
 import green_logo from "../assets/green_logo.svg";
-import sign_img from "../assets/sign_img.svg";
-import sign_image_comm from "../assets/sign_image_comm.svg";
+import sign_img from "../assets/sign_img.jpg";
+import sign_image_comm from "../assets/sign_img_comm_2.jpg";
 import { useState, useEffect } from "react";
 import { Link ,useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
@@ -126,9 +126,9 @@ const handleChangeForm = (e) => {
                     <p className="sign_switch"> ليس لديك حساب؟ <Link to="/sign">إنشاء حساب</Link></p>
                     <input className="submit_btn" type="submit" value="تسجيل" />
                 </form>
-                <div >
-                <img className="sign_vector" src={sign_img} alt="Logo" />
-                        </div>
+                <div className="sign_vector_holder" style={{ backgroundImage: `url(${sign_img})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+</div>
+
                 
             </div>
             <div className='sign_con' id="comm">
@@ -172,9 +172,9 @@ const handleChangeForm = (e) => {
                     <p className="sign_switch"> ليس لديك حساب؟ <Link to="/sign">إنشاء حساب</Link></p>
                     <input className="submit_btn" type="submit" value="تسجيل" />
                 </form>
-                <div >
-                <img className="sign_vector" src={sign_image_comm} alt="Logo" />
-                        </div>
+                <div className="sign_vector_holder" style={{ backgroundImage: `url(${sign_image_comm})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+</div>
+
                 
             </div>
             <ToastContainer />

@@ -7,7 +7,7 @@
   
   .footer_body {
     position: relative;
-    background: var(--black);
+    background: #222;
     width: 100%;
   }
   
@@ -40,7 +40,8 @@
   }
   
   .footer_email {
-    width: 400px;
+    width: 100%;
+    max-width: 400px;
     display: flex;
     flex-direction: column;
     height: max-content;
@@ -187,6 +188,7 @@
     color: #fff;
     font-weight: 300;
     padding: 5px 0 5px 0;
+    text-decoration: underline;
   }
   
   /* Responsive styles */

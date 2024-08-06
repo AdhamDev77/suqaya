@@ -6,40 +6,26 @@ import kyas_logo_1 from "../../assets/kyas_logo_1.svg";
 import kyas_logo_2 from "../../assets/kyas_logo_2.svg";
 import DataTable from "react-data-table-component";
 import Swal from "sweetalert2";
+import Loader from "../../assets/loader";
+import loader2 from "../../assets/loader2.svg";
 
-function Kyas_asar_profile() {
+function Kyas_asar_profile({ local_id }) {
+  const [loading, setLoading] = useState(false);
   const [hasAsar, setHasAsar] = useState(false);
   const [comm, setComm] = useState();
-  const [isComm, setIsComm] = useState();
-  const [isAdmin, setIsAdmin] = useState();
-  const [asar, setAsar] = useState(true);
+  const [asar, setAsar] = useState([]);
   const [shownAsar, setShownAsar] = useState(0);
+  const [searchQuery, setSearchQuery] = useState(""); // State for search query
+  const [showReady, setShowReady] = useState(true);
+  const [showDraft, setShowDraft] = useState(true);
+  let isAdminLocal = localStorage.getItem("admin_admin");
 
   const fetchComm = async () => {
     try {
-      let id;
-      const local_id = localStorage.getItem("_id");
-      const comm_file = localStorage.getItem("comm_file");
-      if (comm_file != null) {
-        id = localStorage.getItem("_id");
-        setIsComm(true);
-        console.log("COMM");
-      } else {
-        try {
-          const responseUser = await axios.get(
-            `https://jellyfish-app-ew84k.ondigitalocean.app/api/users/${local_id}`
-          );
-          id = responseUser.data.comm_id;
-          setIsAdmin(responseUser.data.admin);
-          setIsComm(false);
-          console.log("NOT COMM");
-        } catch (error) {
-          console.error("Error while fetching ahhhhhhh:", error);
-        }
-      }
+      setLoading(true);
 
       const responseComm = await axios.get(
-        `https://jellyfish-app-ew84k.ondigitalocean.app/api/comm/${id}`
+        `https://jellyfish-app-ew84k.ondigitalocean.app/api/comm/${local_id}`
       );
       setComm(responseComm.data);
       if (responseComm.data.comm_asar) {
@@ -68,6 +54,8 @@ function Kyas_asar_profile() {
       console.log(responseComm);
     } catch (error) {
       console.error("Error while fetching:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -97,36 +85,74 @@ function Kyas_asar_profile() {
       }
     });
   };
+
   const handleShowAsar = async (e, asarId) => {
     const index = asar.findIndex((item) => item._id === asarId);
     setShownAsar(index);
     console.log(index);
   };
 
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleShowReadyChange = () => {
+    setShowReady(!showReady);
+  };
+
+  const handleShowDraftChange = () => {
+    setShowDraft(!showDraft);
+  };
+
   useEffect(() => {
     fetchComm();
   }, []);
+
+  const filteredAsar = asar.filter((item) => {
+    const matchesSearchQuery = item.project_info.projectName
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase());
+    const matchesStatus =
+      (showReady && item.project_goals_1) ||
+      (showDraft && !item.project_goals_1);
+    return matchesSearchQuery && matchesStatus;
+  });
 
   const columns = [
     {
       name: "قرار",
       selector: (row) => (
         <div className="karar">
-          <a className="positive_karar" href={`/asar/${row._id}`}>
-            <i class="fa-solid fa-eye"></i>
-          </a>
-            <a href={`/asar/edit/${row._id}`} className="positive_karar">
-              <i class="fa-solid fa-pen-to-square"></i>
+          <div className="karar_container">
+            <a
+              href={`/comm/${local_id}/asar/settings/${row._id}`}
+              className="positive_karar"
+            >
+              <i className="fa-solid fa-universal-access"></i>
             </a>
+            <p className="karar_text">صلاحيات</p>
+          </div>
+          <div className="karar_container">
             <button
               onClick={(e) => handleDeleteAsar(e, row._id)}
               className="negative_karar"
             >
-              <i class="fa-solid fa-x"></i>
+              <i className="fa-solid fa-x"></i>
             </button>
-            <a href={`/asar/settings/${row._id}`} className="positive_karar">
-            <i class="fa-solid fa-universal-access"></i>
-          </a>
+            <p className="karar_text">مسح</p>
+          </div>
+          <div className="karar_container">
+            <a href={`/asar/edit/${row._id}`} className="positive_karar">
+              <i className="fa-solid fa-pen-to-square"></i>
+            </a>
+            <p className="karar_text">تعديل</p>
+          </div>
+          <div className="karar_container">
+            <a className="positive_karar" href={`/asar/${row._id}`}>
+              <i className="fa-solid fa-eye"></i>
+            </a>
+            <p className="karar_text">رؤية</p>
+          </div>
         </div>
       ),
     },
@@ -175,7 +201,17 @@ function Kyas_asar_profile() {
     },
     {
       name: "اسم المشروع",
-      selector: (row) => row.project_info.projectName || "_",
+      selector: (row) =>
+        (
+          <a
+            data-tooltip-id="my-tooltip"
+            data-tooltip-content={row.project_info.projectName}
+            data-tooltip-place="top"
+          >
+            {row.project_info.projectName}
+          </a>
+        ) || "_",
+      sortable: true,
     },
     {
       name: "حالة المشروع",
@@ -191,7 +227,10 @@ function Kyas_asar_profile() {
               }}
             >
               جاهز{" "}
-              <i class="fa-solid fa-circle" style={{ color: "#02e254" }}></i>
+              <i
+                className="fa-solid fa-circle"
+                style={{ color: "#02e254" }}
+              ></i>
             </p>
           ) : (
             <p
@@ -202,37 +241,80 @@ function Kyas_asar_profile() {
                 alignItems: "center",
               }}
             >
+              <i className="fa-solid fa-circle" style={{ color: "orange" }}></i>
               مسودة{" "}
-              <i class="fa-solid fa-circle" style={{ color: "orange" }}></i>
             </p>
           )}
         </>
       ),
+      sortable: true,
     },
   ];
+
   return (
     <>
       <div className="card_container profile_kyas">
-        {hasAsar == true ? (
-          <div className="yes_kyas">
-            <div className="yes_kyas_table">
-              <DataTable columns={columns} data={asar} />
-              <Link className="link_btn" to="/asar">
-                إنشاء قياس جديد <i class="fa-solid fa-plus"></i>
-              </Link>
-            </div>
+        {loading ? (
+          <div className="loader_container">
+            <img src={loader2} alt="loader" />
           </div>
         ) : (
           <>
-            <div className="no_kyas">
-              <img src={no_kyas} />
-              <h1 className="no_kyas_title">
-                لم تقم المؤسسة بأى قياس أثر من قبل
-              </h1>
-              <Link className="link_btn" to="/asar">
-                إنشاء قياس جديد <i class="fa-solid fa-plus"></i>
-              </Link>
-            </div>
+            {hasAsar ? (
+              <div className="yes_kyas">
+                <div className="yes_kyas_table">
+                  <div className="filter_cont">
+                    <div className="search_holder">
+                      <input
+                        type="text"
+                        placeholder="... ابحث عن قياس"
+                        value={searchQuery}
+                        onChange={handleSearchChange}
+                        className="input_input_white"
+                      />
+                      <i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                    <div className="filter_checkboxes">
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={showReady}
+                          onChange={handleShowReadyChange}
+                        />
+                        جاهز
+                      </label>
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={showDraft}
+                          onChange={handleShowDraftChange}
+                        />
+                        مسودة
+                      </label>
+                    </div>
+                  </div>
+
+                  <DataTable
+                    columns={columns}
+                    data={filteredAsar} // Use filtered data
+                  />
+                  <Link className="link_btn" to="/asar">
+                    إنشاء قياس جديد{" "}
+                    <i className="fa-solid fa-plus search_icon"></i>
+                  </Link>
+                </div>
+              </div>
+            ) : (
+              <div className="no_kyas">
+                <img src={no_kyas} alt="No Asar" />
+                <h1 className="no_kyas_title">
+                  لم تقم المؤسسة بأى قياس أثر من قبل
+                </h1>
+                <Link className="link_btn" to="/asar">
+                  إنشاء قياس جديد <i className="fa-solid fa-plus"></i>
+                </Link>
+              </div>
+            )}
           </>
         )}
       </div>

@@ -7,17 +7,26 @@ import Kyas_asar_profile from "./profile_components/Kyas_asar_profile";
 import MyCons from "./profile_components/MyCons";
 import MyConsUser from "./profile_components/MyConsUser";
 import "./styles/SingleProfile.css";
+import { useNavigate } from "react-router-dom";
 
 function Single_profile() {
-  const [commName, setCommName] = useState('');
+  const navigate = useNavigate();
+  const [commName, setCommName] = useState("");
   const [activeTab, setActiveTab] = useState("KyasAsarProfile"); // Default active tab is 'UserInfo'
 
   const id = localStorage.getItem("_id");
+  const isAdmin = localStorage.getItem("admin_admin");
+  let isComm = localStorage.getItem("comm_file");
   const [user, setUser] = useState({});
 
   const fetchUser = async () => {
     try {
-      const response = await axios.get(`https://jellyfish-app-ew84k.ondigitalocean.app/api/users/${id}`);
+        if (!id) {
+          navigate("/");
+        }
+      const response = await axios.get(
+        `https://jellyfish-app-ew84k.ondigitalocean.app/api/users/${id}`
+      );
       setUser(response.data);
       setCommName(response.data.name);
       console.log(response.data);
@@ -25,7 +34,7 @@ function Single_profile() {
       console.error("Error while fetching:", error);
     }
   };
-  
+
   useEffect(() => {
     fetchUser();
   }, [id]);
@@ -91,9 +100,7 @@ function Single_profile() {
     <>
       {user ? (
         <div className="profile_body">
-           <div className="welcome-message">
-      أهلا بك, {commName}
-      </div>
+          <div className="welcome-message">أهلا بك, {commName}</div>
           <div className="profile_con">
             <div className="profile_nav">
               <button

@@ -15,6 +15,10 @@ function Kyas_asar_show() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+      const id = localStorage.getItem("_id");
+      if(!id){
+        navigate('/')
+      }
   }, []);
 
   let { id } = useParams();
@@ -151,7 +155,7 @@ function Kyas_asar_show() {
           <h1 className="asar_title">الاستشارة</h1>
           <p className="asar_title_2">
             يمكنك رؤية و تحليل قياس الأثر الخاص بالمستشير و الرد على استفساره
-            بأليات الرد
+            بآليات الرد
           </p>
         </div>
       </div>
@@ -162,14 +166,14 @@ function Kyas_asar_show() {
               <div className="cons_comment_form">
                 <div className="sign_form">
                   <div className="sign_header">
-                    <h1 className="sign_title">محتوي الرد</h1>
+                    <h1 className="sign_title">محتوى الرد</h1>
                     <img className="sign_logo" src={green_logo} alt="Logo" />
                   </div>
                   {cons_comment.map((goal, index) => (
                     <div className="sign_form_con">
                       <div className="sign_element_multi">
                         <div className="sign_element">
-                          <label className="sign_label">محل التعلىق</label>
+                          <label className="sign_label">محل التعليق</label>
                           <select
                             onChange={(e) =>
                               handleChange(index, "cons_makan", e.target.value)
@@ -191,7 +195,7 @@ function Kyas_asar_show() {
                           </select>
                         </div>
                         <div className="sign_element">
-                          <label className="sign_label">التعلىق</label>
+                          <label className="sign_label">التعليق</label>
                           <textarea
                             onChange={(e) =>
                               handleChange(
@@ -209,7 +213,7 @@ function Kyas_asar_show() {
                     </div>
                   ))}
                   <button onClick={handleAddComment} className="add_btn">
-                    اضافة تعلىق <i class="fa-solid fa-plus"></i>
+                    اضافة تعليق <i class="fa-solid fa-plus"></i>
                   </button>
                   <input className="submit_btn" type="submit" value="رد" />
                 </div>
@@ -265,11 +269,13 @@ function Kyas_asar_show() {
                         القرارت التي تتأثر بالتحليل :
                       </label>
                       {asar.project_info.krarat_tt2sr.length > 0 ? (
-                        asar.project_info.krarat_tt2sr.map((decision, index) => (
-                          <div key={index} className="table_1_info">
-                            {decision || "_"}
-                          </div>
-                        ))
+                        asar.project_info.krarat_tt2sr.map(
+                          (decision, index) => (
+                            <div key={index} className="table_1_info">
+                              {decision || "_"}
+                            </div>
+                          )
+                        )
                       ) : (
                         <div className="table_1_info">_</div>
                       )}
@@ -330,10 +336,10 @@ function Kyas_asar_show() {
                   <h1>الأهداف</h1>
                   <div className="table_2_header">
                     <label className="table_2_header_item">
-                      : أهداف تشغيلية مباشرة للأنشطة
+                      : أهداف المنظمة الاستراتيجية ذات الارتباط
                     </label>
                     <label className="table_2_header_item">
-                      : أهداف المنظمة الاستراتيجية ذات الارتباط
+                      : أهداف تشغيلية مباشرة للأنشطة
                     </label>
                   </div>
                   <div className="table_2_con">
@@ -378,131 +384,146 @@ function Kyas_asar_show() {
                 </div>
               </div>
               <div className="table_row">
-                <div className="table_2">
-                  <h1>أصحاب المصلحة</h1>
-                  <div className="table_2_header">
-                    <label className="table_2_header_item">رمز المعني</label>
-                    <label className="table_2_header_item">صاحب المصلحة</label>
-                    <label className="table_2_header_item">
-                      تأثيرهم/تأثرهم
-                    </label>
-                    <label className="table_2_header_item">الإشراك</label>
-                    <label className="table_2_header_item">
-                      عدد المستفيدين
-                    </label>
-                    <label className="table_2_header_item">سبب</label>
-                    <label className="table_2_header_item">طريقة الإشراك</label>
-                    <label className="table_2_header_item">تاريخ إشراك</label>
-                  </div>
-                  <div className="table_2_con">
-                    {asar.m3neen.map((item, index) => (
-                      <div key={index} className="table_2_content">
-                        <label className="table_2_info">{item.m3ni_id}</label>
-                        <label className="table_2_info">{item.m3ni}</label>
-                        <label className="table_2_info">
-                          {item.ta3ref_m3ni}
+                    <div className="table_2">
+                      <h1>أصحاب المصلحة</h1>
+                      <div className="table_2_header">
+                        <label className="table_2_header_item flex_2">
+                          صاحب المصلحة
                         </label>
-                        <label className="table_2_info">{item.e4temal}</label>
-                        <label className="table_2_info">
-                          {item.mostafed_count || "_"}
+                        <label className="table_2_header_item flex_2">
+                          تأثيرهم/تأثرهم
                         </label>
-                        <label className="table_2_info">
-                          {item.sabab || "_"}
+                        <label className="table_2_header_item">الإشراك</label>
+                        <label className="table_2_header_item">
+                          العدد الذي سيتم إشراكه
                         </label>
-                        <label className="table_2_info">
-                          {item.tare2et_e4rak || "_"}
+                        <label className="table_2_header_item flex_2">سبب</label>
+                        <label className="table_2_header_item">
+                          طريقة الإشراك
                         </label>
-                        <label className="table_2_info">
-                          {item.tare5_e4rak || "_"}
+                        <label className="table_2_header_item">
+                          تاريخ إشراك
                         </label>
                       </div>
-                    ))}
+                      <div className="table_2_con">
+                        {asar.m3neen.map((item, index) => (
+                          <div key={index} className="table_2_content">
+                            <label className="table_2_info flex_2">{item.m3ni}</label>
+                            <label className="table_2_info flex_2">
+                              {item.ta3ref_m3ni}
+                            </label>
+                            <label className="table_2_info">
+                              {item.e4temal}
+                            </label>
+                            <label className="table_2_info">
+                              {item.mostafed_count || "_"}
+                            </label>
+                            <label className="table_2_info flex_2">
+                              {item.sabab || "_"}
+                            </label>
+                            <label className="table_2_info">
+                              {item.tare2et_e4rak || "_"}
+                            </label>
+                            <label className="table_2_info">
+                              {item.tare5_e4rak || "_"}
+                            </label>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-              <div className="table_row">
-                <div className="table_2">
-                  <h1>النتائج</h1>
-                  <div className="table_2_header">
-                    <label className="table_2_header_item">رمز النتيجة</label>
-                    <label className="table_2_header_item">النتيجة</label>
-                    <label className="table_2_header_item">صاحب المصلحة</label>
-                    <label className="table_2_header_item">اسم المؤشر</label>
-                    <label className="table_2_header_item">
-                      العدد الذي سيتم إشراكه
-                    </label>
-                    <label className="table_2_header_item">نسبة التغيير</label>
-                    <label className="table_2_header_item">عتبة التغيير</label>
-                    <label className="table_2_header_item">
-                      المكافئ المالي
-                    </label>
-                    <label className="table_2_header_item">شرح المكافئ</label>
-                    <label className="table_2_header_item">قوة الأثر </label>
-                    <label className="table_2_header_item">بداية المشروع</label>
-                    <label className="table_2_header_item">الحمل الزائد</label>
-                    <label className="table_2_header_item">الازاحة</label>
-                    <label className="table_2_header_item">العزو</label>
-                    <label className="table_2_header_item">فترة</label>
-                  </div>
-                  <div className="table_2_con">
-                    {asar.project_natiga.map((item, index) => (
-                      <div key={index} className="table_2_content">
-                        <label className="table_2_info">
-                          {item.case_id || "_"}
+                  <div className="table_row">
+                    <div className="table_2">
+                      <h1>النتائج</h1>
+                      <div className="table_2_header">
+                        <label className="table_2_header_item flex_2">النتيجة</label>
+                        <label className="table_2_header_item flex_2">
+                          صاحب المصلحة
                         </label>
-                        <label className="table_2_info">
-                          {item.natiga.natiga || "_"}
+                        <label className="table_2_header_item">
+                          اسم المؤشر
                         </label>
-                        <label className="table_2_info">
-                          {item.m3ni.m3ni || "_"}
+                        <label className="table_2_header_item">
+                          عدد المستفيدين
                         </label>
-                        <label className="table_2_info">
-                          {item.esm_mo24r || "_"}
+                        <label className="table_2_header_item">
+                          نسبة التغيير %
                         </label>
-                        <label className="table_2_info">
-                          {item.mostahdaf || "_"}
+                        <label className="table_2_header_item">
+                          عتبة التغيير
                         </label>
-                        <label className="table_2_info">
-                          {item.nesbet_ta8yyr || "_"}
+                        <label className="table_2_header_item">
+                          المكافئ المالي
                         </label>
-                        <label className="table_2_info">
-                          {item.ataba_ta8yyr || "_"}
+                        <label className="table_2_header_item flex_2">
+                          شرح المكافئ
                         </label>
-                        <label className="table_2_info">
-                          {item.mokafe2_maly || "_"}
+                        <label className="table_2_header_item flex_5">
+                          مدة التأثير{" "}
                         </label>
-                        <label className="table_2_info">
-                          {item.shar7_mokafe2_maly || "_"}
+                        <label className="table_2_header_item">
+                          بداية الأثر
                         </label>
-                        <label className="table_2_info">
-                          {item.sneen || "_"}
+                        <label className="table_2_header_item">
+                          الحمل الزائد %
                         </label>
-                        <label className="table_2_info">
-                          {item.bedayt_m4ro3 || "_"}
-                        </label>
-                        <label className="table_2_info">
-                          {item.heml_za2ed || "_"}
-                        </label>
-                        <label className="table_2_info">
-                          {item.eza7a || "_"}
-                        </label>
-                        <label className="table_2_info">
-                          {item.azw || "_"}
-                        </label>
-                        <label className="table_2_info">
-                          {item.fatra || "_"}
+                        <label className="table_2_header_item">الازاحة %</label>
+                        <label className="table_2_header_item">العزو %</label>
+                        <label className="table_2_header_item">
+                          انخفاض الأثر %
                         </label>
                       </div>
-                    ))}
+                      <div className="table_2_con">
+                        {asar.project_natiga.map((item, index) => (
+                          <div key={index} className="table_2_content">
+                            <label className="table_2_info flex_2">
+                              {item.natiga.natiga}
+                            </label>
+                            <label className="table_2_info flex_2">
+                              {item.m3ni.m3ni}
+                            </label>
+                            <label className="table_2_info">
+                              {item.esm_mo24r}
+                            </label>
+                            <label className="table_2_info">
+                              {item.mostahdaf}
+                            </label>
+                            <label className="table_2_info">
+                              {item.nesbet_ta8yyr}%
+                            </label>
+                            <label className="table_2_info">
+                              {item.ataba_ta8yyr}
+                            </label>
+                            <label className="table_2_info">
+                              {item.mokafe2_maly}
+                            </label>
+                            <label className="table_2_info flex_2">
+                              {item.shar7_mokafe2_maly}
+                            </label>
+                            <label className="table_2_info flex_5">{item.sneen}</label>
+                            <label className="table_2_info">
+                              {item.bedayt_m4ro3}
+                            </label>
+                            <label className="table_2_info">
+                              {item.heml_za2ed}%
+                            </label>
+                            <label className="table_2_info">
+                              {item.eza7a}%
+                            </label>
+                            <label className="table_2_info">{item.azw}%</label>
+                            <label className="table_2_info">
+                              {item.fatra}%
+                            </label>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
 
               <div className="table_row">
                 <div className="table_2">
                   <h1>قيمة الأثر</h1>
                   <div className="table_2_header">
-                    <label className="table_2_header_item">رمز النتيجة</label>
                     <label className="table_2_header_item">النتيجة</label>
                     <label className="table_2_header_item">اجمالي الأثر</label>
                     <label className="table_2_header_item">السنة 0</label>
@@ -518,9 +539,6 @@ function Kyas_asar_show() {
                   <div className="table_2_con">
                     {asar.project_natiga.map((item, index) => (
                       <div key={index} className="table_2_content">
-                        <label className="table_2_info">
-                          {item.case_id || "_"}
-                        </label>
                         <label className="table_2_info">
                           {item.natiga.natiga || "_"}
                         </label>

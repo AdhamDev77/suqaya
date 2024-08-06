@@ -64,7 +64,7 @@ function Footer() {
         </div>
     </div>
             <hr className='last_hr'/>
-            <p className='footer_footer'>جميع الحقوق محفوظة ©  Jubyte Software</p>
+            <a href='http://jubyte.vercel.app' target='_blank' className='footer_footer'>جميع الحقوق محفوظة ©  Jubyte Software</a>
     </div>
   )
 }

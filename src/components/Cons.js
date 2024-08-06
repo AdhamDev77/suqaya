@@ -1,8 +1,9 @@
 import "./styles/Sign.css";
 import green_logo from "../assets/green_logo.svg";
 import help_img from "../assets/help_img.svg";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 function Cons() {
+
     const [formType, setFormType] = useState('single');
 
 const handleChangeForm = (e) => {

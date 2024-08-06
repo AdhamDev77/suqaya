@@ -39,7 +39,7 @@
   flex-direction: row-reverse;
   align-items: center;
   width: 100%;
-  height: 320px;
+  height: 280px;
   background: var(--green);
 }
 .asar_header_text {
@@ -238,9 +238,17 @@ align-items: flex-end;
   justify-content: space-between;
   align-items: center;
 }
+.text-sky{
+  color: #2273ba;
+}
 .input_label {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
   color: #121212;
-  font-size: 14px; /* Adjust font size if necessary */
+  font-size: 13px; /* Adjust font size if necessary */
   font-weight: 400;
   line-height: 24px; /* Ensure the line height matches the input field */
   text-transform: capitalize;
@@ -265,6 +273,22 @@ align-items: flex-end;
   line-height: 24px;
   text-transform: capitalize;
   box-sizing: border-box;
+}
+.input_input_white{
+  width: 100%;
+  max-width: 300px;
+  border: none;
+  border-radius: 8px;
+  padding: 12px;
+  background: #fff;
+  outline: none;
+  color: #121212;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 24px;
+  text-transform: capitalize;
+  box-sizing: border-box;
+  box-shadow: 2px 2px 5px #22222212;
 }
 .input_element_multi{
     width: 100%;
@@ -399,6 +423,9 @@ background: none;
   border-radius: 15px;
   overflow: hidden;
 }
+.table_1{
+  width: 50%;
+}
 .table_1 h1,.table_2 h1,.table_3 h1{
   position: relative !important;
   display: flex;
@@ -481,6 +508,7 @@ background: none;
 .table_2_info{
   display: flex;
   justify-content: center;
+  text-align: center;
   align-items: center;
   flex: 1;
   font-size: 14px;
@@ -504,12 +532,13 @@ background: none;
   height: auto;
   gap: 75px;
 }
+
 .yes_kyas_table{
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-end;
   width: 100%;
-  gap: 30px;
+  gap: 10px;
 }
 
 .yes_kyas .show_info {
@@ -593,6 +622,10 @@ background: none;
   white-space: nowrap;
   font-size: 12px;
 }
+.gdBOih{
+  text-align: center;
+  justify-content: center;
+}
 .w_high{
   flex: 2 2;
 }
@@ -604,8 +637,27 @@ background: none;
   flex: 2 2;
 }
 .flex_5{
-  flex: .5 .5;
+  flex: .7 .7;
 }
 .flex_num{
   flex: .3 .3;
+}
+
+@media (max-width: 768px) {
+  .asar_header{
+    height: 220px;
+  }
+  .asar_title_2{
+    font-size: 18px;
+  }
+  .kyas_logo_1,
+  .kyas_logo_2 {
+    width: 120px;
+  }
+  .asar_header_text{
+    margin-right: 20px;
+  }
+  .asar_title{
+    font-size: 48px;
+  }
 }

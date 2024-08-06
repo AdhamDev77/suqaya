@@ -12,6 +12,18 @@ import cuate2 from "../assets/cuate2.svg";
 function Kyas_asar_show() {
   const navigate = useNavigate();
   let { id } = useParams();
+  const isAdmin = localStorage.getItem("admin_admin");
+
+  console.log(id+"dsf")
+
+  useEffect(() => {
+    const id = localStorage.getItem("_id");
+    if (!isAdmin) {
+      if (!id) {
+        navigate("/");
+      }
+    }
+  }, []);
 
   const [asar, setAsar] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -36,6 +48,26 @@ function Kyas_asar_show() {
   const fetchComm = async (id) => {
     try {
       setLoading(true);
+
+      let local_id = localStorage.getItem("_id");
+      let isComm = localStorage.getItem("comm_file");
+      if (isComm) {
+        const responseComm = await axios.get(
+          `https://jellyfish-app-ew84k.ondigitalocean.app/api/comm/${local_id}`
+        );
+        if (!responseComm.data.comm_asar.includes(id)) {
+          return navigate("/");
+        }
+      } else if (isAdmin) {
+        
+      } else {
+        const responseUser = await axios.get(
+          `https://jellyfish-app-ew84k.ondigitalocean.app/api/users/${local_id}`
+        );
+        if (!responseUser.data.toggable_asars.includes(id)) {
+          return navigate("/");
+        }
+      }
 
       const responseAsar = await axios.get(
         `https://jellyfish-app-ew84k.ondigitalocean.app/api/asar/${id}`
@@ -118,7 +150,6 @@ function Kyas_asar_show() {
             <div className="asar_con_con">
               <div className="asar_form_w_btns">
                 <form className="asar_form table_form">
-                  <div className="table_row">
                     <div className="table_1">
                       <h1>معلومات المشروع</h1>
                       <div className="table_1_con">
@@ -236,14 +267,15 @@ function Kyas_asar_show() {
                         </div>
                       </div>
                     </div>
+                    <div className="table_row">
                     <div className="table_2">
                       <h1>الأهداف</h1>
                       <div className="table_2_header">
                         <label className="table_2_header_item">
-                          : أهداف تشغيلية مباشرة للأنشطة
+                          : أهداف المنظمة الاستراتيجية ذات الارتباط
                         </label>
                         <label className="table_2_header_item">
-                          : أهداف المنظمة الاستراتيجية ذات الارتباط
+                          : أهداف تشغيلية مباشرة للأنشطة
                         </label>
                       </div>
                       <div className="table_2_con">
@@ -259,7 +291,7 @@ function Kyas_asar_show() {
                         ))}
                       </div>
                     </div>
-                  </div>
+                    </div>
                   <div className="table_row">
                     <div className="table_2">
                       <h1>موارد المشروع</h1>
@@ -293,20 +325,19 @@ function Kyas_asar_show() {
                     <div className="table_2">
                       <h1>أصحاب المصلحة</h1>
                       <div className="table_2_header">
-                        <label className="table_2_header_item">
-                          رمز المعني
-                        </label>
-                        <label className="table_2_header_item">
+                        <label className="table_2_header_item flex_2">
                           صاحب المصلحة
                         </label>
-                        <label className="table_2_header_item">
+                        <label className="table_2_header_item flex_2">
                           تأثيرهم/تأثرهم
                         </label>
                         <label className="table_2_header_item">الإشراك</label>
                         <label className="table_2_header_item">
-                          عدد المستفيدين
+                          العدد الذي سيتم إشراكه
                         </label>
-                        <label className="table_2_header_item">سبب</label>
+                        <label className="table_2_header_item flex_2">
+                          سبب
+                        </label>
                         <label className="table_2_header_item">
                           طريقة الإشراك
                         </label>
@@ -317,11 +348,10 @@ function Kyas_asar_show() {
                       <div className="table_2_con">
                         {asar.m3neen.map((item, index) => (
                           <div key={index} className="table_2_content">
-                            <label className="table_2_info">
-                              {item.m3ni_id}
+                            <label className="table_2_info flex_2">
+                              {item.m3ni}
                             </label>
-                            <label className="table_2_info">{item.m3ni}</label>
-                            <label className="table_2_info">
+                            <label className="table_2_info flex_2">
                               {item.ta3ref_m3ni}
                             </label>
                             <label className="table_2_info">
@@ -330,7 +360,7 @@ function Kyas_asar_show() {
                             <label className="table_2_info">
                               {item.mostafed_count || "_"}
                             </label>
-                            <label className="table_2_info">
+                            <label className="table_2_info flex_2">
                               {item.sabab || "_"}
                             </label>
                             <label className="table_2_info">
@@ -348,18 +378,17 @@ function Kyas_asar_show() {
                     <div className="table_2">
                       <h1>النتائج</h1>
                       <div className="table_2_header">
-                        <label className="table_2_header_item">
-                          رمز النتيجة
+                        <label className="table_2_header_item flex_2">
+                          النتيجة
                         </label>
-                        <label className="table_2_header_item">النتيجة</label>
-                        <label className="table_2_header_item">
+                        <label className="table_2_header_item flex_2">
                           صاحب المصلحة
                         </label>
                         <label className="table_2_header_item">
                           اسم المؤشر
                         </label>
                         <label className="table_2_header_item">
-                          العدد الذي سيتم إشراكه
+                          عدد المستفيدين
                         </label>
                         <label className="table_2_header_item">
                           نسبة التغيير %
@@ -370,11 +399,11 @@ function Kyas_asar_show() {
                         <label className="table_2_header_item">
                           المكافئ المالي
                         </label>
-                        <label className="table_2_header_item">
+                        <label className="table_2_header_item flex_2">
                           شرح المكافئ
                         </label>
-                        <label className="table_2_header_item">
-                          مدة التأثير 
+                        <label className="table_2_header_item flex_5">
+                          مدة التأثير{" "}
                         </label>
                         <label className="table_2_header_item">
                           بداية الأثر
@@ -391,50 +420,45 @@ function Kyas_asar_show() {
                       <div className="table_2_con">
                         {asar.project_natiga.map((item, index) => (
                           <div key={index} className="table_2_content">
-                            <label className="table_2_info">
-                              {item.case_id || "_"}
+                            <label className="table_2_info flex_2">
+                              {item.natiga.natiga}
+                            </label>
+                            <label className="table_2_info flex_2">
+                              {item.m3ni.m3ni}
                             </label>
                             <label className="table_2_info">
-                              {item.natiga.natiga || "_"}
+                              {item.esm_mo24r}
                             </label>
                             <label className="table_2_info">
-                              {item.m3ni.m3ni || "_"}
+                              {item.mostahdaf}
                             </label>
                             <label className="table_2_info">
-                              {item.esm_mo24r || "_"}
+                              {item.nesbet_ta8yyr}%
                             </label>
                             <label className="table_2_info">
-                              {item.mostahdaf || "_"}
+                              {item.ataba_ta8yyr}
                             </label>
                             <label className="table_2_info">
-                              {item.nesbet_ta8yyr + "%" || "_"}
+                              {item.mokafe2_maly}
+                            </label>
+                            <label className="table_2_info flex_2">
+                              {item.shar7_mokafe2_maly}
+                            </label>
+                            <label className="table_2_info flex_5">
+                              {item.sneen}
                             </label>
                             <label className="table_2_info">
-                              {item.ataba_ta8yyr || "_"}
+                              {item.bedayt_m4ro3}
                             </label>
                             <label className="table_2_info">
-                              {item.mokafe2_maly || "_"}
+                              {item.heml_za2ed}%
                             </label>
                             <label className="table_2_info">
-                              {item.shar7_mokafe2_maly || "_"}
+                              {item.eza7a}%
                             </label>
+                            <label className="table_2_info">{item.azw}%</label>
                             <label className="table_2_info">
-                              {item.sneen || "_"}
-                            </label>
-                            <label className="table_2_info">
-                              {item.bedayt_m4ro3 || "_"}
-                            </label>
-                            <label className="table_2_info">
-                              {item.heml_za2ed + "%" || "_"}
-                            </label>
-                            <label className="table_2_info">
-                              {item.eza7a + "%" || "_"}
-                            </label>
-                            <label className="table_2_info">
-                              {item.azw + "%" || "_"}
-                            </label>
-                            <label className="table_2_info">
-                              {item.fatra + "%" || "_"}
+                              {item.fatra}%
                             </label>
                           </div>
                         ))}
@@ -446,9 +470,6 @@ function Kyas_asar_show() {
                     <div className="table_2">
                       <h1>قيمة الأثر</h1>
                       <div className="table_2_header">
-                        <label className="table_2_header_item">
-                          رمز النتيجة
-                        </label>
                         <label className="table_2_header_item">النتيجة</label>
                         <label className="table_2_header_item">
                           اجمالي الأثر
@@ -468,9 +489,6 @@ function Kyas_asar_show() {
                       <div className="table_2_con">
                         {asar.project_natiga.map((item, index) => (
                           <div key={index} className="table_2_content">
-                            <label className="table_2_info">
-                              {item.case_id || "_"}
-                            </label>
                             <label className="table_2_info">
                               {item.natiga.natiga || "_"}
                             </label>
@@ -512,10 +530,10 @@ function Kyas_asar_show() {
                           إجمالي الموارد
                         </label>
                         <label className="table_2_header_item">
-                          إجمالي القيمة المجتمعية 
+                          إجمالي القيمة المجتمعية
                         </label>
                         <label className="table_2_header_item">
-                        صافي القيمة المجتمعية 
+                          صافي القيمة المجتمعية
                         </label>
                         <label className="table_2_header_item">
                           العائد الاجتماعي على الاستثمار

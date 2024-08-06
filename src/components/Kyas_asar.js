@@ -10,10 +10,22 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
+import "react-tooltip/dist/react-tooltip.css";
+import { Tooltip } from "react-tooltip";
 
 function Kyas_asar() {
   const navigate = useNavigate();
   let asar_id = useParams();
+  const isAdmin = localStorage.getItem("admin_admin");
+
+  useEffect(() => {
+    const id = localStorage.getItem("_id");
+    if (!isAdmin) {
+      if (!id) {
+        navigate("/");
+      }
+    }
+  }, []);
 
   const [currentStep, setCurrentStep] = useState(1);
   const [maxStepReached, setMaxStepReached] = useState(1);
@@ -157,23 +169,35 @@ function Kyas_asar() {
         const isDateValid =
           new Date(project_info.startDate) < new Date(project_info.endDate);
 
+        // Validate lengths of projectName, me7war, and manteka
+        if (project_info.projectName.length > 50) {
+          toast.error("يجب ألا يزيد اسم المشروع عن 50 حرفًا");
+          return false;
+        } else if (project_info.me7war.length > 100) {
+          toast.error("يجب ألا يزيد مجال المشروع عن 100 حرفًا");
+          return false;
+        } else if (project_info.manteka.length > 20) {
+          toast.error("يجب ألا تزيد المنطقة عن 20 حرفًا");
+          return false;
+        }
+
         if (!isValid) {
-          toast.error("يجب ملأ جميع الخانات أولا");
+          toast.error("يجب ملأ جميع الخانات أولاً");
           return false;
         } else if (!isDateValid) {
-          toast.error("يجب ادخال التواريخ بطريقة صحيحة");
+          toast.error("يجب إدخال التواريخ بطريقة صحيحة");
           return false;
-        } else if (!isTanabo2i) {
+        } else if (isTakymy) {
           if (new Date(project_info.endDate) > today) {
             toast.info(
-              "يجب ادخال تاريخ النهاية في يوم ماضي بما أن نوع القياس تقييمي"
+              "يجب إدخال تاريخ النهاية في يوم ماضي بما أن نوع القياس تقييمي"
             );
             return false;
           }
-        } else if (!isTakymy) {
+        } else if (isTanabo2i) {
           if (new Date(project_info.endDate) < today) {
             toast.info(
-              "يجب ادخال تاريخ النهاية مستقبلي بما أن نوع القياس تنبؤي"
+              "يجب إدخال تاريخ النهاية مستقبلي بما أن نوع القياس تنبؤي"
             );
             return false;
           }
@@ -181,15 +205,15 @@ function Kyas_asar() {
       } else if (i === 3) {
         const allGoalsFilled = project_goals_1.every(
           (item) =>
-            item.project_goals.trim() !== "" && item.project_goals.length <= 30
+            item.project_goals.trim() !== "" && item.project_goals.length <= 150
         );
 
         if (!allGoalsFilled) {
           project_goals_1.forEach((item, index) => {
             if (item.project_goals.trim() === "") {
               toast.error(`يجب ملأ الهدف رقم ${index + 1} أولا`);
-            } else if (item.project_goals.length > 30) {
-              toast.error(`يجب أن يكون الهدف 30 حرف أو أقل`);
+            } else if (item.project_goals.length > 150) {
+              toast.error(`يجب أن يكون الهدف 150 حرف أو أقل`);
             }
           });
           return false;
@@ -199,8 +223,8 @@ function Kyas_asar() {
           (item) =>
             item.project_goals_1.trim() !== "" &&
             item.project_goals_2.trim() !== "" &&
-            item.project_goals_1.length <= 30 &&
-            item.project_goals_2.length <= 30
+            item.project_goals_1.length <= 150 &&
+            item.project_goals_2.length <= 150
         );
 
         if (!allGoalsFilled) {
@@ -211,10 +235,10 @@ function Kyas_asar() {
             ) {
               toast.error(`يجب ملأ الهدف رقم ${index + 1} أولا`);
             } else if (
-              item.project_goals_1.length > 30 ||
-              item.project_goals_2.length > 30
+              item.project_goals_1.length > 150 ||
+              item.project_goals_2.length > 150
             ) {
-              toast.error(`يجب أن يكون الهدف 30 حرف أو أقل`);
+              toast.error(`يجب أن يكون الهدف 150 حرف أو أقل`);
             }
           });
           return false;
@@ -223,9 +247,10 @@ function Kyas_asar() {
         const allBayansFilled = project_tahlils.every(
           (item) =>
             item.bayan.trim() !== "" &&
-            item.bayan.length <= 20 &&
+            item.bayan.length <= 50 &&
             item.kema.trim() !== "" &&
             parseInt(item.kema.trim()) > 0 &&
+            parseInt(item.kema.trim()) <= 1000000 &&
             item.no3_taklefa.trim() !== "" &&
             item.na4at_mosaheb.trim() !== ""
         );
@@ -234,12 +259,14 @@ function Kyas_asar() {
           project_tahlils.forEach((item, index) => {
             if (item.bayan.trim() === "") {
               toast.error(`يجب ملأ البيان رقم ${index + 1} أولا`);
-            } else if (item.bayan.length > 20) {
-              toast.error(`يجب أن يكون البيان 20 حرف أو أقل`);
+            } else if (item.bayan.length > 50) {
+              toast.error(`يجب أن يكون البيان 50 حرف أو أقل`);
             } else if (item.kema.trim() === "") {
               toast.error(`يجب ملأ القيمة رقم ${index + 1} أولا`);
-            } else if (parseInt(item.kema.trim()) < 1) {
-              toast.error(`يجب ان تكون القيمة رقم موجب`);
+            } else if (parseInt(item.kema.trim()) <= 0) {
+              toast.error(`يجب أن تكون القيمة رقم ${index + 1} موجبة`);
+            } else if (parseInt(item.kema.trim()) > 1000000) {
+              toast.error(`يجب أن تكون القيمة رقم ${index + 1} أقل من مليون`);
             } else if (item.no3_taklefa.trim() === "") {
               toast.error(`يجب ملأ نوع التكلفة رقم ${index + 1} أولا`);
             } else if (item.na4at_mosaheb.trim() === "") {
@@ -255,14 +282,14 @@ function Kyas_asar() {
           if (!item.m3ni || item.m3ni.trim() === "") {
             toast.error(`يجب ملأ صاحب المصلحة رقم ${index + 1} أولا`);
             allValid = false;
-          } else if (item.m3ni.length > 20) {
-            toast.error(`يجب أن يكون صاحب المصلحة 20 حرف أو أقل`);
+          } else if (item.m3ni.length > 50) {
+            toast.error(`يجب أن يكون صاحب المصلحة 50 حرف أو أقل`);
             allValid = false;
           } else if (!item.ta3ref_m3ni || item.ta3ref_m3ni.trim() === "") {
             toast.error(`يجب ملأ تعريف صاحب المصلحة رقم ${index + 1} أولا`);
             allValid = false;
-          } else if (item.ta3ref_m3ni.length > 20) {
-            toast.error(`يجب أن يكون تعريف صاحب المصلحة 20 حرف أو أقل`);
+          } else if (item.ta3ref_m3ni.length > 150) {
+            toast.error(`يجب أن يكون تأثيرهم/تأثرهم 150 حرف أو أقل`);
             allValid = false;
           } else if (!item.e4temal || item.e4temal.trim() === "") {
             toast.error(`يجب ملأ احتمالية صاحب المصلحة رقم ${index + 1} أولا`);
@@ -278,7 +305,15 @@ function Kyas_asar() {
             (item.mostafed_count === undefined || isNaN(item.mostafed_count))
           ) {
             toast.error(
-              `يجب ملأ عدد المستهدفين بشكل صحيح لصاحب المصلحة رقم ${index + 1}`
+              `يجب ملأ العدد الذي سيتم اشراكه بشكل صحيح لصاحب المصلحة رقم ${index + 1}`
+            );
+            allValid = false;
+          } else if (
+            item.e4temal === "مشمول" &&
+            parseInt(item.mostafed_count.trim()) > 1000000
+          ) {
+            toast.error(
+              `يجب أن يكون العدد الذي سيتم اشراكه رقم ${index + 1} أقل من مليون`
             );
             allValid = false;
           } else if (
@@ -289,28 +324,30 @@ function Kyas_asar() {
               `يجب ملأ طريقة الإشراك لصاحب المصلحة رقم ${index + 1} أولا`
             );
             allValid = false;
-          } else if (
-            item.e4temal === "مشمول" &&
-            (!item.tare5_e4rak || item.tare5_e4rak.trim() === "")
-          ) {
-            toast.error(`يجب ملأ تاريخ الإشراك لصاحب المصلحة رقم ${index + 1}`);
-            allValid = false;
-          } else if (
-            item.e4temal === "مشمول" &&
-            item.tare5_e4rak &&
-            item.tare5_e4rak.trim() !== "" &&
-            ((project_info.no3_kyas === "تقييمي" &&
-              new Date(item.tare5_e4rak) <= new Date(project_info.endDate)) ||
-              (project_info.no3_kyas === "تنبؤي" &&
-                new Date(item.tare5_e4rak) >= new Date(project_info.endDate)))
-          ) {
-            toast.error(
-              project_info.no3_kyas === "تقييمي"
-                ? `يجب أن يكون تاريخ الإشراك بعد ${project_info.endDate}`
-                : `يجب أن يكون تاريخ الإشراك قبل ${project_info.endDate}`
-            );
-            allValid = false;
-          }
+          } 
+          // else if (
+          //   item.e4temal === "مشمول" &&
+          //   (!item.tare5_e4rak || item.tare5_e4rak.trim() === "")
+          // ) {
+          //   toast.error(`يجب ملأ تاريخ الإشراك لصاحب المصلحة رقم ${index + 1}`);
+          //   allValid = false;
+          // } 
+          // else if (
+          //   item.e4temal === "مشمول" &&
+          //   item.tare5_e4rak &&
+          //   item.tare5_e4rak.trim() !== "" &&
+          //   ((project_info.no3_kyas === "تقييمي" &&
+          //     new Date(item.tare5_e4rak) <= new Date(project_info.endDate)) ||
+          //     (project_info.no3_kyas === "تنبؤي" &&
+          //       new Date(item.tare5_e4rak) >= new Date(project_info.endDate)))
+          // ) {
+          //   toast.error(
+          //     project_info.no3_kyas === "تقييمي"
+          //       ? `يجب أن يكون تاريخ الإشراك بعد ${project_info.endDate}`
+          //       : `يجب أن يكون تاريخ الإشراك قبل ${project_info.endDate}`
+          //   );
+          //   allValid = false;
+          // }
         });
 
         if (!allValid) {
@@ -321,8 +358,9 @@ function Kyas_asar() {
           (item) =>
             item.m3ni.m3ni.trim() !== "" &&
             item.natiga.natiga.trim() !== "" &&
-            item.natiga.natiga.length <= 20 &&
+            item.natiga.natiga.length <= 100 &&
             item.esm_mo24r.trim() !== "" &&
+            item.esm_mo24r.length <= 100 &&
             item.mostahdaf.trim() !== "" &&
             parseInt(item.mostahdaf.trim()) > 0 &&
             parseInt(item.mostahdaf.trim()) <=
@@ -336,17 +374,19 @@ function Kyas_asar() {
               toast.error(`يجب ملأ النتيجة رقم ${index + 1} أولا`);
             } else if (item.natiga.natiga.trim() === "") {
               toast.error(`يجب ملأ النتيجة رقم ${index + 1} أولا`);
-            } else if (item.natiga.natiga.length > 20) {
-              toast.error(`يجب أن تكون النتيجة 20 حرف أو أقل`);
+            } else if (item.natiga.natiga.length > 100) {
+              toast.error(`يجب أن تكون النتيجة 100 حرف أو أقل`);
             } else if (item.esm_mo24r.trim() === "") {
               toast.error(`يجب ملأ اسم المقرر رقم ${index + 1} أولا`);
+            } else if (item.esm_mo24r.length > 100) {
+              toast.error(`يجب أن تكون اسم المؤشر 100 حرف أو أقل`);
             } else if (item.mostahdaf.trim() === "") {
               toast.error(`يجب ملأ العدد المستهدف رقم ${index + 1} أولا`);
             } else if (parseInt(item.mostahdaf.trim()) < 1) {
-              toast.error(`يجب ان يكون رقم العدد الذي سيتم إشراكه رقم موجب`);
+              toast.error(`يجب ان يكون رقم عدد المستفيدين رقم موجب`);
             } else if (parseInt(item.mostahdaf.trim()) > adad) {
               toast.error(
-                `يجب ان تكون العدد الذي سيتم إشراكه أقل من أو تساوي عدد أصحاب المصلحة لهذة النتيجة`
+                `يجب ان تكون عدد المستفيدين أقل من أو تساوي عدد أصحاب المصلحة لهذة النتيجة`
               );
             }
           });
@@ -387,23 +427,41 @@ function Kyas_asar() {
             item.bedayt_m4ro3.trim() !== "" &&
             parseInt(item.sneen) > 0 &&
             parseInt(item.sneen) <= 5 &&
-            parseInt(item.mokafe2_maly) > 0
+            parseInt(item.mokafe2_maly) > 0 &&
+            parseInt(item.mokafe2_maly) <= 1000000 &&
+            item.shar7_mokafe2_maly.length <= 150
         );
+
         if (!allNatigaFilled) {
           project_natiga.forEach((item, index) => {
-            if (
-              item.mokafe2_maly.trim() === "" ||
-              item.shar7_mokafe2_maly.trim() === "" ||
-              item.sneen.trim() === "" ||
-              item.bedayt_m4ro3.trim() === ""
-            ) {
-              toast.error(`يجب ملأ النتيجة رقم ${index + 1} أولا`);
-            } else if (!(parseInt(item.mokafe2_maly) > 0)) {
-              toast.error(`يجب أن يكون المكافئ المالي رقم موجب`);
+            if (item.mokafe2_maly.trim() === "") {
+              toast.error(`يجب ملأ المكافئ المالي رقم ${index + 1} أولا`);
+            } else if (parseInt(item.mokafe2_maly) <= 0) {
+              toast.error(`يجب أن يكون المكافئ المالي رقم ${index + 1} موجب`);
+            } else if (parseInt(item.mokafe2_maly) > 1000000) {
+              toast.error(
+                `يجب أن يكون المكافئ المالي رقم ${index + 1} أقل من مليون`
+              );
+            } else if (item.shar7_mokafe2_maly.trim() === "") {
+              toast.error(`يجب ملأ شرح المكافئ المالي رقم ${index + 1} أولا`);
+            } else if (item.shar7_mokafe2_maly.length > 150) {
+              toast.error(
+                `يجب أن يكون شرح المكافئ المالي رقم ${
+                  index + 1
+                } أقل من 150 حرفًا`
+              );
+            } else if (item.sneen.trim() === "") {
+              toast.error(`يجب ملأ عدد السنين رقم ${index + 1} أولا`);
             } else if (
               !(parseInt(item.sneen) > 0 && parseInt(item.sneen) <= 5)
             ) {
-              toast.error(`يجب أن تكون مدة التأثير من سنة واحدة الي 5 سنين`);
+              toast.error(
+                `يجب أن تكون مدة التأثير رقم ${
+                  index + 1
+                } من سنة واحدة إلى 5 سنين`
+              );
+            } else if (item.bedayt_m4ro3.trim() === "") {
+              toast.error(`يجب ملأ بداية المشروع رقم ${index + 1} أولا`);
             }
           });
           return false;
@@ -951,7 +1009,15 @@ function Kyas_asar() {
               <div className="asar_form_w_btns">
                 <form className="asar_form">
                   <div className="input_element">
-                    <label className="input_label">اسم المشروع</label>
+                    <label className="input_label">
+                      <a
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-content="Hello world!"
+                      >
+                        <i class="fa-solid fa-circle-info text-sky"></i>
+                      </a>{" "}
+                      اسم المشروع
+                    </label>
                     <input
                       value={project_info.projectName}
                       name="projectName"
@@ -961,7 +1027,16 @@ function Kyas_asar() {
                     />
                   </div>
                   <div className="input_element">
-                    <label className="input_label">نوع القياس</label>
+                    <label className="input_label">
+                      <a
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-content="Hello world!"
+                      >
+                        <i className="fa-solid fa-circle-info text-sky"></i>
+                      </a>
+                      نوع القياس
+                    </label>
+
                     <select
                       value={project_info.no3_kyas}
                       name="no3_kyas"
@@ -975,7 +1050,15 @@ function Kyas_asar() {
                     </select>
                   </div>
                   <div className="input_element">
-                    <label className="input_label">مجال المشروع</label>
+                    <label className="input_label">
+                      <a
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-content="Hello world!"
+                      >
+                        <i className="fa-solid fa-circle-info text-sky"></i>
+                      </a>
+                      مجال المشروع
+                    </label>
                     <input
                       value={project_info.me7war}
                       name="me7war"
@@ -984,7 +1067,16 @@ function Kyas_asar() {
                     />
                   </div>
                   <div className="input_element">
-                    <label className="input_label">المنطقة</label>
+                    <label className="input_label">
+                      <a
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-content="Hello world!"
+                      >
+                        <i className="fa-solid fa-circle-info text-sky"></i>
+                      </a>
+                      المنطقة
+                    </label>
+
                     <input
                       value={project_info.manteka}
                       name="manteka"
@@ -993,7 +1085,15 @@ function Kyas_asar() {
                     />
                   </div>
                   <div className="input_element">
-                    <label className="input_label">مصدر دخل المشروع</label>
+                    <label className="input_label">
+                      <a
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-content="Hello world!"
+                      >
+                        <i className="fa-solid fa-circle-info text-sky"></i>
+                      </a>
+                      مصدر دخل المشروع
+                    </label>
                     <input
                       value={project_info.masdar_da5l}
                       name="masdar_da5l"
@@ -1002,7 +1102,16 @@ function Kyas_asar() {
                     />
                   </div>
                   <div className="input_element">
-                    <label className="input_label">التطوع بالمشروع</label>
+                    <label className="input_label">
+                      <a
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-content="Hello world!"
+                      >
+                        <i className="fa-solid fa-circle-info text-sky"></i>
+                      </a>
+                      التطوع بالمشروع
+                    </label>
+
                     <input
                       value={project_info.el_tatawo3}
                       name="el_tatawo3"
@@ -1013,8 +1122,15 @@ function Kyas_asar() {
 
                   <div className="input_element">
                     <label className="input_label">
+                      <a
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-content="Hello world!"
+                      >
+                        <i className="fa-solid fa-circle-info text-sky"></i>
+                      </a>
                       الفترة الزمنية للمشروع
                     </label>
+
                     <div className="input_element_multi">
                       <div className="input_element_inner">
                         <label className="input_label">: من</label>
@@ -1040,8 +1156,14 @@ function Kyas_asar() {
                   </div>
                   <div className="input_element">
                     <label className="input_label">
-                      الإطار الزمني المخطط للتحليل{" "}
+                      <a
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-content="Hello world!"
+                      >
+                        <i className="fa-solid fa-circle-info text-sky"></i>
+                      </a>
                       <span className="text-red">(اختياري)</span>
+                      الإطار الزمني المخطط للتحليل{" "}
                     </label>
                     <input
                       type="date"
@@ -1052,7 +1174,16 @@ function Kyas_asar() {
                     />
                   </div>
                   <div className="input_element">
-                    <label className="input_label">هل تم اغلاق المشروع ؟</label>
+                    <label className="input_label">
+                      <a
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-content="Hello world!"
+                      >
+                        <i className="fa-solid fa-circle-info text-sky"></i>
+                      </a>
+                      هل تم اغلاق المشروع ؟
+                    </label>
+
                     <div className="input_element_multi">
                       <div className="input_element_inner inner_boolean">
                         <input
@@ -1081,8 +1212,15 @@ function Kyas_asar() {
                   <form className="asar_form_info">
                     <div className="input_element">
                       <label className="input_label">
+                        <a
+                          data-tooltip-id="my-tooltip"
+                          data-tooltip-content="Hello world!"
+                        >
+                          <i className="fa-solid fa-circle-info text-sky"></i>
+                        </a>
                         القرارت التي تتأثر بالتحليل
                       </label>
+
                       {project_info.krarat_tt2sr.map((item, index) => (
                         <div className="input_elements_row" key={index}>
                           <input
@@ -1120,8 +1258,15 @@ function Kyas_asar() {
                   <form className="asar_form_info">
                     <div className="input_element">
                       <label className="input_label">
+                        <a
+                          data-tooltip-id="my-tooltip"
+                          data-tooltip-content="Hello world!"
+                        >
+                          <i className="fa-solid fa-circle-info text-sky"></i>
+                        </a>
                         الأنشطة التي ستركز عليها
                       </label>
+
                       {project_info.an4eta.map((item, index) => (
                         <div className="input_elements_row" key={index}>
                           <input
@@ -1156,7 +1301,15 @@ function Kyas_asar() {
                     </button>
                   </form>
                   <div className="input_element">
-                    <label className="input_label">الغاية من الأنشطة</label>
+                    <label className="input_label">
+                      <a
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-content="Hello world!"
+                      >
+                        <i className="fa-solid fa-circle-info text-sky"></i>
+                      </a>
+                      الغاية من الأنشطة
+                    </label>
                     <input
                       value={project_info.ghaya_an4eta}
                       name="ghaya_an4eta"
@@ -1192,8 +1345,15 @@ function Kyas_asar() {
                 <form className="asar_form">
                   <div className="input_element">
                     <label className="input_label">
+                      <a
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-content="Hello world!"
+                      >
+                        <i className="fa-solid fa-circle-info text-sky"></i>
+                      </a>
                       أهداف المنظمة الاستراتيجية ذات الارتباط
                     </label>
+
                     {project_goals_1.map((goal, index) => (
                       <div className="input_elements_row" key={index}>
                         <input
@@ -1243,12 +1403,26 @@ function Kyas_asar() {
                 <form className="asar_form">
                   <div className="flex_labels">
                     <label className="input_label">
+                      <a
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-content="Hello world!"
+                      >
+                        <i className="fa-solid fa-circle-info text-sky"></i>
+                      </a>
                       أهداف المنظمة الاستراتيجية ذات الارتباط
                     </label>
+
                     <label className="input_label">
+                      <a
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-content="Hello world!"
+                      >
+                        <i className="fa-solid fa-circle-info text-sky"></i>
+                      </a>
                       أهداف تشغيلية مباشرة للأنشطة
                     </label>
                   </div>
+
                   {project_goals_2.map((goal, index) => (
                     <div className="input_elements_row" key={index}>
                       <div className="input_element">
@@ -1284,6 +1458,7 @@ function Kyas_asar() {
                           }
                         />
                       </div>
+
                       <button
                         onClick={(e) => handleRemoveGoal2(e, index)}
                         className="re_btn"
@@ -1321,13 +1496,44 @@ function Kyas_asar() {
               <div className="asar_form_w_btns">
                 <form className="asar_form">
                   <div className="input_labels">
-                    <label className="input_label">البيان</label>
-                    <label className="input_label flex_num">القيمة</label>
-                    <label className="input_label flex_5">نوع التكلفة</label>
+                    <label className="input_label">
+                      <a
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-content="Hello world!"
+                      >
+                        <i className="fa-solid fa-circle-info text-sky"></i>
+                      </a>
+                      البيان
+                    </label>
+                    <label className="input_label flex_num">
+                      <a
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-content="Hello world!"
+                      >
+                        <i className="fa-solid fa-circle-info text-sky"></i>
+                      </a>
+                      القيمة
+                    </label>
                     <label className="input_label flex_5">
+                      <a
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-content="Hello world!"
+                      >
+                        <i className="fa-solid fa-circle-info text-sky"></i>
+                      </a>
+                      نوع التكلفة
+                    </label>
+                    <label className="input_label flex_5">
+                      <a
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-content="Hello world!"
+                      >
+                        <i className="fa-solid fa-circle-info text-sky"></i>
+                      </a>
                       النشاط المُصاحب
                     </label>
                   </div>
+
                   {project_tahlils.map((resource, index) => (
                     <div className="input_elements_row">
                       <div className="input_element_single">
@@ -1419,14 +1625,71 @@ function Kyas_asar() {
               <div className="asar_form_w_btns">
                 <form className="asar_form">
                   <div className="input_labels">
-                    <label className="input_label flex_2">صاحب المصلحة</label>
-                    <label className="input_label flex_2">تأثيرهم/تأثرهم</label>
-                    <label className="input_label">الإشراك</label>
-                    <label className="input_label flex_2">السبب</label>
-                    <label className="input_label">عدد المستهدفين</label>
-                    <label className="input_label">طريقة الإشراك</label>
-                    <label className="input_label">تاريخ الإشراك</label>
+                    <label className="input_label flex_2">
+                      <a
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-content="Hello world!"
+                      >
+                        <i className="fa-solid fa-circle-info text-sky"></i>
+                      </a>
+                      صاحب المصلحة
+                    </label>
+                    <label className="input_label flex_2">
+                      <a
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-content="Hello world!"
+                      >
+                        <i className="fa-solid fa-circle-info text-sky"></i>
+                      </a>
+                      تأثيرهم/تأثرهم
+                    </label>
+                    <label className="input_label">
+                      <a
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-content="Hello world!"
+                      >
+                        <i className="fa-solid fa-circle-info text-sky"></i>
+                      </a>
+                      الإشراك
+                    </label>
+                    <label className="input_label flex_2">
+                      <a
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-content="Hello world!"
+                      >
+                        <i className="fa-solid fa-circle-info text-sky"></i>
+                      </a>
+                      السبب
+                    </label>
+                    <label className="input_label">
+                      <a
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-content="Hello world!"
+                      >
+                        <i className="fa-solid fa-circle-info text-sky"></i>
+                      </a>
+                      العدد الذي سيتم اشراكه
+                    </label>
+                    <label className="input_label">
+                      <a
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-content="Hello world!"
+                      >
+                        <i className="fa-solid fa-circle-info text-sky"></i>
+                      </a>
+                      طريقة الإشراك
+                    </label>
+                    <label className="input_label">
+                      <a
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-content="Hello world!"
+                      >
+                        <i className="fa-solid fa-circle-info text-sky"></i>
+                      </a>
+                      تاريخ الإشراك
+                    </label>
                   </div>
+
                   {m3neen.map((meaning, index) => (
                     <div className="input_elements_row" key={index}>
                       <div className="input_element_single flex_2">
@@ -1581,13 +1844,44 @@ function Kyas_asar() {
               <div className="asar_form_w_btns">
                 <form className="asar_form">
                   <div className="input_labels">
-                    <label className="input_label">صاحب المصلحة</label>
-                    <label className="input_label">النتيجة</label>
-                    <label className="input_label">اسم المؤشر</label>
+                    <label className="input_label">
+                      <a
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-content="Hello world!"
+                      >
+                        <i className="fa-solid fa-circle-info text-sky"></i>
+                      </a>
+                      صاحب المصلحة
+                    </label>
+                    <label className="input_label">
+                      <a
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-content="Hello world!"
+                      >
+                        <i className="fa-solid fa-circle-info text-sky"></i>
+                      </a>
+                      النتيجة
+                    </label>
+                    <label className="input_label">
+                      <a
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-content="Hello world!"
+                      >
+                        <i className="fa-solid fa-circle-info text-sky"></i>
+                      </a>
+                      اسم المؤشر
+                    </label>
                     <label className="input_label flex_5">
-                      العدد الذي سيتم إشراكه
+                      <a
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-content="Hello world!"
+                      >
+                        <i className="fa-solid fa-circle-info text-sky"></i>
+                      </a>
+                      عدد المستفيدين
                     </label>
                   </div>
+
                   {project_natiga.map((natiga, index) => (
                     <div className="input_elements_row" key={index}>
                       <div className="input_element_single">
@@ -1683,8 +1977,24 @@ function Kyas_asar() {
                   <div className="input_labels">
                     <label className="input_label flex_2">صاحب المصلحة</label>
                     <label className="input_label flex_2">النتيجة</label>
-                    <label className="input_label flex_5">نسبة التغيير %</label>
-                    <label className="input_label">عتبة التغيير</label>
+                    <label className="input_label flex_5">
+                      <a
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-content="Hello world!"
+                      >
+                        <i className="fa-solid fa-circle-info text-sky"></i>
+                      </a>
+                      نسبة التغيير %
+                    </label>
+                    <label className="input_label">
+                      <a
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-content="Hello world!"
+                      >
+                        <i className="fa-solid fa-circle-info text-sky"></i>
+                      </a>
+                      عتبة التغيير
+                    </label>
                   </div>
                   {project_natiga.map((natiga, index) => (
                     <div className="input_elements_row" key={index}>
@@ -1751,11 +2061,41 @@ function Kyas_asar() {
                     <label className="input_label">صاحب المصلحة</label>
                     <label className="input_label">النتيجة</label>
                     <label className="input_label flex_5">
+                      <a
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-content="Hello world!"
+                      >
+                        <i className="fa-solid fa-circle-info text-sky"></i>
+                      </a>
                       قيمة المكافئ المالي
                     </label>
-                    <label className="input_label">شرح المكافئ المالي</label>
-                    <label className="input_label flex_num">مدة التأثير </label>
-                    <label className="input_label flex_5">بداية الأثر</label>
+                    <label className="input_label">
+                      <a
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-content="Hello world!"
+                      >
+                        <i className="fa-solid fa-circle-info text-sky"></i>
+                      </a>
+                      شرح المكافئ المالي
+                    </label>
+                    <label className="input_label flex_num">
+                      <a
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-content="Hello world!"
+                      >
+                        <i className="fa-solid fa-circle-info text-sky"></i>
+                      </a>
+                      مدة التأثير
+                    </label>
+                    <label className="input_label flex_5">
+                      <a
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-content="Hello world!"
+                      >
+                        <i className="fa-solid fa-circle-info text-sky"></i>
+                      </a>
+                      بداية الأثر
+                    </label>
                   </div>
                   {project_natiga.map((natiga, index) => (
                     <div className="input_elements_row" key={index}>
@@ -1845,10 +2185,42 @@ function Kyas_asar() {
                     <label className="input_label flex_2">صاحب المصلحة</label>
                     <label className="input_label flex_2 flex_2">النتيجة</label>
                     <label className="input_label">قيمة المكافئ المالي</label>
-                    <label className="input_label flex_5">الحمل الزائد %</label>
-                    <label className="input_label flex_5">الازاحة %</label>
-                    <label className="input_label flex_5">العزو %</label>
-                    <label className="input_label flex_5">انخفاض الأثر %</label>
+                    <label className="input_label flex_5">
+                      <a
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-content="Hello world!"
+                      >
+                        <i className="fa-solid fa-circle-info text-sky"></i>
+                      </a>
+                      الحمل الزائد %
+                    </label>
+                    <label className="input_label flex_5">
+                      <a
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-content="Hello world!"
+                      >
+                        <i className="fa-solid fa-circle-info text-sky"></i>
+                      </a>
+                      الازاحة %
+                    </label>
+                    <label className="input_label flex_5">
+                      <a
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-content="Hello world!"
+                      >
+                        <i className="fa-solid fa-circle-info text-sky"></i>
+                      </a>
+                      العزو %
+                    </label>
+                    <label className="input_label flex_5">
+                      <a
+                        data-tooltip-id="my-tooltip"
+                        data-tooltip-content="Hello world!"
+                      >
+                        <i className="fa-solid fa-circle-info text-sky"></i>
+                      </a>
+                      انخفاض الأثر %
+                    </label>
                   </div>
                   {project_natiga.map((natiga, index) => (
                     <div className="input_elements_row" key={index}>
@@ -2056,10 +2428,10 @@ function Kyas_asar() {
                       <h1>الأهداف</h1>
                       <div className="table_2_header">
                         <label className="table_2_header_item">
-                          : أهداف تشغيلية مباشرة للأنشطة
+                          : أهداف المنظمة الاستراتيجية ذات الارتباط
                         </label>
                         <label className="table_2_header_item">
-                          : أهداف المنظمة الاستراتيجية ذات الارتباط
+                          : أهداف تشغيلية مباشرة للأنشطة
                         </label>
                       </div>
                       <div className="table_2_con">
@@ -2109,20 +2481,19 @@ function Kyas_asar() {
                     <div className="table_2">
                       <h1>أصحاب المصلحة</h1>
                       <div className="table_2_header">
-                        <label className="table_2_header_item">
-                          رمز صاحب المصلحة
-                        </label>
-                        <label className="table_2_header_item">
+                        <label className="table_2_header_item flex_2">
                           صاحب المصلحة
                         </label>
-                        <label className="table_2_header_item">
+                        <label className="table_2_header_item flex_2">
                           تأثيرهم/تأثرهم
                         </label>
                         <label className="table_2_header_item">الإشراك</label>
                         <label className="table_2_header_item">
-                          عدد المستفيدين
+                          العدد الذي سيتم إشراكه
                         </label>
-                        <label className="table_2_header_item">سبب</label>
+                        <label className="table_2_header_item flex_2">
+                          سبب
+                        </label>
                         <label className="table_2_header_item">
                           طريقة الإشراك
                         </label>
@@ -2133,11 +2504,10 @@ function Kyas_asar() {
                       <div className="table_2_con">
                         {m3neen.map((item, index) => (
                           <div key={index} className="table_2_content">
-                            <label className="table_2_info">
-                              {item.m3ni_id}
+                            <label className="table_2_info flex_2">
+                              {item.m3ni}
                             </label>
-                            <label className="table_2_info">{item.m3ni}</label>
-                            <label className="table_2_info">
+                            <label className="table_2_info flex_2">
                               {item.ta3ref_m3ni}
                             </label>
                             <label className="table_2_info">
@@ -2146,7 +2516,7 @@ function Kyas_asar() {
                             <label className="table_2_info">
                               {item.mostafed_count || "_"}
                             </label>
-                            <label className="table_2_info">
+                            <label className="table_2_info flex_2">
                               {item.sabab || "_"}
                             </label>
                             <label className="table_2_info">
@@ -2164,18 +2534,17 @@ function Kyas_asar() {
                     <div className="table_2">
                       <h1>النتائج</h1>
                       <div className="table_2_header">
-                        <label className="table_2_header_item">
-                          رمز النتيجة
+                        <label className="table_2_header_item flex_2">
+                          النتيجة
                         </label>
-                        <label className="table_2_header_item">النتيجة</label>
-                        <label className="table_2_header_item">
+                        <label className="table_2_header_item flex_2">
                           صاحب المصلحة
                         </label>
                         <label className="table_2_header_item">
                           اسم المؤشر
                         </label>
                         <label className="table_2_header_item">
-                          العدد الذي سيتم إشراكه
+                          عدد المستفيدين
                         </label>
                         <label className="table_2_header_item">
                           نسبة التغيير %
@@ -2186,10 +2555,10 @@ function Kyas_asar() {
                         <label className="table_2_header_item">
                           المكافئ المالي
                         </label>
-                        <label className="table_2_header_item">
+                        <label className="table_2_header_item flex_2">
                           شرح المكافئ
                         </label>
-                        <label className="table_2_header_item">
+                        <label className="table_2_header_item flex_5">
                           مدة التأثير{" "}
                         </label>
                         <label className="table_2_header_item">
@@ -2207,13 +2576,10 @@ function Kyas_asar() {
                       <div className="table_2_con">
                         {project_natiga.map((item, index) => (
                           <div key={index} className="table_2_content">
-                            <label className="table_2_info">
-                              {item.case_id}
-                            </label>
-                            <label className="table_2_info">
+                            <label className="table_2_info flex_2">
                               {item.natiga.natiga}
                             </label>
-                            <label className="table_2_info">
+                            <label className="table_2_info flex_2">
                               {item.m3ni.m3ni}
                             </label>
                             <label className="table_2_info">
@@ -2231,10 +2597,12 @@ function Kyas_asar() {
                             <label className="table_2_info">
                               {item.mokafe2_maly}
                             </label>
-                            <label className="table_2_info">
+                            <label className="table_2_info flex_2">
                               {item.shar7_mokafe2_maly}
                             </label>
-                            <label className="table_2_info">{item.sneen}</label>
+                            <label className="table_2_info flex_5">
+                              {item.sneen}
+                            </label>
                             <label className="table_2_info">
                               {item.bedayt_m4ro3}
                             </label>
@@ -2272,6 +2640,7 @@ function Kyas_asar() {
             </div>
           </div>
         </div>
+        <Tooltip id="my-tooltip" />
       </div>
     </>
   );

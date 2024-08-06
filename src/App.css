@@ -1,41 +1,181 @@
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Cairo", sans-serif;
-    color: #374151;
-    scroll-behavior: smooth;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Cairo", sans-serif;
+  color: #333;
+  scroll-behavior: smooth;
 }
 
-:root{
-    --light_green : #F5FFEB;
-    --non_hover_green:#00ab1f9f;
-    --green: #019939;
-    --dark-green: #00372a;
-    --yellow: #ffce00;
-    --dark-yellow: #e0b800;
-    --gray: #666;
-    --light-gray: #f8f9fa;
-    --blue : #3a82c5;
-    --red : #FF3347;
-    --black : #1A1A1A;
-    --non_hover_light: #d9d9d9;
-    --non_hover: #8F8F8F;
-    --text: #374151;
+:root {
+  --white: #ffffff;
+  --light_green: #f5ffeb;
+  --non_hover_green: #00ab1f9f;
+  --green: #019939;
+  --dark-green: #00372a;
+  --yellow: #ffce00;
+  --dark-yellow: #e0b800;
+  --gray: #666;
+  --accent-color: #ffbf00;
+  --light-gray: #f8f9fa;
+  --blue: #3a82c5;
+  --red: #ff3347;
+  --black: #1a1a1a;
+  --non_hover_light: #d9d9d9;
+  --non_hover: #8f8f8f;
+  --text: #374151;
 }
-option{
-    color: #222;
+option {
+  color: #222;
 }
 
-input, select, textarea{
-    text-align: right;
+input,
+select,
+textarea {
+  text-align: right;
 }
-textarea{
-    height: 200px !important;
+textarea {
+  height: 200px !important;
 }
-a{
-    text-decoration: none;
+a {
+  text-decoration: none;
 }
-ul{
-    list-style: none;
+ul {
+  list-style: none;
+}
+.loader_container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: max-content;
+}
+.loader_container p{
+  font-size: 16px;
+}
+
+.nav_btn{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 15px 6px 15px;
+  font-size: 15px;
+  border-radius: 5px;
+  text-align: center;
+  border: none;
+  outline: none;
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  font-weight: 500;
+  cursor: pointer;
+}
+.nav_btn i{
+  font-size: 13px;
+  margin-top: 4px;
+  color: #fff;
+}
+
+.Testimonial {
+  width: 25vw !important;
+  margin-right: 15px !important;
+  margin-left: 15px !important;
+  box-shadow: none !important;
+}
+.Testimonials .Track{
+  width: 100% !important;
+  padding-bottom: 10px !important;
+}
+.Testimonial .DetailSection {
+  background-color: #fff !important;
+  border-radius: 10px !important;
+  box-shadow: 2px 2px 5px #2222221e !important;
+}
+.Testimonial .DetailSection .Name, .Testimonial .DetailSection .Designation, .Testimonial .DetailSection .Review {
+  color: #222 !important;
+}
+.Testimonial .DetailSection .Designation{
+  color: #333 !important;
+  font-size: 16px !important;
+}
+.Testimonial .Image img {
+  width: 100px !important;
+}
+.filter_cont{
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  gap: 20px;
+}
+.search_holder{
+  position: relative;
+}
+.search_holder i{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 20px;
+  color: var(--green);
+}
+.filter_checkboxes {
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 20px;
+}
+
+.filter_checkboxes label {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  gap: 5px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.filter_checkboxes input[type="checkbox"] {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--green);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.filter_checkboxes input[type="checkbox"]:checked {
+  background-color: var(--green);
+  border-color: var(--green);
+  position: relative;
+}
+
+.filter_checkboxes input[type="checkbox"]:checked::after {
+  content: '';
+  width: 3px;
+  height: 7px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  position: absolute;
+  top: 3px;
+  left: 6px;
+}
+
+.sc-fqkwJk{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: right;
+  direction: rtl;
+}
+
+@media (max-width: 768px) {
+  .Testimonial {
+    width: 75vw !important;
+  }
 }
