@@ -232,8 +232,8 @@ function Kyas_asar_profile() {
                 alignItems: "center",
               }}
             >
-              جاهز{" "}
               <i class="fa-solid fa-circle" style={{ color: "#02e254" }}></i>
+              جاهز{" "}
             </p>
           ) : (
             <p

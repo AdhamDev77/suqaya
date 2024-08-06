@@ -29,6 +29,7 @@ function MyConsUser() {
   const [comm, setComm] = useState();
   const [isComm, setIsComm] = useState();
   const [isAdmin, setIsAdmin] = useState();
+  const [togglableAsars, setTogglableAsars] = useState([]);
   const [asar, setAsar] = useState([]);
 
   const fetchComm = async () => {
@@ -118,6 +119,33 @@ function MyConsUser() {
         `https://jellyfish-app-ew84k.ondigitalocean.app/api/users/${id}`
       );
       setThisUser(responseUser.data);
+
+      if (responseUser.data.toggable_asars) {
+        try {
+          const promises = responseUser.data.toggable_asars.map((id) =>
+            axios.get(
+              `https://jellyfish-app-ew84k.ondigitalocean.app/api/asar/${id}`
+            )
+          );
+          const responses = await Promise.all(promises);
+
+          const asarData = responses
+            .filter(
+              (response) => response.data && "project_natiga" in response.data
+            )
+            .map((response) => response.data);
+
+          console.log(asarData);
+          setTogglableAsars(asarData);
+          console.log("Data received for all IDs:", asarData);
+          setHasAsar(true);
+        } catch (error) {
+          console.error("Error fetching asar data:", error);
+        }
+      } else {
+        setHasAsar(false);
+      }
+
       console.log(responseUser.data);
       try {
         console.log(responseUser.data.name);
@@ -141,6 +169,7 @@ function MyConsUser() {
       console.error("Error while fetching:", error);
     }
   };
+
   const handlePost = async (e) => {
     e.preventDefault();
     try {
@@ -172,9 +201,9 @@ function MyConsUser() {
     console.log(makalInfo);
   };
   useEffect(() => {
-    fetchThisUser();
-    fetchUser();
     fetchComm();
+    fetchUser();
+    fetchThisUser();
   }, [id]);
 
   const columns = [
@@ -241,7 +270,7 @@ function MyConsUser() {
 
   return (
     <>
-      {thisUser && user && makal && thisUser && asar ? (
+      {thisUser && user && makal && thisUser && (asar || togglableAsars) ? (
         <div className="card_container_admin">
           <div className="table_con">
             <form className="sign_form" onSubmit={handlePost}>
@@ -277,19 +306,38 @@ function MyConsUser() {
                     className="sign_input"
                   >
                     <option value=""></option>
-                    {asar.map((asar) => (
-                      <option
-                        key={asar.project_info.projectName}
-                        value={asar._id}
-                      >
-                        {asar.project_info.projectName}
-                      </option>
-                    ))}
+                    {isComm ? (
+                      <>
+                        {" "}
+                        {asar.map((asar) => (
+                          <option
+                            key={asar.project_info.projectName}
+                            value={asar._id}
+                          >
+                            {asar.project_info.projectName}
+                          </option>
+                        ))}
+                      </>
+                    ) : (
+                      <>
+                        {" "}
+                        {togglableAsars.map((asar) => (
+                          <option
+                            key={asar.project_info.projectName}
+                            value={asar._id}
+                          >
+                            {asar.project_info.projectName}
+                          </option>
+                        ))}
+                      </>
+                    )}
                   </select>
                 </div>
 
                 <div className="sign_element">
-                  <label className="sign_label">الموعد المقترح لرد الاستشارة</label>
+                  <label className="sign_label">
+                    الموعد المقترح لرد الاستشارة
+                  </label>
                   <input
                     type="date"
                     value={makal.cons_time}
