@@ -1004,6 +1004,9 @@ function Kyas_asar() {
       let responseUser = await axios.get(
         `https://jellyfish-app-ew84k.ondigitalocean.app/api/users/${userId}`
       );
+      let responseAsar = await axios.get(
+        `https://jellyfish-app-ew84k.ondigitalocean.app/api/users/${userId}`
+      );
       local_id = responseUser.data.comm_id;
       console.log("comm_user");
       console.log(localStorage.getItem("comm_file"));
@@ -1018,8 +1021,9 @@ function Kyas_asar() {
         mod5alat: parseInt(localStorage.getItem("mod5alat")),
         project_natiga,
       };
+      console.log("CHECK"+JSON.stringify(asar.draft._id))
       const response = await axios.patch(
-        `https://jellyfish-app-ew84k.ondigitalocean.app/api/draft_asar/${id}`,
+        `https://jellyfish-app-ew84k.ondigitalocean.app/api/draft_asar/${asar._id}`,
         allData
       );
       console.log("Post successful:", response.data);

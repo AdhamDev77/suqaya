@@ -173,7 +173,18 @@ ul {
   text-align: right;
   direction: rtl;
 }
-
+.comment_x{
+  height: max-content;
+  border: none;
+  cursor: pointer;
+  background: none;
+  font-weight: 700;
+  font-size: 18px;
+  color: red;
+}
+.fa-trash{
+  color: var(--gray);
+}
 @media (max-width: 768px) {
   .Testimonial {
     width: 75vw !important;

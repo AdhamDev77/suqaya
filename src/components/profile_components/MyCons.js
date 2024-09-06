@@ -85,7 +85,7 @@ function MyCons() {
             {row.cons_seen === "true" ? (
               <div className="karar_container">
                 <a
-                  href={`/asar/cons/show/${row._id}`}
+                  href={`/asar/cons/${row._id}`}
                   className="positive_karar"
                 >
                   <i className="fa-solid fa-eye"></i>

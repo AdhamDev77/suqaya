@@ -15,10 +15,10 @@ function Kyas_asar_show() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-      const id = localStorage.getItem("_id");
-      if(!id){
-        navigate('/')
-      }
+    const id = localStorage.getItem("_id");
+    if (!id) {
+      navigate("/");
+    }
   }, []);
 
   let { id } = useParams();
@@ -29,6 +29,9 @@ function Kyas_asar_show() {
   const handleAddComment = (e) => {
     e.preventDefault();
     setCons_comment([...cons_comment, { cons_makan: "عام", cons_subject: "" }]);
+  };
+  const handleRemoveComment = (index) => {
+    setCons_comment(cons_comment.filter((_, i) => i !== index));
   };
   const handleChange = (index, fieldName, value) => {
     const newComments = [...cons_comment];
@@ -50,6 +53,7 @@ function Kyas_asar_show() {
   };
 
   const [asar, setAsar] = useState(null);
+  const [cons, setCons] = useState();
   const [loading, setLoading] = useState(true);
   const [project_info, setProject_info] = useState(null);
   const [project_goals_1, setProject_goals_1] = useState(null);
@@ -82,34 +86,75 @@ function Kyas_asar_show() {
       const responseComm = await axios.get(`https://jellyfish-app-ew84k.ondigitalocean.app/api/comm/${id}`);
       const responseAsar = await axios.get(`https://jellyfish-app-ew84k.ondigitalocean.app/api/asar/${responseComm.data.comm_asar}`);
       */
-      const response = await axios.get(
-        `https://jellyfish-app-ew84k.ondigitalocean.app/api/cons/${id}`
-      );
+      const response = await axios.get(`https://jellyfish-app-ew84k.ondigitalocean.app/api/cons/${id}`);
+      if (Array.isArray(response.data.cons_comment)) {
+        setCons_comment(response.data.cons_comment);
+      } else {
+        console.error(
+          "cons_comment is not an array:",
+          response.data.cons_comment
+        );
+        setCons_comment([{ cons_makan: "عام", cons_subject: "" }]);
+      }
+      console.log("CONS:", response.data.cons_comment);
       const responseAsar = await axios.get(
         `https://jellyfish-app-ew84k.ondigitalocean.app/api/asar/${response.data.cons_asar}`
       );
+      console.log("responseASAR" + JSON.stringify(responseAsar.data.draft._id));
+      const responseDraft = await axios.get(
+        `https://jellyfish-app-ew84k.ondigitalocean.app/api/draft_asar/${responseAsar.data.draft._id}`
+      );
+      console.log("responseDraft" + JSON.stringify(responseDraft));
       localStorage.setItem(
         "project_info",
-        JSON.stringify(responseAsar.data.project_info)
+        JSON.stringify(
+          responseAsar.data.project_info ||
+            responseDraft.data.project_info ||
+            []
+        )
       );
       localStorage.setItem(
         "project_goals_1",
-        JSON.stringify(responseAsar.data.project_goals_1)
+        JSON.stringify(
+          responseAsar.data.project_goals_1 ||
+            responseDraft.data.project_goals_1 ||
+            []
+        )
       );
       localStorage.setItem(
         "project_goals_2",
-        JSON.stringify(responseAsar.data.project_goals_2)
+        JSON.stringify(
+          responseAsar.data.project_goals_2 ||
+            responseDraft.data.project_goals_2 ||
+            []
+        )
       );
       localStorage.setItem(
         "project_tahlils",
-        JSON.stringify(responseAsar.data.project_tahlils)
+        JSON.stringify(
+          responseAsar.data.project_tahlils ||
+            responseDraft.data.project_tahlils ||
+            []
+        )
       );
-      localStorage.setItem("m3neen", JSON.stringify(responseAsar.data.m3neen));
+      localStorage.setItem(
+        "m3neen",
+        JSON.stringify(
+          responseAsar.data.m3neen || responseDraft.data.m3neen || []
+        )
+      );
       localStorage.setItem(
         "project_natiga",
-        JSON.stringify(responseAsar.data.project_natiga)
+        JSON.stringify(
+          responseAsar.data.project_natiga ||
+            responseDraft.data.project_natiga ||
+            []
+        )
       );
-      localStorage.setItem("mod5alat", responseAsar.data.mod5alat);
+      localStorage.setItem(
+        "mod5alat",
+        responseAsar.data.mod5alat || responseDraft.data.mod5alat || ""
+      );
 
       const project_info_ls = localStorage.getItem("project_info");
       const project_goals_1_ls = localStorage.getItem("project_goals_1");
@@ -169,7 +214,7 @@ function Kyas_asar_show() {
                     <h1 className="sign_title">محتوى الرد</h1>
                     <img className="sign_logo" src={green_logo} alt="Logo" />
                   </div>
-                  {cons_comment.map((goal, index) => (
+                  {cons_comment.map((cons_comment, index) => (
                     <div className="sign_form_con">
                       <div className="sign_element_multi">
                         <div className="sign_element">
@@ -209,6 +254,12 @@ function Kyas_asar_show() {
                             className="sign_input"
                           ></textarea>
                         </div>
+                        <button
+                          className="comment_x"
+                          onClick={() => handleRemoveComment(index)}
+                        >
+                          <i class="fa-solid fa-trash"></i>
+                        </button>
                       </div>
                     </div>
                   ))}
@@ -268,7 +319,8 @@ function Kyas_asar_show() {
                       <label className="table_1_title">
                         القرارت التي تتأثر بالتحليل :
                       </label>
-                      {asar.project_info.krarat_tt2sr.length > 0 ? (
+                      {asar.project_info.krarat_tt2sr &&
+                      asar.project_info.krarat_tt2sr.length > 0 ? (
                         asar.project_info.krarat_tt2sr.map(
                           (decision, index) => (
                             <div key={index} className="table_1_info">
@@ -284,7 +336,8 @@ function Kyas_asar_show() {
                       <label className="table_1_title">
                         : الأنشطة التي ستركز عليها
                       </label>
-                      {asar.project_info.an4eta.length > 0 ? (
+                      {asar.project_info.an4eta &&
+                      asar.project_info.an4eta.length > 0 ? (
                         asar.project_info.an4eta.map((na4at, index) => (
                           <div key={index} className="table_1_info">
                             {na4at || "_"}
@@ -343,16 +396,21 @@ function Kyas_asar_show() {
                     </label>
                   </div>
                   <div className="table_2_con">
-                    {asar.project_goals_2.map((item, index) => (
-                      <div key={index} className="table_2_content">
-                        <label className="table_2_info">
-                          {item.project_goals_1 || "_"}
-                        </label>
-                        <label className="table_2_info">
-                          {item.project_goals_2 || "_"}
-                        </label>
-                      </div>
-                    ))}
+                    {asar.project_goals_2 &&
+                      asar.project_goals_2.length > 0 && (
+                        <>
+                          {asar.project_goals_2.map((item, index) => (
+                            <div key={index} className="table_2_content">
+                              <label className="table_2_info">
+                                {item.project_goals_1 || "_"}
+                              </label>
+                              <label className="table_2_info">
+                                {item.project_goals_2 || "_"}
+                              </label>
+                            </div>
+                          ))}
+                        </>
+                      )}
                   </div>
                 </div>
               </div>
@@ -368,47 +426,56 @@ function Kyas_asar_show() {
                     </label>
                   </div>
                   <div className="table_2_con">
-                    {asar.project_tahlils.map((item, index) => (
-                      <div key={index} className="table_2_content">
-                        <label className="table_2_info">{item.bayan}</label>
-                        <label className="table_2_info">{item.kema}</label>
-                        <label className="table_2_info">
-                          {item.no3_taklefa}
-                        </label>
-                        <label className="table_2_info">
-                          {item.na4at_mosaheb}
-                        </label>
-                      </div>
-                    ))}
+                    {asar.project_tahlils &&
+                      asar.project_tahlils.length > 0 && (
+                        <>
+                          {asar.project_tahlils.map((item, index) => (
+                            <div key={index} className="table_2_content">
+                              <label className="table_2_info">
+                                {item.bayan}
+                              </label>
+                              <label className="table_2_info">
+                                {item.kema}
+                              </label>
+                              <label className="table_2_info">
+                                {item.no3_taklefa}
+                              </label>
+                              <label className="table_2_info">
+                                {item.na4at_mosaheb}
+                              </label>
+                            </div>
+                          ))}
+                        </>
+                      )}
                   </div>
                 </div>
               </div>
               <div className="table_row">
-                    <div className="table_2">
-                      <h1>أصحاب المصلحة</h1>
-                      <div className="table_2_header">
-                        <label className="table_2_header_item flex_2">
-                          صاحب المصلحة
-                        </label>
-                        <label className="table_2_header_item flex_2">
-                          تأثيرهم/تأثرهم
-                        </label>
-                        <label className="table_2_header_item">الإشراك</label>
-                        <label className="table_2_header_item">
-                          العدد الذي سيتم إشراكه
-                        </label>
-                        <label className="table_2_header_item flex_2">سبب</label>
-                        <label className="table_2_header_item">
-                          طريقة الإشراك
-                        </label>
-                        <label className="table_2_header_item">
-                          تاريخ إشراك
-                        </label>
-                      </div>
-                      <div className="table_2_con">
+                <div className="table_2">
+                  <h1>أصحاب المصلحة</h1>
+                  <div className="table_2_header">
+                    <label className="table_2_header_item flex_2">
+                      صاحب المصلحة
+                    </label>
+                    <label className="table_2_header_item flex_2">
+                      تأثيرهم/تأثرهم
+                    </label>
+                    <label className="table_2_header_item">الإشراك</label>
+                    <label className="table_2_header_item">
+                      العدد الذي سيتم إشراكه
+                    </label>
+                    <label className="table_2_header_item flex_2">سبب</label>
+                    <label className="table_2_header_item">طريقة الإشراك</label>
+                    <label className="table_2_header_item">تاريخ إشراك</label>
+                  </div>
+                  <div className="table_2_con">
+                    {asar.m3neen && asar.m3neen.length > 0 && (
+                      <>
                         {asar.m3neen.map((item, index) => (
                           <div key={index} className="table_2_content">
-                            <label className="table_2_info flex_2">{item.m3ni}</label>
+                            <label className="table_2_info flex_2">
+                              {item.m3ni}
+                            </label>
                             <label className="table_2_info flex_2">
                               {item.ta3ref_m3ni}
                             </label>
@@ -429,51 +496,51 @@ function Kyas_asar_show() {
                             </label>
                           </div>
                         ))}
-                      </div>
-                    </div>
+                      </>
+                    )}
                   </div>
-                  <div className="table_row">
-                    <div className="table_2">
-                      <h1>النتائج</h1>
-                      <div className="table_2_header">
-                        <label className="table_2_header_item flex_2">النتيجة</label>
-                        <label className="table_2_header_item flex_2">
-                          صاحب المصلحة
-                        </label>
-                        <label className="table_2_header_item">
-                          اسم المؤشر
-                        </label>
-                        <label className="table_2_header_item">
-                          عدد المستفيدين
-                        </label>
-                        <label className="table_2_header_item">
-                          نسبة التغيير %
-                        </label>
-                        <label className="table_2_header_item">
-                          عتبة التغيير
-                        </label>
-                        <label className="table_2_header_item">
-                          المكافئ المالي
-                        </label>
-                        <label className="table_2_header_item flex_2">
-                          شرح المكافئ
-                        </label>
-                        <label className="table_2_header_item flex_5">
-                          مدة التأثير{" "}
-                        </label>
-                        <label className="table_2_header_item">
-                          بداية الأثر
-                        </label>
-                        <label className="table_2_header_item">
-                          الحمل الزائد %
-                        </label>
-                        <label className="table_2_header_item">الازاحة %</label>
-                        <label className="table_2_header_item">العزو %</label>
-                        <label className="table_2_header_item">
-                          انخفاض الأثر %
-                        </label>
-                      </div>
-                      <div className="table_2_con">
+                </div>
+              </div>
+              <div className="table_row">
+                <div className="table_2">
+                  <h1>النتائج</h1>
+                  <div className="table_2_header">
+                    <label className="table_2_header_item flex_2">
+                      النتيجة
+                    </label>
+                    <label className="table_2_header_item flex_2">
+                      صاحب المصلحة
+                    </label>
+                    <label className="table_2_header_item">اسم المؤشر</label>
+                    <label className="table_2_header_item">
+                      عدد المستفيدين
+                    </label>
+                    <label className="table_2_header_item">
+                      نسبة التغيير %
+                    </label>
+                    <label className="table_2_header_item">عتبة التغيير</label>
+                    <label className="table_2_header_item">
+                      المكافئ المالي
+                    </label>
+                    <label className="table_2_header_item flex_2">
+                      شرح المكافئ
+                    </label>
+                    <label className="table_2_header_item flex_5">
+                      مدة التأثير{" "}
+                    </label>
+                    <label className="table_2_header_item">بداية الأثر</label>
+                    <label className="table_2_header_item">
+                      الحمل الزائد %
+                    </label>
+                    <label className="table_2_header_item">الازاحة %</label>
+                    <label className="table_2_header_item">العزو %</label>
+                    <label className="table_2_header_item">
+                      انخفاض الأثر %
+                    </label>
+                  </div>
+                  <div className="table_2_con">
+                    {asar.project_natiga && asar.project_natiga.length > 0 && (
+                      <>
                         {asar.project_natiga.map((item, index) => (
                           <div key={index} className="table_2_content">
                             <label className="table_2_info flex_2">
@@ -500,7 +567,9 @@ function Kyas_asar_show() {
                             <label className="table_2_info flex_2">
                               {item.shar7_mokafe2_maly}
                             </label>
-                            <label className="table_2_info flex_5">{item.sneen}</label>
+                            <label className="table_2_info flex_5">
+                              {item.sneen}
+                            </label>
                             <label className="table_2_info">
                               {item.bedayt_m4ro3}
                             </label>
@@ -516,9 +585,11 @@ function Kyas_asar_show() {
                             </label>
                           </div>
                         ))}
-                      </div>
-                    </div>
+                      </>
+                    )}
                   </div>
+                </div>
+              </div>
 
               <div className="table_row">
                 <div className="table_2">
@@ -537,37 +608,41 @@ function Kyas_asar_show() {
                     </label>
                   </div>
                   <div className="table_2_con">
-                    {asar.project_natiga.map((item, index) => (
-                      <div key={index} className="table_2_content">
-                        <label className="table_2_info">
-                          {item.natiga.natiga || "_"}
-                        </label>
-                        <label className="table_2_info">
-                          {Math.round(item.egmali_el_asar) || "_"}
-                        </label>
-                        <label className="table_2_info">
-                          {Math.round(item.years[0]) || "_"}
-                        </label>
-                        <label className="table_2_info">
-                          {Math.round(item.years[1]) || "_"}
-                        </label>
-                        <label className="table_2_info">
-                          {Math.round(item.years[2]) || "_"}
-                        </label>
-                        <label className="table_2_info">
-                          {Math.round(item.years[3]) || "_"}
-                        </label>
-                        <label className="table_2_info">
-                          {Math.round(item.years[4]) || "_"}
-                        </label>
-                        <label className="table_2_info">
-                          {Math.round(item.years[5]) || "_"}
-                        </label>
-                        <label className="table_2_info">
-                          {Math.round(item.total_years) || "_"}
-                        </label>
-                      </div>
-                    ))}
+                    {asar.project_natiga && asar.project_natiga.length > 0 && (
+                      <>
+                        {asar.project_natiga.map((item, index) => (
+                          <div key={index} className="table_2_content">
+                            <label className="table_2_info">
+                              {item.natiga.natiga || "_"}
+                            </label>
+                            <label className="table_2_info">
+                              {Math.round(item.egmali_el_asar) || "_"}
+                            </label>
+                            <label className="table_2_info">
+                              {Math.round(item.years[0]) || "_"}
+                            </label>
+                            <label className="table_2_info">
+                              {Math.round(item.years[1]) || "_"}
+                            </label>
+                            <label className="table_2_info">
+                              {Math.round(item.years[2]) || "_"}
+                            </label>
+                            <label className="table_2_info">
+                              {Math.round(item.years[3]) || "_"}
+                            </label>
+                            <label className="table_2_info">
+                              {Math.round(item.years[4]) || "_"}
+                            </label>
+                            <label className="table_2_info">
+                              {Math.round(item.years[5]) || "_"}
+                            </label>
+                            <label className="table_2_info">
+                              {Math.round(item.total_years) || "_"}
+                            </label>
+                          </div>
+                        ))}
+                      </>
+                    )}
                   </div>
                 </div>
               </div>

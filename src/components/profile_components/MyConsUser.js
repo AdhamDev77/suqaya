@@ -129,11 +129,13 @@ function MyConsUser() {
           );
           const responses = await Promise.all(promises);
 
-          const asarData = responses
-            .filter(
-              (response) => response.data && "project_natiga" in response.data
-            )
-            .map((response) => response.data);
+          // const asarData = responses
+          //   .filter(
+          //     (response) => response.data && "project_natiga" in response.data
+          //   )
+          //   .map((response) => response.data);
+
+          const asarData = responses.map((response) => response.data);
 
           console.log(asarData);
           setTogglableAsars(asarData);

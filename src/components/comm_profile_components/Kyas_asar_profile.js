@@ -23,37 +23,39 @@ function Kyas_asar_profile({ local_id }) {
   const fetchComm = async () => {
     try {
       setLoading(true);
-
+  
       const responseComm = await axios.get(
         `https://jellyfish-app-ew84k.ondigitalocean.app/api/comm/${local_id}`
       );
       setComm(responseComm.data);
-      if (responseComm.data.comm_asar) {
+  
+      if (responseComm.data.comm_asar && responseComm.data.comm_asar.length > 0) {
         const asarIds = responseComm.data.comm_asar;
-        const fetchedAsars = [];
-
-        for (const asarId of asarIds) {
-          try {
-            const responseAsar = await axios.get(
-              `https://jellyfish-app-ew84k.ondigitalocean.app/api/asar/${asarId}`
-            );
-            fetchedAsars.push(responseAsar.data);
-          } catch (error) {
-            console.error("Error while fetching asar:", error);
-          }
-        }
-
-        setAsar(fetchedAsars);
-        console.log(fetchedAsars);
-        if (fetchedAsars.length > 0) {
-          setHasAsar(true);
-        }
+        
+        const asarPromises = asarIds.map(asarId => 
+          axios.get(`https://jellyfish-app-ew84k.ondigitalocean.app/api/asar/${asarId}`)
+            .then(response => response.data)
+            .catch(error => {
+              console.error(`Error fetching asar ${asarId}:`, error);
+              return null;
+            })
+        );
+  
+        const fetchedAsars = await Promise.all(asarPromises);
+        const validAsars = fetchedAsars.filter(asar => asar !== null);
+  
+        setAsar(validAsars);
+        setHasAsar(validAsars.length > 0);
       } else {
+        setAsar([]);
         setHasAsar(false);
       }
+  
       console.log(responseComm);
     } catch (error) {
       console.error("Error while fetching:", error);
+      setAsar([]);
+      setHasAsar(false);
     } finally {
       setLoading(false);
     }
