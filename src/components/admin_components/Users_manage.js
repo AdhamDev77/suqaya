@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import DataTable from "react-data-table-component";
 import no_kyas from "../../assets/no_kyas.svg";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 function Kyas_asar_profile() {
   const [trueMos, setTrueMos] = useState([]);
@@ -10,7 +11,7 @@ function Kyas_asar_profile() {
   const fetchDataTrue = async () => {
     try {
       const response = await axios.get(
-        "https://jellyfish-app-ew84k.ondigitalocean.app/api/users/getMos"
+        "https://suqaya-backend.onrender.com/api/users/getMos"
       );
       console.log("Get successful:", response.data);
       setTrueMos(response.data);
@@ -21,7 +22,7 @@ function Kyas_asar_profile() {
   const fetchDataFalse = async () => {
     try {
       const response = await axios.get(
-        "https://jellyfish-app-ew84k.ondigitalocean.app/api/users/getMosReq"
+        "https://suqaya-backend.onrender.com/api/users/getMosReq"
       );
       console.log("Get successful:", response.data);
       setFalseMos(response.data);
@@ -32,7 +33,7 @@ function Kyas_asar_profile() {
   const fetchDataOld = async () => {
     try {
       const response = await axios.get(
-        "https://jellyfish-app-ew84k.ondigitalocean.app/api/users/getMosOld"
+        "https://suqaya-backend.onrender.com/api/users/getMosOld"
       );
       console.log("Get successful:", response.data);
       setOldMos(response.data);
@@ -51,7 +52,7 @@ function Kyas_asar_profile() {
     e.preventDefault();
     try {
       const response = await axios.patch(
-        `https://jellyfish-app-ew84k.ondigitalocean.app/api/users/${id}`,
+        `https://suqaya-backend.onrender.com/api/users/${id}`,
         { isMos: true, isMosReq: false, isMosOld: false }
       );
       console.log("Approved successful:", response.data);
@@ -64,33 +65,53 @@ function Kyas_asar_profile() {
   };
   const handleRemoveOld = async (e, id) => {
     e.preventDefault();
-    try {
-      const response = await axios.patch(
-        `https://jellyfish-app-ew84k.ondigitalocean.app/api/users/${id}`,
-        { isMos: false, isMosReq: false, isMosOld: true }
-      );
-      console.log("De-Approved successful:", response.data);
-      fetchDataTrue();
-      fetchDataFalse();
-      fetchDataOld();
-    } catch (error) {
-      console.error("Error while posting:", error);
-    }
+    Swal.fire({
+      title: "تأكيد الرفد",
+      html: "هل أنت متأكد أنك تريد رفد هذا المستشار ؟",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "نعم",
+      cancelButtonText: "لا",
+    }).then(async (result) => {
+      try {
+        const response = await axios.patch(
+          `https://suqaya-backend.onrender.com/api/users/${id}`,
+          { isMos: false, isMosReq: false, isMosOld: true }
+        );
+        console.log("De-Approved successful:", response.data);
+        fetchDataTrue();
+        fetchDataFalse();
+        fetchDataOld();
+      } catch (error) {
+        console.error("Error while posting:", error);
+      }
+    });
+
   };
   const handleRemove = async (e, id) => {
     e.preventDefault();
-    try {
-      const response = await axios.patch(
-        `https://jellyfish-app-ew84k.ondigitalocean.app/api/users/${id}`,
-        { isMos: false, isMosReq: false }
-      );
-      console.log("De-Approved successful:", response.data);
-      fetchDataTrue();
-      fetchDataFalse();
-      fetchDataOld();
-    } catch (error) {
-      console.error("Error while posting:", error);
-    }
+    Swal.fire({
+      title: "تأكيد الرفض",
+      html: "هل أنت متأكد أنك تريد رفض طلب التعيين كمستشار ؟",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "نعم",
+      cancelButtonText: "لا",
+    }).then(async (result) => {
+      try {
+        const response = await axios.patch(
+          `https://suqaya-backend.onrender.com/api/users/${id}`,
+          { isMos: false, isMosReq: false }
+        );
+        console.log("De-Approved successful:", response.data);
+        fetchDataTrue();
+        fetchDataFalse();
+        fetchDataOld();
+      } catch (error) {
+        console.error("Error while posting:", error);
+      }
+    });
+
   };
   const columnsTrue = [
     {

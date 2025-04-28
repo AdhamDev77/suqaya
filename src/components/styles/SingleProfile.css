@@ -219,6 +219,26 @@
     transition: .2s ease;
     font-size: 18px;
 }
+.link_btn_3{
+    width: 100%;
+    display: flex;
+    border: none !important;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    font-size: 18px;
+    background: var(--blue);
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    padding: 7px 20px;
+    transition: .2s ease;
+}
+.link_btn_3 i{
+    color: #fff;
+    transition: .2s ease;
+    font-size: 18px;
+}
 .link_btn i{
     color: #fff;
     transition: .2s ease;

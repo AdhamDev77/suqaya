@@ -25,7 +25,7 @@ function Single_profile() {
           navigate("/");
         }
       const response = await axios.get(
-        `https://jellyfish-app-ew84k.ondigitalocean.app/api/users/${id}`
+        `https://suqaya-backend.onrender.com/api/users/${id}`
       );
       setUser(response.data);
       setCommName(response.data.name);
@@ -116,7 +116,7 @@ function Single_profile() {
                   className="profile_nav_item nav_selected"
                   onClick={() => setActiveTab("MyCons")}
                 >
-                  استشاراتي
+                  طلب استشارة
                 </button>
               ) : (
                 <button
@@ -124,7 +124,7 @@ function Single_profile() {
                   className="profile_nav_item nav_selected"
                   onClick={() => setActiveTab("MyConsUser")}
                 >
-                  استشاراتي
+                  طلب استشارة
                 </button>
               )}
               <button

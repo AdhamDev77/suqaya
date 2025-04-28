@@ -10,7 +10,7 @@ function Makal() {
   const fetchMakal = async () => {
     try {
       const response = await axios.get(
-        `https://jellyfish-app-ew84k.ondigitalocean.app/api/makal`
+        `https://suqaya-backend.onrender.com/api/makal`
       );
       console.log(response.data);
       setMakal(response.data);
@@ -28,9 +28,9 @@ function Makal() {
         <img className="kyas_logo_1" src={kyas_logo_1} />
         <img className="kyas_logo_2" src={kyas_logo_2} />
         <div className="asar_header_text">
-          <h1 className="asar_title">مكتبة أعمق</h1>
+          <h1 className="asar_title">مكتبة سقاية</h1>
           <p className="asar_title_2">
-            مكتبة أعمق تحوي المجلدات و المستندات الازمة لقياس الأثر .. جاري
+            مكتبة سقاية تحوي المجلدات و المستندات الازمة لقياس الأثر .. جاري
             العمل عليها انتظرونا
           </p>
         </div>

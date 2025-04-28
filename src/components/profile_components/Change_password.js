@@ -21,7 +21,7 @@ function Change_password() {
     const handleSubmit = async () => {
         try {
             // Make a request to your backend to change the password
-            const response = await axios.post(`https://jellyfish-app-ew84k.ondigitalocean.app/api/users/change_password/${id}`, post);
+            const response = await axios.post(`https://suqaya-backend.onrender.com/api/users/change_password/${id}`, post);
             // Optionally handle success response
             console.log('Password changed successfully:', response.data);
             setPost({currentPassword: "", newPassword: ""})

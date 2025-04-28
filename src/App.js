@@ -29,6 +29,8 @@ import Kyas_asar_settings from "./components/Kyas_asar_settings";
 import Feedback from "./components/Feedback";
 import { Tooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
+import Analytics from "./components/Analytics";
+import Test from "./components/Test";
 function App() {
   return (
     <BrowserRouter>
@@ -57,8 +59,10 @@ function App() {
         <Route path="/mos/req" element={<MosReq />} />
         <Route path="/admin/login" element={<Admin_login />} />
         <Route path="/admin/651282101" element={<Admin />} />
+        <Route path="/admin/analytics" element={<Analytics />} />
         <Route path="/comm/wait" element={<Comm_wait />} />
         <Route path="/user/wait" element={<User_wait />} />
+        <Route path="/test" element={<Test />} />
       </Routes>
       <Footer />
       <ToastContainer />

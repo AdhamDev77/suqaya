@@ -50,7 +50,7 @@ function Kyas_asar_show() {
         id = localStorage.getItem("_id");
       } else {
         try {
-          const responseUser = await axios.get(`https://jellyfish-app-ew84k.ondigitalocean.app/api/users/${local_id}`);
+          const responseUser = await axios.get(`https://suqaya-backend.onrender.com/api/users/${local_id}`);
           id = responseUser.data.comm_id;
         } catch(error) {
           console.error("Error while fetching user:", error);
@@ -58,17 +58,19 @@ function Kyas_asar_show() {
         }
       }
  
-      const responseComm = await axios.get(`https://jellyfish-app-ew84k.ondigitalocean.app/api/comm/${id}`);
-      const responseAsar = await axios.get(`https://jellyfish-app-ew84k.ondigitalocean.app/api/asar/${responseComm.data.comm_asar}`);
+      const responseComm = await axios.get(`https://suqaya-backend.onrender.com/api/comm/${id}`);
+      const responseAsar = await axios.get(`https://suqaya-backend.onrender.com/api/asar/${responseComm.data.comm_asar}`);
       */
-      const response = await axios.get(`https://jellyfish-app-ew84k.ondigitalocean.app/api/cons/${id}`);
+      const response = await axios.get(
+        `https://suqaya-backend.onrender.com/api/cons/${id}`
+      );
       setCons(response.data);
       const responseAsar = await axios.get(
-        `https://jellyfish-app-ew84k.ondigitalocean.app/api/asar/${response.data.cons_asar}`
+        `https://suqaya-backend.onrender.com/api/asar/${response.data.cons_asar}`
       );
       console.log(responseAsar.data);
       const responseDraft = await axios.get(
-        `https://jellyfish-app-ew84k.ondigitalocean.app/api/draft_asar/${responseAsar.data.draft._id}`
+        `https://suqaya-backend.onrender.com/api/draft_asar/${responseAsar.data.draft._id}`
       );
       localStorage.setItem(
         "project_info",
@@ -587,14 +589,28 @@ function Kyas_asar_show() {
                         {asar.mod5alat || "_"}
                       </label>
                       <label className="table_2_info important">
-                        {asar.kema_mogtama3ya.toFixed(2) || "_"}
+                        {Math.round(asar.kema_mogtama3ya) || "_"}
                       </label>
+                      {asar.safy_kema_mogtama3ya > 0 ? (
+                        <label className="table_2_info important">
+                          {Math.round(asar.safy_kema_mogtama3ya) || "_"}
+                        </label>
+                      ) : (
+                        <label className="table_2_info_red important">
+                          {Math.round(asar.safy_kema_mogtama3ya)|| "_"}
+                        </label>
+                      )}
+                      {asar.aed > 1 ? (
                       <label className="table_2_info important">
-                        {asar.safy_kema_mogtama3ya.toFixed(2) || "_"}
-                      </label>
-                      <label className="table_2_info important">
+                      {asar.aed.toFixed(2) || "_"}
+                    </label>
+                      ) : (
+                        <label className="table_2_info_red important">
                         {asar.aed.toFixed(2) || "_"}
                       </label>
+                      )}
+
+
                     </div>
                   </div>
                 </div>

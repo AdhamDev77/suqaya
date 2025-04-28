@@ -2,11 +2,8 @@ import { useState, useEffect } from "react";
 import no_kyas from "../../assets/no_kyas.svg";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import kyas_logo_1 from "../../assets/kyas_logo_1.svg";
-import kyas_logo_2 from "../../assets/kyas_logo_2.svg";
 import DataTable from "react-data-table-component";
 import Swal from "sweetalert2";
-import Loader from "../../assets/loader";
 import loader2 from "../../assets/loader2.svg";
 
 function Kyas_asar_profile({ local_id }) {
@@ -15,42 +12,56 @@ function Kyas_asar_profile({ local_id }) {
   const [comm, setComm] = useState();
   const [asar, setAsar] = useState([]);
   const [shownAsar, setShownAsar] = useState(0);
-  const [searchQuery, setSearchQuery] = useState(""); // State for search query
+  const [searchQuery, setSearchQuery] = useState("");
   const [showReady, setShowReady] = useState(true);
   const [showDraft, setShowDraft] = useState(true);
   let isAdminLocal = localStorage.getItem("admin_admin");
 
+  // Calculate counts
+  const getCounts = () => {
+    const totalCount = asar.length;
+    const readyCount = asar.filter((item) => item.project_goals_1).length;
+    const draftCount = asar.filter((item) => !item.project_goals_1).length;
+    return { totalCount, readyCount, draftCount };
+  };
+
   const fetchComm = async () => {
     try {
       setLoading(true);
-  
+
       const responseComm = await axios.get(
-        `https://jellyfish-app-ew84k.ondigitalocean.app/api/comm/${local_id}`
+        `https://suqaya-backend.onrender.com/api/comm/${local_id}`
       );
       setComm(responseComm.data);
-  
-      if (responseComm.data.comm_asar && responseComm.data.comm_asar.length > 0) {
+
+      if (
+        responseComm.data.comm_asar &&
+        responseComm.data.comm_asar.length > 0
+      ) {
         const asarIds = responseComm.data.comm_asar;
-        
-        const asarPromises = asarIds.map(asarId => 
-          axios.get(`https://jellyfish-app-ew84k.ondigitalocean.app/api/asar/${asarId}`)
-            .then(response => response.data)
-            .catch(error => {
+
+        const asarPromises = asarIds.map((asarId) =>
+          axios
+            .get(
+              `https://suqaya-backend.onrender.com/api/asar/${asarId}`
+            )
+            .then((response) => response.data)
+            .catch((error) => {
               console.error(`Error fetching asar ${asarId}:`, error);
               return null;
             })
         );
-  
+
         const fetchedAsars = await Promise.all(asarPromises);
-        const validAsars = fetchedAsars.filter(asar => asar !== null);
-  
+        const validAsars = fetchedAsars.filter((asar) => asar !== null);
+
         setAsar(validAsars);
         setHasAsar(validAsars.length > 0);
       } else {
         setAsar([]);
         setHasAsar(false);
       }
-  
+
       console.log(responseComm);
     } catch (error) {
       console.error("Error while fetching:", error);
@@ -75,7 +86,7 @@ function Kyas_asar_profile({ local_id }) {
       if (result.isConfirmed) {
         try {
           const responseAsar = await axios.delete(
-            `https://jellyfish-app-ew84k.ondigitalocean.app/api/asar/${asarId}`
+            `https://suqaya-backend.onrender.com/api/asar/${asarId}`
           );
           console.log(responseAsar);
           fetchComm();
@@ -120,9 +131,15 @@ function Kyas_asar_profile({ local_id }) {
     return matchesSearchQuery && matchesStatus;
   });
 
+  console.log(filteredAsar);
+
   const columns = [
     {
-      name: "قرار",
+      name: (
+        <p>
+          رؤية&nbsp;&nbsp;&nbsp;تعديل&nbsp;&nbsp;&nbsp;مسح&nbsp;&nbsp;&nbsp;صلاحيات
+        </p>
+      ),
       selector: (row) => (
         <div className="karar">
           <div className="karar_container">
@@ -132,7 +149,6 @@ function Kyas_asar_profile({ local_id }) {
             >
               <i className="fa-solid fa-universal-access"></i>
             </a>
-            <p className="karar_text">صلاحيات</p>
           </div>
           <div className="karar_container">
             <button
@@ -141,19 +157,16 @@ function Kyas_asar_profile({ local_id }) {
             >
               <i className="fa-solid fa-x"></i>
             </button>
-            <p className="karar_text">مسح</p>
           </div>
           <div className="karar_container">
             <a href={`/asar/edit/${row._id}`} className="positive_karar">
               <i className="fa-solid fa-pen-to-square"></i>
             </a>
-            <p className="karar_text">تعديل</p>
           </div>
           <div className="karar_container">
             <a className="positive_karar" href={`/asar/${row._id}`}>
               <i className="fa-solid fa-eye"></i>
             </a>
-            <p className="karar_text">رؤية</p>
           </div>
         </div>
       ),
@@ -171,8 +184,15 @@ function Kyas_asar_profile({ local_id }) {
           العائد الاجتماعي على الاستثمار
         </span>
       ),
-      selector: (row) => <p className="important">{row.aed}</p> || "_",
+      selector: (row) => {
+        return row.aed > 1 ? (
+          <p className="important">{row.aed.toFixed(2) || "_"}</p>
+        ) : (
+          <p className="important_red">{row.aed.toFixed(2) || "_"}</p>
+        );
+      },
     },
+
     {
       name: (
         <span
@@ -186,9 +206,19 @@ function Kyas_asar_profile({ local_id }) {
           صافي القيمة المجتمعية
         </span>
       ),
-      selector: (row) =>
-        <p className="important">{row.safy_kema_mogtama3ya}</p> || "_",
+      selector: (row) => {
+        return row.safy_kema_mogtama3ya > 0 ? (
+          <p className="important">
+            {Math.round(row.safy_kema_mogtama3ya) || "_"}
+          </p>
+        ) : (
+          <p className="important_red">
+            {Math.round(row.safy_kema_mogtama3ya) || "_"}
+          </p>
+        );
+      },
     },
+
     {
       name: "إجمالي الموارد",
       selector: (row) => <p className="important">{row.mod5alat}</p> || "_",
@@ -209,11 +239,11 @@ function Kyas_asar_profile({ local_id }) {
             data-tooltip-id="my-tooltip"
             data-tooltip-content={row.project_info.projectName}
             data-tooltip-place="top"
+            className="projectNameSmall"
           >
             {row.project_info.projectName}
           </a>
         ) || "_",
-      sortable: true,
     },
     {
       name: "حالة المشروع",
@@ -249,7 +279,6 @@ function Kyas_asar_profile({ local_id }) {
           )}
         </>
       ),
-      sortable: true,
     },
   ];
 
@@ -266,40 +295,114 @@ function Kyas_asar_profile({ local_id }) {
               <div className="yes_kyas">
                 <div className="yes_kyas_table">
                   <div className="filter_cont">
-                    <div className="search_holder">
-                      <input
-                        type="text"
-                        placeholder="... ابحث عن قياس"
-                        value={searchQuery}
-                        onChange={handleSearchChange}
-                        className="input_input_white"
-                      />
-                      <i class="fa-solid fa-magnifying-glass"></i>
+                    <div className="flex">
+                      <div className="search_holder">
+                        <input
+                          type="text"
+                          placeholder="... ابحث عن قياس"
+                          value={searchQuery}
+                          onChange={handleSearchChange}
+                          className="input_input_white"
+                        />
+                        <i className="fa-solid fa-magnifying-glass"></i>
+                      </div>
+                      <div className="filter_checkboxes">
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={showReady}
+                            onChange={handleShowReadyChange}
+                          />
+                          جاهز
+                        </label>
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={showDraft}
+                            onChange={handleShowDraftChange}
+                          />
+                          مسودة
+                        </label>
+                      </div>
                     </div>
-                    <div className="filter_checkboxes">
-                      <label>
-                        <input
-                          type="checkbox"
-                          checked={showReady}
-                          onChange={handleShowReadyChange}
-                        />
-                        جاهز
-                      </label>
-                      <label>
-                        <input
-                          type="checkbox"
-                          checked={showDraft}
-                          onChange={handleShowDraftChange}
-                        />
-                        مسودة
-                      </label>
+                    <div
+                      className="stats-container"
+                      style={{
+                        display: "flex",
+                        gap: "8px",
+                        justifyContent: "space-between",
+                        padding: "1rem",
+                        backgroundColor: "#f8f9fa",
+                        borderRadius: "0.5rem",
+                        marginBottom: "1rem",
+                      }}
+                    >
+                      <div
+                        className="stat-item"
+                        style={{
+                          textAlign: "center",
+                          padding: "0.2rem 0.5rem",
+                          borderRadius: "0.25rem",
+                          backgroundColor: "#fff",
+                          boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+                        }}
+                      >
+                        <div className="stat-label">إجمالي القياسات</div>
+                        <div
+                          className="stat-value"
+                          style={{ fontSize: "1rem", fontWeight: "bold" }}
+                        >
+                          {getCounts().totalCount}
+                        </div>
+                      </div>
+                      <div
+                        className="stat-item"
+                        style={{
+                          textAlign: "center",
+                          padding: "0.2rem 0.5rem",
+                          borderRadius: "0.25rem",
+                          backgroundColor: "#fff",
+                          boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+                        }}
+                      >
+                        <div className="stat-label">جاهز</div>
+                        <div
+                          className="stat-value"
+                          style={{
+                            fontSize: "1rem",
+                            fontWeight: "bold",
+                            color: "#02e254",
+                          }}
+                        >
+                          {getCounts().readyCount}
+                        </div>
+                      </div>
+                      <div
+                        className="stat-item"
+                        style={{
+                          textAlign: "center",
+                          padding: "0.2rem 0.5rem",
+                          borderRadius: "0.25rem",
+                          backgroundColor: "#fff",
+                          boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+                        }}
+                      >
+                        <div className="stat-label">مسودة</div>
+                        <div
+                          className="stat-value"
+                          style={{
+                            fontSize: "1rem",
+                            fontWeight: "bold",
+                            color: "orange",
+                          }}
+                        >
+                          {getCounts().draftCount}
+                        </div>
+                      </div>
                     </div>
                   </div>
 
-                  <DataTable
-                    columns={columns}
-                    data={filteredAsar} // Use filtered data
-                  />
+                  <DataTable columns={columns} data={filteredAsar} />
                   <Link className="link_btn" to="/asar">
                     إنشاء قياس جديد{" "}
                     <i className="fa-solid fa-plus search_icon"></i>

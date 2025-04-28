@@ -9,7 +9,7 @@ function UserProfile() {
 
     const fetchUser = async () => {
         try {
-            const response = await axios.get(`https://jellyfish-app-ew84k.ondigitalocean.app/api/users/${id}`);
+            const response = await axios.get(`https://suqaya-backend.onrender.com/api/users/${id}`);
             setUser(response.data);
             console.log(response.data)
         } catch (error) {
@@ -30,7 +30,7 @@ function UserProfile() {
 
     const handleSubmit = async () => {
         try {
-            await axios.patch(`https://jellyfish-app-ew84k.ondigitalocean.app/api/users/${id}`, user);
+            await axios.patch(`https://suqaya-backend.onrender.com/api/users/${id}`, user);
             toast.success("تم تعديل معلوماتك بنجاح")
         } catch (error) {
             console.error("Error while updating user:", error);

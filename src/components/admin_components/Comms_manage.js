@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import DataTable from "react-data-table-component";
 import no_kyas from "../../assets/no_kyas.svg";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 function Kyas_asar_profile() {
   const [trueComm, setTrueComm] = useState([]);
@@ -9,7 +10,7 @@ function Kyas_asar_profile() {
   const fetchDataTrue = async () => {
     try {
       const response = await axios.get(
-        "https://jellyfish-app-ew84k.ondigitalocean.app/api/comm/true"
+        "https://suqaya-backend.onrender.com/api/comm/true"
       );
       console.log("Get successful:", response.data);
       setTrueComm(response.data);
@@ -21,7 +22,7 @@ function Kyas_asar_profile() {
   const fetchDataFalse = async () => {
     try {
       const response = await axios.get(
-        "https://jellyfish-app-ew84k.ondigitalocean.app/api/comm/false"
+        "https://suqaya-backend.onrender.com/api/comm/false"
       );
       console.log("Get successful:", response.data);
       setFalseComm(response.data);
@@ -34,7 +35,7 @@ function Kyas_asar_profile() {
     const fetchDataTrue = async () => {
       try {
         const response = await axios.get(
-          "https://jellyfish-app-ew84k.ondigitalocean.app/api/comm/true"
+          "https://suqaya-backend.onrender.com/api/comm/true"
         );
         console.log("Get successful:", response.data);
         setTrueComm(response.data);
@@ -46,7 +47,7 @@ function Kyas_asar_profile() {
     const fetchDataFalse = async () => {
       try {
         const response = await axios.get(
-          "https://jellyfish-app-ew84k.ondigitalocean.app/api/comm/false"
+          "https://suqaya-backend.onrender.com/api/comm/false"
         );
         console.log("Get successful:", response.data);
         setFalseComm(response.data);
@@ -63,7 +64,7 @@ function Kyas_asar_profile() {
     e.preventDefault();
     try {
       const response = await axios.post(
-        `https://jellyfish-app-ew84k.ondigitalocean.app/api/comm/approve/${id}`
+        `https://suqaya-backend.onrender.com/api/comm/approve/${id}`
       );
       console.log("Approved successful:", response.data);
       fetchDataTrue();
@@ -74,16 +75,26 @@ function Kyas_asar_profile() {
   };
   const handleRemove = async (e, id) => {
     e.preventDefault();
-    try {
-      const response = await axios.delete(
-        `https://jellyfish-app-ew84k.ondigitalocean.app/api/comm/${id}`
-      );
-      console.log("Deleted successful:", response.data);
-      fetchDataTrue();
-      fetchDataFalse();
-    } catch (error) {
-      console.error("Error while posting:", error);
-    }
+    Swal.fire({
+      title: "تأكيد الحذف",
+      html: "هل أنت متأكد أنك تريد حذف هذة المؤسسة<br>(سيتم حذف كل مبني علي هذة المؤسسة)",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "نعم",
+      cancelButtonText: "لا",
+    }).then(async (result) => {
+      try {
+        const response = await axios.delete(
+          `https://suqaya-backend.onrender.com/api/comm/${id}`
+        );
+        console.log("Deleted successful:", response.data);
+        fetchDataTrue();
+        fetchDataFalse();
+      } catch (error) {
+        console.error("Error while posting:", error);
+      }
+    });
+
   };
   const columnsTrue = [
     {

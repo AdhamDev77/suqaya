@@ -1,6 +1,6 @@
 import "./styles/Sign.css";
 import green_logo from "../assets/green_logo.svg";
-import sign_img from "../assets/sign_img.svg";
+import sign_img from "../assets/sign_img.jpg";
 import sign_image_comm from "../assets/sign_image_comm.svg";
 import { useState } from "react";
 import { Link ,useNavigate } from 'react-router-dom';
@@ -25,7 +25,7 @@ function Login() {
   const handleUserPost = async (e) => {
     e.preventDefault()
     try {
-      const response = await axios.post('https://jellyfish-app-ew84k.ondigitalocean.app/api/admin/', userInfo)
+      const response = await axios.post('https://suqaya-backend.onrender.com/api/admin/', userInfo)
       console.log('Post successful:', response.data)
       localStorage.setItem("admin_admin", true)
       navigate("/admin/651282101")

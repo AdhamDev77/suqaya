@@ -39,7 +39,7 @@ function Login() {
   const handleUserPost = async (e) => {
     e.preventDefault()
     try {
-      const response = await axios.post('https://jellyfish-app-ew84k.ondigitalocean.app/api/users/login', userInfo)
+      const response = await axios.post('https://suqaya-backend.onrender.com/api/users/login', userInfo)
       console.log('Post successful:', response.data)
       localStorage.setItem("_id", response.data.user._id)
       localStorage.setItem("accessToken", response.data.token)
@@ -54,7 +54,7 @@ function Login() {
     e.preventDefault()
     console.log(commInfo)
     try {
-      const response = await axios.post('https://jellyfish-app-ew84k.ondigitalocean.app/api/comm/login', commInfo)
+      const response = await axios.post('https://suqaya-backend.onrender.com/api/comm/login', commInfo)
       
       console.log('Post successful:', response.data)
       localStorage.setItem("_id", response.data.comm._id)

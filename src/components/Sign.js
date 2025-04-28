@@ -1,6 +1,6 @@
 import "./styles/Sign.css";
 import green_logo from "../assets/green_logo.svg";
-import sign_img from "../assets/sign_img.svg";
+import sign_img from "../assets/sign_img.jpg";
 import sign_image_comm from "../assets/sign_image_comm.svg";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -18,7 +18,7 @@ function Sign() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("https://jellyfish-app-ew84k.ondigitalocean.app/api/comm/");
+        const response = await axios.get("https://suqaya-backend.onrender.com/api/comm/");
         console.log("Get successful:", response.data);
         setComms(response.data);
       } catch (error) {
@@ -83,7 +83,7 @@ function Sign() {
     }
     try {
       const response = await axios.post(
-        "https://jellyfish-app-ew84k.ondigitalocean.app/api/users/signup",
+        "https://suqaya-backend.onrender.com/api/users/signup",
         userInfo
       );
       console.log("Post successful:", response.data);
@@ -114,7 +114,7 @@ function Sign() {
     console.log(commInfo);
     try {
       const response = await axios.post(
-        "https://jellyfish-app-ew84k.ondigitalocean.app/api/comm/signup",
+        "https://suqaya-backend.onrender.com/api/comm/signup",
         commInfo
       );
 

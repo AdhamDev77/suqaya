@@ -40,7 +40,7 @@ function MyConsUser() {
       if (!isComm) {
         try {
           const responseUser = await axios.get(
-            `https://jellyfish-app-ew84k.ondigitalocean.app/api/users/${userId}`
+            `https://suqaya-backend.onrender.com/api/users/${userId}`
           );
           userId = responseUser.data.comm_id;
           setIsComm(false);
@@ -51,7 +51,7 @@ function MyConsUser() {
       } else {
         try {
           const responseComm = await axios.get(
-            `https://jellyfish-app-ew84k.ondigitalocean.app/api/comm/${userId}`
+            `https://suqaya-backend.onrender.com/api/comm/${userId}`
           );
           userId = responseComm.data.comm_id;
           setIsComm(true);
@@ -63,7 +63,7 @@ function MyConsUser() {
 
       try {
         const responseComm = await axios.get(
-          `https://jellyfish-app-ew84k.ondigitalocean.app/api/comm/${userId}`
+          `https://suqaya-backend.onrender.com/api/comm/${userId}`
         );
         console.log(userId);
         setComm(responseComm.data);
@@ -72,7 +72,7 @@ function MyConsUser() {
           try {
             const promises = responseComm.data.comm_asar.map((id) =>
               axios.get(
-                `https://jellyfish-app-ew84k.ondigitalocean.app/api/asar/${id}`
+                `https://suqaya-backend.onrender.com/api/asar/${id}`
               )
             );
             const responses = await Promise.all(promises);
@@ -105,7 +105,7 @@ function MyConsUser() {
   const fetchUser = async () => {
     try {
       const response = await axios.get(
-        `https://jellyfish-app-ew84k.ondigitalocean.app/api/users/`
+        `https://suqaya-backend.onrender.com/api/users/`
       );
       setUser(response.data);
       console.log(response.data);
@@ -116,7 +116,7 @@ function MyConsUser() {
   const fetchThisUser = async () => {
     try {
       const responseUser = await axios.get(
-        `https://jellyfish-app-ew84k.ondigitalocean.app/api/users/${id}`
+        `https://suqaya-backend.onrender.com/api/users/${id}`
       );
       setThisUser(responseUser.data);
 
@@ -124,7 +124,7 @@ function MyConsUser() {
         try {
           const promises = responseUser.data.toggable_asars.map((id) =>
             axios.get(
-              `https://jellyfish-app-ew84k.ondigitalocean.app/api/asar/${id}`
+              `https://suqaya-backend.onrender.com/api/asar/${id}`
             )
           );
           const responses = await Promise.all(promises);
@@ -152,7 +152,7 @@ function MyConsUser() {
       try {
         console.log(responseUser.data.name);
         const response = await axios.get(
-          `https://jellyfish-app-ew84k.ondigitalocean.app/api/cons`
+          `https://suqaya-backend.onrender.com/api/cons`
         );
         setMakal(
           response.data.filter(
@@ -178,7 +178,7 @@ function MyConsUser() {
       const inputElements = document.querySelectorAll("input");
 
       const response = await axios.post(
-        `https://jellyfish-app-ew84k.ondigitalocean.app/api/cons`,
+        `https://suqaya-backend.onrender.com/api/cons`,
         makalInfo
       );
       fetchUser();

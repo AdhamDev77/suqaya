@@ -54,16 +54,16 @@ function Navbar() {
                     </li>
                   )}
                   <li>
-                    <Link to="/makalat" onClick={closeMenu}>مكتبة أعمق</Link>
+                    <Link to="/makalat" onClick={closeMenu}>مكتبة سقاية</Link>
                   </li>
                   <li>
-                    <Link to="/" onClick={closeMenu}>عيادة أعمق</Link>
+                    <Link to="/" onClick={closeMenu}>مؤسسة سقاية الأهلية</Link>
                   </li>
                   <li>
-                    <Link to="/" onClick={closeMenu}>استشارات أعمق</Link>
+                    <Link to="/" onClick={closeMenu}>استشارات سقاية</Link>
                   </li>
                   <li>
-                    <Link to="/cons" onClick={closeMenu}>عن المجلس</Link>
+                    <Link to="/cons" onClick={closeMenu}>عن المؤسسة</Link>
                   </li>
                   <li>
                     <button onClick={(e) => { handleLogout(e); closeMenu(); }} className="logout_btn">
@@ -77,16 +77,16 @@ function Navbar() {
                     <Link to="/" onClick={closeMenu}>الرئيسية</Link>
                   </li>
                   <li>
-                    <Link to="/makalat" onClick={closeMenu}>مكتبة أعمق</Link>
+                    <Link to="/makalat" onClick={closeMenu}>مكتبة سقاية</Link>
                   </li>
                   <li>
-                    <Link to="/" onClick={closeMenu}>عيادة أعمق</Link>
+                    <Link to="/" onClick={closeMenu}>مؤسسة سقاية الأهلية</Link>
                   </li>
                   <li>
-                    <Link to="/feedback" onClick={closeMenu}>استشارات أعمق</Link>
+                    <Link to="/feedback" onClick={closeMenu}>استشارات سقاية</Link>
                   </li>
                   <li>
-                    <Link to="/" onClick={closeMenu}>عن المجلس</Link>
+                    <Link to="/" onClick={closeMenu}>عن المؤسسة</Link>
                   </li>
                   <li>
                     <Link to="/login" onClick={closeMenu}>

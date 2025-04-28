@@ -15,7 +15,7 @@ function MyCons() {
     try {
       console.log(id);
       const response = await axios.get(
-        `https://jellyfish-app-ew84k.ondigitalocean.app/api/users/${id}`
+        `https://suqaya-backend.onrender.com/api/users/${id}`
       );
       console.log("Get successful:", response.data);
       setUser(response.data);
@@ -27,7 +27,7 @@ function MyCons() {
   const fetchData = async (userName) => {
     try {
       const response = await axios.get(
-        "https://jellyfish-app-ew84k.ondigitalocean.app/api/cons/"
+        "https://suqaya-backend.onrender.com/api/cons/"
       );
       console.log("Get successful:", response.data);
       const filteredData = response.data.filter(
@@ -58,7 +58,7 @@ function MyCons() {
     e.preventDefault();
     try {
       await axios.patch(
-        `https://jellyfish-app-ew84k.ondigitalocean.app/api/cons/${id}`,
+        `https://suqaya-backend.onrender.com/api/cons/${id}`,
         { cons_seen: "refused" }
       );
       fetchData(user.name);

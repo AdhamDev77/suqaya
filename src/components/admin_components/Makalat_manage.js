@@ -18,7 +18,7 @@ function Makalat_manage() {
   const fetchMakal = async () => {
     try {
       const response = await axios.get(
-        `https://jellyfish-app-ew84k.ondigitalocean.app/api/makal`
+        `https://suqaya-backend.onrender.com/api/makal`
       );
       console.log(response.data);
       setMakal(response.data);
@@ -31,7 +31,7 @@ function Makalat_manage() {
     try {
       const inputElements = document.querySelectorAll("input");
       const response = await axios.post(
-        `https://jellyfish-app-ew84k.ondigitalocean.app/api/makal`,
+        `https://suqaya-backend.onrender.com/api/makal`,
         makalInfo
       );
       setMakalInfo({
@@ -80,7 +80,7 @@ function Makalat_manage() {
     e.preventDefault();
     try {
       const response = await axios.post(
-        `https://jellyfish-app-ew84k.ondigitalocean.app/api/makal/${id}`
+        `https://suqaya-backend.onrender.com/api/makal/${id}`
       );
       console.log("Deleted successful:", response.data);
       fetchMakal();

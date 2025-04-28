@@ -10,14 +10,14 @@ function User_manage({ local_id }) {
   const fetchComm = async () => {
     try {
       const response = await axios.get(
-        `https://jellyfish-app-ew84k.ondigitalocean.app/api/comm/${local_id}`
+        `https://suqaya-backend.onrender.com/api/comm/${local_id}`
       );
       console.log(response.data.comm_name);
       const approvedIds = response.data.approvedMembers;
 
       const fetchApprovedUsersPromises = approvedIds.map(async (userId) => {
         const userResponse = await axios.get(
-          `https://jellyfish-app-ew84k.ondigitalocean.app/api/users/${userId}`
+          `https://suqaya-backend.onrender.com/api/users/${userId}`
         );
         return userResponse.data;
       });
@@ -50,7 +50,7 @@ function User_manage({ local_id }) {
     console.log(id);
     try {
       const response = await axios.patch(
-        `https://jellyfish-app-ew84k.ondigitalocean.app/api/users/${local_id}`,
+        `https://suqaya-backend.onrender.com/api/users/${id}`,
         { admin: true }
       );
       console.log("Approved successful:", response.data);
@@ -63,7 +63,7 @@ function User_manage({ local_id }) {
     e.preventDefault();
     try {
       const response = await axios.patch(
-        `https://jellyfish-app-ew84k.ondigitalocean.app/api/users/${local_id}`,
+        `https://suqaya-backend.onrender.com/api/users/${id}`,
         { admin: false }
       );
       console.log("Deleted successful:", response.data);
@@ -93,7 +93,7 @@ function User_manage({ local_id }) {
     {
       name: "اسم المستخدم",
       selector: (row) => row.name,
-      sortable: true,
+      
     },
   ];
   const NewColumns = [
@@ -117,7 +117,7 @@ function User_manage({ local_id }) {
     {
       name: "اسم المستخدم",
       selector: (row) => row.name,
-      sortable: true,
+      
     },
   ];
 

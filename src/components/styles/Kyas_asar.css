@@ -258,7 +258,19 @@ align-items: flex-end;
     display: flex;
     flex-direction: row-reverse;
 }
+.projectNameSmall {
+  font-size: 12px;
+  white-space: normal; /* Allow text to wrap */
+  overflow: hidden; /* Hide any overflow */
+  text-overflow: ellipsis; /* Optional: Show ellipsis when text is truncated */
+  display: block; /* Ensure it's treated as a block element */
+  max-width: 100%; /* Control the maximum width */
+}
 
+.sc-dAbbbq{
+  height: 500px;
+  overflow-y: scroll;
+}
 
 .input_input {
   width: 100%;
@@ -516,10 +528,26 @@ background: none;
   color: var(--black);
   
 }
+.table_2_info_red{
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  flex: 1;
+  font-size: 14px;
+  font-weight: 500;
+  color: rgb(190, 0, 0) !important;
+  
+}
 .important{
   font-size: 15px;
   font-weight: 700;
   color: var(--green);
+}
+.important_red{
+  font-size: 15px;
+  font-weight: 700;
+  color: rgb(190, 0, 0) !important;
 }
 .white{
   background: none;

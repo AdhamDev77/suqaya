@@ -10,8 +10,8 @@
 :root {
   --white: #ffffff;
   --light_green: #f5ffeb;
-  --non_hover_green: #00ab1f9f;
-  --green: #019939;
+  --non_hover_green: #0006ab9f;
+  --green: #011d99;
   --dark-green: #00372a;
   --yellow: #ffce00;
   --dark-yellow: #e0b800;
@@ -49,11 +49,11 @@ ul {
   gap: 5px;
   width: max-content;
 }
-.loader_container p{
+.loader_container p {
   font-size: 16px;
 }
 
-.nav_btn{
+.nav_btn {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -73,7 +73,7 @@ ul {
   font-weight: 500;
   cursor: pointer;
 }
-.nav_btn i{
+.nav_btn i {
   font-size: 13px;
   margin-top: 4px;
   color: #fff;
@@ -85,7 +85,7 @@ ul {
   margin-left: 15px !important;
   box-shadow: none !important;
 }
-.Testimonials .Track{
+.Testimonials .Track {
   width: 100% !important;
   padding-bottom: 10px !important;
 }
@@ -94,26 +94,36 @@ ul {
   border-radius: 10px !important;
   box-shadow: 2px 2px 5px #2222221e !important;
 }
-.Testimonial .DetailSection .Name, .Testimonial .DetailSection .Designation, .Testimonial .DetailSection .Review {
+.Testimonial .DetailSection .Name,
+.Testimonial .DetailSection .Designation,
+.Testimonial .DetailSection .Review {
   color: #222 !important;
 }
-.Testimonial .DetailSection .Designation{
+.Testimonial .DetailSection .Designation {
   color: #333 !important;
   font-size: 16px !important;
 }
 .Testimonial .Image img {
   width: 100px !important;
 }
-.filter_cont{
+.filter_cont {
+  width: 100%;
   display: flex;
   flex-direction: row-reverse;
+  justify-content: space-between;
   align-items: center;
   gap: 20px;
 }
-.search_holder{
-  position: relative;
+.flex {
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 40px;
 }
-.search_holder i{
+.search_holder {
+  position: relative;
+  width: 220px;
+}
+.search_holder i {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -155,7 +165,7 @@ ul {
 }
 
 .filter_checkboxes input[type="checkbox"]:checked::after {
-  content: '';
+  content: "";
   width: 3px;
   height: 7px;
   border: solid white;
@@ -166,14 +176,14 @@ ul {
   left: 6px;
 }
 
-.sc-fqkwJk{
+.sc-fqkwJk {
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: right;
   direction: rtl;
 }
-.comment_x{
+.comment_x {
   height: max-content;
   border: none;
   cursor: pointer;
@@ -182,11 +192,224 @@ ul {
   font-size: 18px;
   color: red;
 }
-.fa-trash{
+.fa-trash {
   color: var(--gray);
 }
 @media (max-width: 768px) {
   .Testimonial {
     width: 75vw !important;
   }
+}
+
+
+
+
+
+
+
+
+
+
+
+.hero-section {
+  position: relative;
+  background: linear-gradient(to bottom right, #06535f, #06074e);
+  color: #fff;
+  padding: 60px 20px;
+  overflow: hidden;
+}
+.flex-sm {
+  width: 100%;
+  display: flex;
+  gap: 8px;
+}
+.hero-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.1;
+  background: radial-gradient(#ffffff 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  position: relative;
+  z-index: 10;
+}
+
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+}
+
+.hero-text {
+  text-align: center;
+}
+.hero-text h1,.hero-text p,.hero-text blockquote {
+  color: #fff;
+}
+
+.hero-text h1 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 20px;
+}
+
+.hero-text blockquote {
+  font-size: 1.25rem;
+  border-right: 4px solid #6e92e7;
+  padding-right: 16px;
+  margin: 20px 0;
+}
+
+.buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+.buttons button {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.buttons button.primary {
+  background-color: white;
+  color: #06285f;
+}
+
+.buttons button.primary:hover {
+  background-color: #f0f0f0;
+}
+
+.buttons button.secondary {
+  background-color: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+}
+
+.buttons button.secondary:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.news-carousel {
+  display: none;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+  .hero-content {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .hero-text {
+    text-align: right;
+    max-width: 50%;
+  }
+
+  .news-carousel {
+    display: block;
+  }
+}
+
+/* News Carousel Styles */
+.carousel {
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.carousel-inner {
+  display: flex;
+  transition: transform 0.7s ease-in-out;
+}
+
+.carousel-item {
+  min-width: 100%;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.carousel-item img {
+  width: 50%;
+  border-radius: 12px;
+  margin-left: 20px;
+}
+
+.carousel-content {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  text-align: end;
+  justify-content: center;
+}
+
+.carousel-content h3 {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.carousel-content p {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 20px;
+}
+
+.carousel-content button {
+  padding: 8px 16px;
+  background-color: #062a5f;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.carousel-content button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.carousel-indicators {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+}
+
+.carousel-indicators span {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.carousel-indicators span.active {
+  background-color: white;
 }

@@ -30,7 +30,7 @@ function Kyas_asar_profile() {
       } else {
         try {
           const responseUser = await axios.get(
-            `https://jellyfish-app-ew84k.ondigitalocean.app/api/users/${id}`
+            `https://suqaya-backend.onrender.com/api/users/${id}`
           );
           id = responseUser.data.comm_id;
           setIsAdmin(responseUser.data.admin);
@@ -42,7 +42,7 @@ function Kyas_asar_profile() {
       }
 
       const responseComm = await axios.get(
-        `https://jellyfish-app-ew84k.ondigitalocean.app/api/comm/${id}`
+        `https://suqaya-backend.onrender.com/api/comm/${id}`
       );
       setComm(responseComm.data);
       console.log(responseComm);
@@ -55,7 +55,7 @@ function Kyas_asar_profile() {
     try {
       setLoading(true);
       const response = await axios.get(
-        `https://jellyfish-app-ew84k.ondigitalocean.app/api/users/${id}`
+        `https://suqaya-backend.onrender.com/api/users/${id}`
       );
       setUser(response.data);
       const ids = response.data.toggable_asars;
@@ -63,7 +63,7 @@ function Kyas_asar_profile() {
       // Fetch details for each ID
       const asarDetailsPromises = ids.map((id) =>
         axios.get(
-          `https://jellyfish-app-ew84k.ondigitalocean.app/api/asar/${id}`
+          `https://suqaya-backend.onrender.com/api/asar/${id}`
         )
       );
       const asarDetailsResponses = await Promise.all(asarDetailsPromises);
@@ -97,7 +97,7 @@ function Kyas_asar_profile() {
       if (result.isConfirmed) {
         try {
           const responseAsar = await axios.delete(
-            `https://jellyfish-app-ew84k.ondigitalocean.app/api/asar/${asarId}`
+            `https://suqaya-backend.onrender.com/api/asar/${asarId}`
           );
           console.log(responseAsar);
 
@@ -127,7 +127,7 @@ function Kyas_asar_profile() {
 
   const columns = [
     {
-      name: "قرار",
+      name: <p>رؤية&nbsp;&nbsp;&nbsp;تعديل&nbsp;&nbsp;&nbsp;مسح</p>,
       selector: (row) => (
         <div className="karar">
           {isAdmin ? (
@@ -138,7 +138,6 @@ function Kyas_asar_profile() {
               >
                 <i class="fa-solid fa-x"></i>
               </button>
-              <p className="karar_text">مسح</p>
             </div>
           ) : (
             <></>
@@ -148,7 +147,6 @@ function Kyas_asar_profile() {
               <a href={`/asar/edit/${row._id}`} className="positive_karar">
                 <i class="fa-solid fa-pen-to-square"></i>
               </a>
-              <p className="karar_text">تعديل</p>
             </div>
           ) : (
             <></>
@@ -157,7 +155,6 @@ function Kyas_asar_profile() {
             <a className="positive_karar" href={`/asar/${row._id}`}>
               <i class="fa-solid fa-eye"></i>
             </a>
-            <p className="karar_text">رؤية</p>
           </div>
         </div>
       ),
@@ -175,7 +172,21 @@ function Kyas_asar_profile() {
           العائد الاجتماعي على الاستثمار
         </span>
       ),
-      selector: (row) => <p className="important">{row.aed}</p> || "_",
+      selector: (row) =>
+        (
+          <p className="important">
+            {" "}
+            {row.aed > 1 ? (
+              <p className="important">
+                {row.aed.toFixed(2) || "_"}
+              </p>
+            ) : (
+              <p className="important_red">
+                {row.aed.toFixed(2) || "_"}
+              </p>
+            )}
+          </p>
+        ) || "_",
     },
     {
       name: (
@@ -190,8 +201,17 @@ function Kyas_asar_profile() {
           صافي القيمة المجتمعية
         </span>
       ),
-      selector: (row) =>
-        <p className="important">{row.safy_kema_mogtama3ya}</p> || "_",
+      selector: (row) => {
+        row.safy_kema_mogtama3ya > 0 ? (
+          <label className="important">
+            {Math.round(row.safy_kema_mogtama3ya) || "_"}
+          </label>
+        ) : (
+          <label className="important_red">
+            {Math.round(row.safy_kema_mogtama3ya) || "_"}
+          </label>
+        );
+      },
     },
     {
       name: "إجمالي الموارد",
@@ -213,11 +233,11 @@ function Kyas_asar_profile() {
             data-tooltip-id="my-tooltip"
             data-tooltip-content={row.project_info.projectName}
             data-tooltip-place="top"
+            className="projectNameSmall"
           >
             {row.project_info.projectName}
           </a>
         ) || "_",
-      sortable: true,
     },
     {
       name: "حالة المشروع",

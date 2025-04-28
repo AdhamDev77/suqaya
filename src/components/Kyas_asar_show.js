@@ -14,7 +14,7 @@ function Kyas_asar_show() {
   let { id } = useParams();
   const isAdmin = localStorage.getItem("admin_admin");
 
-  console.log(id+"dsf")
+  console.log(id + "dsf");
 
   useEffect(() => {
     const id = localStorage.getItem("_id");
@@ -53,16 +53,15 @@ function Kyas_asar_show() {
       let isComm = localStorage.getItem("comm_file");
       if (isComm) {
         const responseComm = await axios.get(
-          `https://jellyfish-app-ew84k.ondigitalocean.app/api/comm/${local_id}`
+          `https://suqaya-backend.onrender.com/api/comm/${local_id}`
         );
         if (!responseComm.data.comm_asar.includes(id)) {
           return navigate("/");
         }
       } else if (isAdmin) {
-        
       } else {
         const responseUser = await axios.get(
-          `https://jellyfish-app-ew84k.ondigitalocean.app/api/users/${local_id}`
+          `https://suqaya-backend.onrender.com/api/users/${local_id}`
         );
         if (!responseUser.data.toggable_asars.includes(id)) {
           return navigate("/");
@@ -70,7 +69,7 @@ function Kyas_asar_show() {
       }
 
       const responseAsar = await axios.get(
-        `https://jellyfish-app-ew84k.ondigitalocean.app/api/asar/${id}`
+        `https://suqaya-backend.onrender.com/api/asar/${id}`
       );
 
       localStorage.setItem(
@@ -150,124 +149,122 @@ function Kyas_asar_show() {
             <div className="asar_con_con">
               <div className="asar_form_w_btns">
                 <form className="asar_form table_form">
-                    <div className="table_1">
-                      <h1>معلومات المشروع</h1>
-                      <div className="table_1_con">
+                  <div className="table_1">
+                    <h1>معلومات المشروع</h1>
+                    <div className="table_1_con">
+                      <div className="table_1_element">
+                        <label className="table_1_title">: اسم المشروع</label>
+                        <label className="table_1_info">
+                          {asar.project_info.projectName || "_"}
+                        </label>
+                      </div>
+                      <div className="table_1_element_multi">
                         <div className="table_1_element">
-                          <label className="table_1_title">: اسم المشروع</label>
+                          <label className="table_1_title">: نوع القياس</label>
                           <label className="table_1_info">
-                            {asar.project_info.projectName || "_"}
-                          </label>
-                        </div>
-                        <div className="table_1_element_multi">
-                          <div className="table_1_element">
-                            <label className="table_1_title">
-                              : نوع القياس
-                            </label>
-                            <label className="table_1_info">
-                              {asar.project_info.no3_kyas || "_"}
-                            </label>
-                          </div>
-                          <div className="table_1_element">
-                            <label className="table_1_title">
-                              : مجال المشروع
-                            </label>
-                            <label className="table_1_info">
-                              {asar.project_info.me7war || "_"}
-                            </label>
-                          </div>
-                        </div>
-                        <div className="table_1_element">
-                          <label className="table_1_title">: المنطقة</label>
-                          <label className="table_1_info">
-                            {asar.project_info.manteka || "_"}
+                            {asar.project_info.no3_kyas || "_"}
                           </label>
                         </div>
                         <div className="table_1_element">
                           <label className="table_1_title">
-                            : الإطار الزمني المخطط للتحليل
+                            : مجال المشروع
                           </label>
                           <label className="table_1_info">
-                            {asar.project_info.etar_zamani || "_"}
-                          </label>
-                        </div>
-                        <div className="table_1_element">
-                          <label className="table_1_title">
-                            : مصدر دخل المشروع
-                          </label>
-                          <label className="table_1_info">
-                            {asar.project_info.masdar_da5l || "_"}
-                          </label>
-                        </div>
-                        <div className="table_1_element">
-                          <label className="table_1_title">
-                            القرارت التي تتأثر بالتحليل :
-                          </label>
-                          {project_info.krarat_tt2sr.length > 0 ? (
-                            project_info.krarat_tt2sr.map((decision, index) => (
-                              <div key={index} className="table_1_info">
-                                {decision || "_"}
-                              </div>
-                            ))
-                          ) : (
-                            <div className="table_1_info">_</div>
-                          )}
-                        </div>
-                        <div className="table_1_element">
-                          <label className="table_1_title">
-                            : الأنشطة التي ستركز عليها
-                          </label>
-                          {project_info.an4eta.length > 0 ? (
-                            project_info.an4eta.map((na4at, index) => (
-                              <div key={index} className="table_1_info">
-                                {na4at || "_"}
-                              </div>
-                            ))
-                          ) : (
-                            <div className="table_1_info">_</div>
-                          )}
-                        </div>
-                        <div className="table_1_element">
-                          <label className="table_1_title">
-                            : الغاية من الأنشطة
-                          </label>
-                          <label className="table_1_info">
-                            {project_info.ghaya_an4eta || "_"}
-                          </label>
-                        </div>
-                        <div className="table_1_element">
-                          <label className="table_1_title">
-                            : التطوع بالمشروع
-                          </label>
-                          <label className="table_1_info">
-                            {asar.project_info.el_tatawo3 || "_"}
-                          </label>
-                        </div>
-                        <div className="table_1_element_multi">
-                          <div className="table_1_element">
-                            <label className="table_1_title">: من</label>
-                            <label className="table_1_info">
-                              {asar.project_info.startDate || "_"}
-                            </label>
-                          </div>
-                          <div className="table_1_element">
-                            <label className="table_1_title">: الي</label>
-                            <label className="table_1_info">
-                              {asar.project_info.endDate || "_"}
-                            </label>
-                          </div>
-                        </div>
-                        <div className="table_1_element">
-                          <label className="table_1_title">
-                            : حالة اغلاق المشروع
-                          </label>
-                          <label className="table_1_info">
-                            {asar.project_info.projectClosed || "_"}
+                            {asar.project_info.me7war || "_"}
                           </label>
                         </div>
                       </div>
+                      <div className="table_1_element">
+                        <label className="table_1_title">: المنطقة</label>
+                        <label className="table_1_info">
+                          {asar.project_info.manteka || "_"}
+                        </label>
+                      </div>
+                      <div className="table_1_element">
+                        <label className="table_1_title">
+                          : الإطار الزمني المخطط للتحليل
+                        </label>
+                        <label className="table_1_info">
+                          {asar.project_info.etar_zamani || "_"}
+                        </label>
+                      </div>
+                      <div className="table_1_element">
+                        <label className="table_1_title">
+                          : مصدر دخل المشروع
+                        </label>
+                        <label className="table_1_info">
+                          {asar.project_info.masdar_da5l || "_"}
+                        </label>
+                      </div>
+                      <div className="table_1_element">
+                        <label className="table_1_title">
+                          القرارت التي تتأثر بالتحليل :
+                        </label>
+                        {project_info.krarat_tt2sr.length > 0 ? (
+                          project_info.krarat_tt2sr.map((decision, index) => (
+                            <div key={index} className="table_1_info">
+                              {decision || "_"}
+                            </div>
+                          ))
+                        ) : (
+                          <div className="table_1_info">_</div>
+                        )}
+                      </div>
+                      <div className="table_1_element">
+                        <label className="table_1_title">
+                          : الأنشطة التي ستركز عليها
+                        </label>
+                        {project_info.an4eta.length > 0 ? (
+                          project_info.an4eta.map((na4at, index) => (
+                            <div key={index} className="table_1_info">
+                              {na4at || "_"}
+                            </div>
+                          ))
+                        ) : (
+                          <div className="table_1_info">_</div>
+                        )}
+                      </div>
+                      <div className="table_1_element">
+                        <label className="table_1_title">
+                          : الغاية من الأنشطة
+                        </label>
+                        <label className="table_1_info">
+                          {project_info.ghaya_an4eta || "_"}
+                        </label>
+                      </div>
+                      <div className="table_1_element">
+                        <label className="table_1_title">
+                          : التطوع بالمشروع
+                        </label>
+                        <label className="table_1_info">
+                          {asar.project_info.el_tatawo3 || "_"}
+                        </label>
+                      </div>
+                      <div className="table_1_element_multi">
+                        <div className="table_1_element">
+                          <label className="table_1_title">: من</label>
+                          <label className="table_1_info">
+                            {asar.project_info.startDate || "_"}
+                          </label>
+                        </div>
+                        <div className="table_1_element">
+                          <label className="table_1_title">: الي</label>
+                          <label className="table_1_info">
+                            {asar.project_info.endDate || "_"}
+                          </label>
+                        </div>
+                      </div>
+                      <div className="table_1_element">
+                        <label className="table_1_title">
+                          : حالة اغلاق المشروع
+                        </label>
+                        <label className="table_1_info">
+                          {asar.project_info.projectClosed || "_"}
+                        </label>
+                      </div>
                     </div>
-                    <div className="table_row">
+                  </div>
+                  <div className="table_row">
                     <div className="table_2">
                       <h1>الأهداف</h1>
                       <div className="table_2_header">
@@ -291,7 +288,7 @@ function Kyas_asar_show() {
                         ))}
                       </div>
                     </div>
-                    </div>
+                  </div>
                   <div className="table_row">
                     <div className="table_2">
                       <h1>موارد المشروع</h1>
@@ -545,22 +542,39 @@ function Kyas_asar_show() {
                             {asar.mod5alat || "_"}
                           </label>
                           <label className="table_2_info important">
-                            {asar.kema_mogtama3ya.toFixed(2) || "_"}
+                            {Math.round(asar.kema_mogtama3ya) || "_"}
                           </label>
-                          <label className="table_2_info important">
-                            {asar.safy_kema_mogtama3ya.toFixed(2) || "_"}
-                          </label>
-                          <label className="table_2_info important">
-                            {asar.aed.toFixed(2) || "_"}
-                          </label>
+                          {asar.safy_kema_mogtama3ya > 0 ? (
+                            <label className="table_2_info important">
+                              {Math.round(asar.safy_kema_mogtama3ya) || "_"}
+                            </label>
+                          ) : (
+                            <label className="table_2_info_red important">
+                              {Math.round(asar.safy_kema_mogtama3ya) || "_"}
+                            </label>
+                          )}
+                          {asar.aed > 1 ? (
+                            <label className="table_2_info important">
+                              {asar.aed.toFixed(2) || "_"}
+                            </label>
+                          ) : (
+                            <label className="table_2_info_red important">
+                              {asar.aed.toFixed(2) || "_"}
+                            </label>
+                          )}
                         </div>
                       </div>
                     </div>
                   </div>
-                  <button onClick={handleBack} className="link_btn_2">
-                    <i class="fa fa-arrow-left" aria-hidden="true"></i> الرجوع
-                    الي الحساب
-                  </button>
+                  <div className="flex-sm">
+                    <a href={`/asar/edit/${id}`} className="link_btn_3">
+                      تعديل القياس <i class="fa fa-pen" aria-hidden="true"></i>
+                    </a>
+                    <button onClick={handleBack} className="link_btn_2">
+                      <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                      الرجوع الي الحساب{" "}
+                    </button>
+                  </div>
                 </form>
               </div>
             </div>

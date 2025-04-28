@@ -25,10 +25,10 @@ function Kyas_asar_settings() {
   const fetchComm = async () => {
     try {
       const responseComm = await axios.get(
-        `https://jellyfish-app-ew84k.ondigitalocean.app/api/comm/${comm_id}`
+        `https://suqaya-backend.onrender.com/api/comm/${comm_id}`
       );
       const responseAsar = await axios.get(
-        `https://jellyfish-app-ew84k.ondigitalocean.app/api/asar/${asar_id}`
+        `https://suqaya-backend.onrender.com/api/asar/${asar_id}`
       );
 
       console.log(responseComm.data.approvedMembers);
@@ -43,7 +43,7 @@ function Kyas_asar_settings() {
       // Fetch approved members details
       const ToggableUsersPromises = ToggableUsersIds.map(async (memberId) => {
         const memberResponse = await axios.get(
-          `https://jellyfish-app-ew84k.ondigitalocean.app/api/users/${memberId}`
+          `https://suqaya-backend.onrender.com/api/users/${memberId}`
         );
         return memberResponse.data;
       });
@@ -54,7 +54,7 @@ function Kyas_asar_settings() {
       const UnToggableUsersPromises = UnToggableUsersIds.map(
         async (memberId) => {
           const memberResponse = await axios.get(
-            `https://jellyfish-app-ew84k.ondigitalocean.app/api/users/${memberId}`
+            `https://suqaya-backend.onrender.com/api/users/${memberId}`
           );
           return memberResponse.data;
         }
@@ -74,7 +74,7 @@ function Kyas_asar_settings() {
     e.preventDefault();
     try {
       const response = await axios.post(
-        `https://jellyfish-app-ew84k.ondigitalocean.app/api/asar/toggle/${asar_id}`,
+        `https://suqaya-backend.onrender.com/api/asar/toggle/${asar_id}`,
         { userId: id }
       );
       console.log("Approved successful:", response.data);
@@ -88,7 +88,7 @@ function Kyas_asar_settings() {
     e.preventDefault();
     try {
       const response = await axios.post(
-        `https://jellyfish-app-ew84k.ondigitalocean.app/api/asar/untoggle/${asar_id}`,
+        `https://suqaya-backend.onrender.com/api/asar/untoggle/${asar_id}`,
         { userId: id }
       );
       console.log("Deleted successful:", response.data);
@@ -119,7 +119,6 @@ function Kyas_asar_settings() {
     {
       name: "اسم المستخدم",
       selector: (row) => row.name,
-      sortable: true,
     },
   ];
 
@@ -140,7 +139,6 @@ function Kyas_asar_settings() {
     {
       name: "بريد المستخدم",
       selector: (row) => row.email,
-      sortable: true,
     },
     {
       name: "اسم المستخدم",

@@ -21,7 +21,7 @@ function Footer() {
         <hr/>
         <div className='footer_content'>
             <div className='content_intro'>
-                <img  src={logo}/>
+                <img src={logo} className=' w-80'/>
                 <p>مؤسسة مهنية غير هادفة للربح <br/>تأسست عام 2018</p>
                 <div className='social'>
                     <a className='social_link' target='_blank' href="/"><i class="fa-brands fa-facebook-f"></i></a>
@@ -37,16 +37,16 @@ function Footer() {
                     <Link to="/">الرئيسية</Link>
                   </li>
                   <li>
-                    <Link to="/makalat">مكتبة أعمق</Link>
+                    <Link to="/makalat">مكتبة سقاية</Link>
                   </li>
                   <li>
-                    <Link to="/">عيادة أعمق</Link>
+                    <Link to="/">مؤسسة سقاية الأهلية</Link>
                   </li>
                   <li>
-                  <Link to="/">استشارات أعمق</Link>
+                  <Link to="/">استشارات سقاية</Link>
                   </li>
                   <li>
-                    <Link to="/">عن المجلس</Link>
+                    <Link to="/">عن المؤسسة</Link>
                   </li>
             </ul>
             <ul className='footer_list'>
@@ -64,7 +64,7 @@ function Footer() {
         </div>
     </div>
             <hr className='last_hr'/>
-            <a href='http://jubyte.vercel.app' target='_blank' className='footer_footer'>جميع الحقوق محفوظة ©  Jubyte Software</a>
+            <a href='http://jubyte.net' target='_blank' className='footer_footer'>جميع الحقوق محفوظة ©  Jubyte Software</a>
     </div>
   )
 }

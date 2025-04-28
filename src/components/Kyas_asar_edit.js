@@ -118,7 +118,7 @@ function Kyas_asar() {
       let isComm = localStorage.getItem("comm_file");
       if (isComm) {
         const responseComm = await axios.get(
-          `https://jellyfish-app-ew84k.ondigitalocean.app/api/comm/${local_id}`
+          `https://suqaya-backend.onrender.com/api/comm/${local_id}`
         );
         if (!responseComm.data.comm_asar.includes(id)) {
           return navigate("/");
@@ -126,14 +126,14 @@ function Kyas_asar() {
       } else if (isAdmin) {
       } else {
         const responseUser = await axios.get(
-          `https://jellyfish-app-ew84k.ondigitalocean.app/api/users/${local_id}`
+          `https://suqaya-backend.onrender.com/api/users/${local_id}`
         );
         if (!responseUser.data.toggable_asars.includes(id)) {
           return navigate("/");
         }
       }
       const responseAsar = await axios.get(
-        `https://jellyfish-app-ew84k.ondigitalocean.app/api/asar/${id}`
+        `https://suqaya-backend.onrender.com/api/asar/${id}`
       );
       console.log("asar: " + JSON.stringify(responseAsar.data.draft));
 
@@ -320,7 +320,7 @@ function Kyas_asar() {
             item.bayan.length <= 50 &&
             item.kema.trim() !== "" &&
             parseInt(item.kema.trim()) > 0 &&
-            parseInt(item.kema.trim()) <= 1000000 &&
+            parseInt(item.kema.trim()) <= 100000000000 &&
             item.no3_taklefa.trim() !== "" &&
             item.na4at_mosaheb.trim() !== ""
         );
@@ -335,8 +335,8 @@ function Kyas_asar() {
               toast.error(`يجب ملأ القيمة رقم ${index + 1} أولا`);
             } else if (parseInt(item.kema.trim()) <= 0) {
               toast.error(`يجب أن تكون القيمة رقم ${index + 1} موجبة`);
-            } else if (parseInt(item.kema.trim()) > 1000000) {
-              toast.error(`يجب أن تكون القيمة رقم ${index + 1} أقل من مليون`);
+            } else if (parseInt(item.kema.trim()) > 100000000000) {
+              toast.error(`يجب أن تكون القيمة رقم ${index + 1} أقل`);
             } else if (item.no3_taklefa.trim() === "") {
               toast.error(`يجب ملأ نوع التكلفة رقم ${index + 1} أولا`);
             } else if (item.na4at_mosaheb.trim() === "") {
@@ -368,7 +368,7 @@ function Kyas_asar() {
             item.e4temal === "مشمول" &&
             (!item.sabab || item.sabab.trim() === "")
           ) {
-            toast.error(`يجب ملأ السبب لصاحب المصلحة رقم ${index + 1} أولا`);
+            toast.error(`يجب ملأ سبب الإستثناء لصاحب المصلحة رقم ${index + 1} أولا`);
             allValid = false;
           } else if (
             item.e4temal === "مشمول" &&
@@ -465,29 +465,40 @@ function Kyas_asar() {
           return false;
         }
       } else if (i === 8) {
-        const allNatigaFilled = project_natiga.every(
-          (item) =>
-            item.nesbet_ta8yyr.trim() !== "" &&
-            item.ataba_ta8yyr.trim() !== "" &&
-            parseInt(item.nesbet_ta8yyr) > 1 &&
-            parseInt(item.nesbet_ta8yyr) <= 100
-        );
+        const allNatigaFilled = project_natiga.every((item) => {
+          const { nesbet_ta8yyr, ataba_ta8yyr } = item;
+        
+          // Check if fields are not empty
+          const isFilled = nesbet_ta8yyr.trim() !== "" && ataba_ta8yyr.trim() !== "";
+        
+          // Check if nesbet_ta8yyr is a valid percentage (0 to 100)
+          const isPercentageValid =
+            !isNaN(parseInt(nesbet_ta8yyr)) &&
+            parseInt(nesbet_ta8yyr) >= 0 &&
+            parseInt(nesbet_ta8yyr) <= 100;
+        
+          return isFilled && isPercentageValid;
+        });
+        
         if (!allNatigaFilled) {
           project_natiga.forEach((item, index) => {
-            if (
-              item.nesbet_ta8yyr.trim() === "" ||
-              item.ataba_ta8yyr.trim() === ""
-            ) {
+            const { nesbet_ta8yyr, ataba_ta8yyr } = item;
+        
+            // Check if fields are empty
+            if (nesbet_ta8yyr.trim() === "" || ataba_ta8yyr.trim() === "") {
               toast.error(`يجب ملأ النتيجة رقم ${index + 1} أولا`);
-            } else if (
-              !(
-                parseInt(item.nesbet_ta8yyr) > 1 &&
-                parseInt(item.nesbet_ta8yyr) <= 100
-              )
+            }
+        
+            // Check if nesbet_ta8yyr is a valid percentage
+            else if (
+              isNaN(parseInt(nesbet_ta8yyr)) ||
+              parseInt(nesbet_ta8yyr) < 0 ||
+              parseInt(nesbet_ta8yyr) > 100
             ) {
-              toast.error(`يجب ان يجب ان تكون نسبة التغيير % نسبة مئوية صحيحة`);
+              toast.error(`يجب أن تكون نسبة التغيير في النتيجة رقم ${index + 1} بين 0% و 100%`);
             }
           });
+        
           return false;
         }
       } else if (i === 9) {
@@ -539,45 +550,67 @@ function Kyas_asar() {
           return false;
         }
       } else if (i === 10) {
-        const allNatigaFilled = project_natiga.every(
-          (item) =>
-            item.heml_za2ed.trim() !== "" &&
-            item.eza7a.trim() !== "" &&
-            item.azw.trim() !== "" &&
-            item.fatra.trim() !== "" &&
-            parseInt(item.heml_za2ed) > 0 &&
-            parseInt(item.heml_za2ed) <= 100 &&
-            parseInt(item.eza7a) > 0 &&
-            parseInt(item.eza7a) <= 100 &&
-            parseInt(item.azw) > 0 &&
-            parseInt(item.azw) <= 100 &&
-            parseInt(item.fatra) > 0 &&
-            parseInt(item.fatra) <= 100
-        );
+        const allNatigaFilled = project_natiga.every((item) => {
+          const { heml_za2ed, eza7a, azw, fatra } = item;
+      
+          // Check if fields are not empty
+          const isFilled =
+            heml_za2ed.trim() !== "" &&
+            eza7a.trim() !== "" &&
+            azw.trim() !== "" &&
+            fatra.trim() !== "";
+      
+          // Check if all fields are valid percentages (0 to 100)
+          const isPercentageValid =
+            !isNaN(parseInt(heml_za2ed)) &&
+            parseInt(heml_za2ed) >= 0 && // Allow 0%
+            parseInt(heml_za2ed) <= 100 &&
+            !isNaN(parseInt(eza7a)) &&
+            parseInt(eza7a) >= 0 && // Allow 0%
+            parseInt(eza7a) <= 100 &&
+            !isNaN(parseInt(azw)) &&
+            parseInt(azw) >= 0 && // Allow 0%
+            parseInt(azw) <= 100 &&
+            !isNaN(parseInt(fatra)) &&
+            parseInt(fatra) >= 0 && // Allow 0%
+            parseInt(fatra) <= 100;
+      
+          return isFilled && isPercentageValid;
+        });
+      
         if (!allNatigaFilled) {
           project_natiga.forEach((item, index) => {
+            const { heml_za2ed, eza7a, azw, fatra } = item;
+      
+            // Check if fields are empty
             if (
-              item.heml_za2ed.trim() === "" ||
-              item.eza7a.trim() === "" ||
-              item.azw.trim() === "" ||
-              item.fatra.trim() === ""
+              heml_za2ed.trim() === "" ||
+              eza7a.trim() === "" ||
+              azw.trim() === "" ||
+              fatra.trim() === ""
             ) {
               toast.error(`يجب ملأ النتيجة رقم ${index + 1} أولا`);
-            } else if (
-              !(
-                parseInt(item.heml_za2ed) > 0 &&
-                parseInt(item.heml_za2ed) <= 100 &&
-                parseInt(item.eza7a) > 0 &&
-                parseInt(item.eza7a) <= 100 &&
-                parseInt(item.azw) > 0 &&
-                parseInt(item.azw) <= 100 &&
-                parseInt(item.fatra) > 0 &&
-                parseInt(item.fatra) <= 100
-              )
+            }
+      
+            // Check if fields are valid percentages (0 to 100)
+            else if (
+              isNaN(parseInt(heml_za2ed)) ||
+              parseInt(heml_za2ed) < 0 || // Allow 0%
+              parseInt(heml_za2ed) > 100 ||
+              isNaN(parseInt(eza7a)) ||
+              parseInt(eza7a) < 0 || // Allow 0%
+              parseInt(eza7a) > 100 ||
+              isNaN(parseInt(azw)) ||
+              parseInt(azw) < 0 || // Allow 0%
+              parseInt(azw) > 100 ||
+              isNaN(parseInt(fatra)) ||
+              parseInt(fatra) < 0 || // Allow 0%
+              parseInt(fatra) > 100
             ) {
-              toast.error(`يجب أن تكون جميع الخانات أرقام مئوية صحيحة`);
+              toast.error(`يجب أن تكون جميع الخانات في النتيجة رقم ${index + 1} أرقام مئوية صحيحة بين 0% و 100%`);
             }
           });
+      
           return false;
         }
       }
@@ -613,11 +646,11 @@ function Kyas_asar() {
       };
 
       const response = await axios.patch(
-        `https://jellyfish-app-ew84k.ondigitalocean.app/api/asar/${id}`,
+        `https://suqaya-backend.onrender.com/api/asar/${id}`,
         allData
       );
       const responseDraft = await axios.patch(
-        `https://jellyfish-app-ew84k.ondigitalocean.app/api/draft_asar/${id}`,
+        `https://suqaya-backend.onrender.com/api/draft_asar/${id}`,
         allData
       );
       toast.success("تم تأكيد قياس الأثر");
@@ -629,8 +662,9 @@ function Kyas_asar() {
   };
   function generateArray(mod5alat, fatra, nesba, sneen, isAfter) {
     let resultArray = [];
+    console.log("asd",(1-(fatra/100))/(1+nesba))
     if (isAfter) {
-      let currentValue = mod5alat * (1 - nesba / 100);
+      let currentValue = mod5alat / ( (nesba / 100)+1);
       for (let i = 0; i < 5; i++) {
         if (isAfter && i === 0) {
           resultArray.push(0);
@@ -639,9 +673,8 @@ function Kyas_asar() {
           resultArray.push(Math.max(0, currentValue));
           currentValue = Math.max(
             0,
-            currentValue * (1 - (fatra / 100 + (nesba / 100) * (i + 2)))
+            (currentValue * (1-(fatra/100)))/(1+(nesba/100))
           );
-          console.log(1 - (fatra / 100 + (nesba / 100) * (i + 1)));
         } else {
           resultArray.push(0);
         }
@@ -655,14 +688,12 @@ function Kyas_asar() {
         }
         if (i < sneen) {
           resultArray.push(Math.max(0, currentValue));
-          if (i == 0) {
-            currentValue = mod5alat * (1 - nesba / 100);
-          } else {
+       
             currentValue = Math.max(
               0,
-              currentValue * (1 - (fatra / 100 + (nesba / 100) * (i + 1)))
+              (currentValue * (1-(fatra/100)))/(1+(nesba/100))
             );
-          }
+          
         } else {
           resultArray.push(0);
         }
@@ -925,22 +956,29 @@ function Kyas_asar() {
       newNatigas[index][fieldName] = value;
     }
 
-    let newEgmali = Math.round(
-      parseInt(newNatigas[index].m3ni.mostafed_count) *
+    let newEgmali = (Math.round(
+      parseInt(newNatigas[index].mostahdaf) *
         parseInt(newNatigas[index].mokafe2_maly) *
         ((100 - parseInt(newNatigas[index].azw)) / 100) *
         ((100 - parseInt(newNatigas[index].heml_za2ed)) / 100) *
         ((100 - parseInt(newNatigas[index].eza7a)) / 100)
-    );
+    ));
+    // let newEgmali = Math.round(
+    //   parseInt(newNatigas[index].mostahdaf) *
+    //     parseInt(newNatigas[index].mokafe2_maly) *
+    //     ((100 - parseInt(newNatigas[index].azw)) / 100) *
+    //     ((100 - parseInt(newNatigas[index].heml_za2ed)) / 100) *
+    //     ((100 - parseInt(newNatigas[index].eza7a)) / 100)
+    // );
 
     console.log(newEgmali);
 
     newNatigas[index].egmali_el_asar = newEgmali;
     let newYears;
-    if (newNatigas[index].bedayt_m4ro3 == "بعد المشروع") {
+    if (newNatigas[index].bedayt_m4ro3 === "بعد المشروع") {
       newYears = generateArray(
         newEgmali,
-        100 - parseInt(newNatigas[index].fatra),
+        parseInt(newNatigas[index].fatra),
         3.5,
         parseInt(newNatigas[index].sneen),
         true
@@ -948,7 +986,7 @@ function Kyas_asar() {
     } else {
       newYears = generateArray(
         newEgmali,
-        100 - parseInt(newNatigas[index].fatra),
+        parseInt(newNatigas[index].fatra),
         3.5,
         parseInt(newNatigas[index].sneen),
         false
@@ -1002,10 +1040,10 @@ function Kyas_asar() {
     if (!isComm) {
       let userId = localStorage.getItem("_id");
       let responseUser = await axios.get(
-        `https://jellyfish-app-ew84k.ondigitalocean.app/api/users/${userId}`
+        `https://suqaya-backend.onrender.com/api/users/${userId}`
       );
       let responseAsar = await axios.get(
-        `https://jellyfish-app-ew84k.ondigitalocean.app/api/users/${userId}`
+        `https://suqaya-backend.onrender.com/api/users/${userId}`
       );
       local_id = responseUser.data.comm_id;
       console.log("comm_user");
@@ -1023,7 +1061,7 @@ function Kyas_asar() {
       };
       console.log("CHECK"+JSON.stringify(asar.draft._id))
       const response = await axios.patch(
-        `https://jellyfish-app-ew84k.ondigitalocean.app/api/draft_asar/${asar._id}`,
+        `https://suqaya-backend.onrender.com/api/draft_asar/${asar._id}`,
         allData
       );
       console.log("Post successful:", response.data);
@@ -1081,7 +1119,7 @@ function Kyas_asar() {
             <div className="asar_con_con">
               <img src={cuate} />
               <div className="asar_form_w_btns">
-                <form className="asar_form">
+                <form className="asar_form" onKeyDown={(e) => e.key === 'Enter' && e.preventDefault()}>
                   <div className="input_element">
                     <label className="input_label">
                       <a
@@ -1419,7 +1457,7 @@ function Kyas_asar() {
             <div className="asar_con_con">
               <img src={amico} />
               <div className="asar_form_w_btns">
-                <form className="asar_form">
+                <form className="asar_form" onKeyDown={(e) => e.key === 'Enter' && e.preventDefault()}>
                   <div className="input_element">
                     <label className="input_label">
                       <a
@@ -1479,7 +1517,7 @@ function Kyas_asar() {
             <div className="asar_con_con">
               <img src={cuate2} />
               <div className="asar_form_w_btns">
-                <form className="asar_form">
+                <form className="asar_form" onKeyDown={(e) => e.key === 'Enter' && e.preventDefault()}>
                   <div className="flex_labels">
                     <label className="input_label">
                       <a
@@ -1575,7 +1613,7 @@ function Kyas_asar() {
             <h1 className="asar_con_title">تحليل موارد المشروع</h1>
             <div className="asar_con_con">
               <div className="asar_form_w_btns">
-                <form className="asar_form">
+                <form className="asar_form" onKeyDown={(e) => e.key === 'Enter' && e.preventDefault()}>
                   <div className="input_labels">
                     <label className="input_label">
                       <a
@@ -1649,8 +1687,8 @@ function Kyas_asar() {
                           }
                         >
                           <option value="" hidden disabled></option>
-                          <option value="نقدية مباشر">نقدية مباشر</option>
-                          <option value="عينية مباشرة">عينية مباشرة</option>
+                          <option value="نقدية">نقدية</option>
+                          <option value="عينية">عينية</option>
                           <option value="تخفيض التزام">تخفيض التزام</option>
                           <option value="خصم مكتسب">خصم مكتسب</option>
                           <option value="تطوع">تطوع</option>
@@ -1708,7 +1746,7 @@ function Kyas_asar() {
             <h1 className="asar_con_title">تحديد أصحاب المصلحة</h1>
             <div className="asar_con_con">
               <div className="asar_form_w_btns">
-                <form className="asar_form">
+                <form className="asar_form" onKeyDown={(e) => e.key === 'Enter' && e.preventDefault()}>
                   <div className="input_labels">
                     <label className="input_label flex_2">
                       <a
@@ -1748,7 +1786,7 @@ function Kyas_asar() {
                       >
                         <i className="fa-solid fa-circle-info text-sky text-sky"></i>
                       </a>
-                      السبب
+                      سبب الإستثناء
                     </label>
                     <label className="input_label">
                       <a
@@ -1935,7 +1973,7 @@ function Kyas_asar() {
             <h1 className="asar_con_title">تحديد النتائج (المرحلة الأولى)</h1>
             <div className="asar_con_con">
               <div className="asar_form_w_btns">
-                <form className="asar_form">
+                <form className="asar_form" onKeyDown={(e) => e.key === 'Enter' && e.preventDefault()}>
                   <div className="input_labels">
                     <label className="input_label">
                       <a
@@ -2070,7 +2108,7 @@ function Kyas_asar() {
             <h1 className="asar_con_title">تحديد النتائج (المرحلة الثانية)</h1>
             <div className="asar_con_con">
               <div className="asar_form_w_btns">
-                <form className="asar_form">
+                <form className="asar_form" onKeyDown={(e) => e.key === 'Enter' && e.preventDefault()}>
                   <div className="input_labels">
                     <label className="input_label flex_2">صاحب المصلحة</label>
                     <label className="input_label flex_2">النتيجة</label>
@@ -2155,7 +2193,7 @@ function Kyas_asar() {
             <h1 className="asar_con_title">المكافئات المالية</h1>
             <div className="asar_con_con">
               <div className="asar_form_w_btns">
-                <form className="asar_form">
+                <form className="asar_form" onKeyDown={(e) => e.key === 'Enter' && e.preventDefault()}>
                   <div className="input_labels">
                     <label className="input_label">صاحب المصلحة</label>
                     <label className="input_label">النتيجة</label>
@@ -2253,7 +2291,7 @@ function Kyas_asar() {
                         >
                           <option value="" hidden disabled></option>
                           <option value="بعد المشروع">بعد المشروع</option>
-                          <option value="قبل المشروع">قبل المشروع</option>
+                          <option value="أثناء المشروع">أثناء المشروع</option>
                         </select>
                       </div>
                     </div>
@@ -2283,7 +2321,7 @@ function Kyas_asar() {
             <h1 className="asar_con_title">الإضافة النوعية</h1>
             <div className="asar_con_con">
               <div className="asar_form_w_btns">
-                <form className="asar_form">
+                <form className="asar_form" onKeyDown={(e) => e.key === 'Enter' && e.preventDefault()}>
                   <div className="input_labels">
                     <label className="input_label flex_2">صاحب المصلحة</label>
                     <label className="input_label flex_2">النتيجة</label>

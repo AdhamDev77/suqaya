@@ -25,7 +25,7 @@ function Single_profile() {
       }
 
       const response = await axios.get(
-        `https://jellyfish-app-ew84k.ondigitalocean.app/api/comm/${id}`
+        `https://suqaya-backend.onrender.com/api/comm/${id}`
       );
       setCommName(response.data.comm_name);
     } catch (error) {

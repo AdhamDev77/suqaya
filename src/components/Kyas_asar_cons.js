@@ -6,9 +6,6 @@ import kyas_logo_1 from "../assets/kyas_logo_1.svg";
 import kyas_logo_2 from "../assets/kyas_logo_2.svg";
 import green_logo from "../assets/green_logo.svg";
 import { ToastContainer, toast } from "react-toastify";
-import cuate from "../assets/cuate.svg";
-import amico from "../assets/amico.svg";
-import cuate2 from "../assets/cuate2.svg";
 
 function Kyas_asar_show() {
   const navigate = useNavigate();
@@ -43,7 +40,7 @@ function Kyas_asar_show() {
     e.preventDefault();
     try {
       const response = await axios.patch(
-        `https://jellyfish-app-ew84k.ondigitalocean.app/api/cons/${id}`,
+        `https://suqaya-backend.onrender.com/api/cons/${id}`,
         { cons_comment: cons_comment, cons_seen: "true" }
       );
       navigate(-1);
@@ -55,6 +52,7 @@ function Kyas_asar_show() {
   const [asar, setAsar] = useState(null);
   const [cons, setCons] = useState();
   const [loading, setLoading] = useState(true);
+  const [isMos, setIsMos] = useState(null);
   const [project_info, setProject_info] = useState(null);
   const [project_goals_1, setProject_goals_1] = useState(null);
   const [project_goals_2, setProject_goals_2] = useState(null);
@@ -66,6 +64,16 @@ function Kyas_asar_show() {
   const fetchComm = async (id) => {
     try {
       setLoading(true);
+      try {
+        const local_id = localStorage.getItem("_id");
+        const responseUser = await axios.get(
+          `https://suqaya-backend.onrender.com/api/users/${local_id}`
+        );
+        setIsMos(responseUser.data.isMos);
+      } catch (error) {
+        console.error("Error while fetching user:", error);
+        return; // Exit the function early if user fetch fails
+      }
       /*
       let id;
       const local_id = localStorage.getItem("_id");
@@ -75,7 +83,7 @@ function Kyas_asar_show() {
         id = localStorage.getItem("_id");
       } else {
         try {
-          const responseUser = await axios.get(`https://jellyfish-app-ew84k.ondigitalocean.app/api/users/${local_id}`);
+          const responseUser = await axios.get(`https://suqaya-backend.onrender.com/api/users/${local_id}`);
           id = responseUser.data.comm_id;
         } catch(error) {
           console.error("Error while fetching user:", error);
@@ -83,10 +91,12 @@ function Kyas_asar_show() {
         }
       }
  
-      const responseComm = await axios.get(`https://jellyfish-app-ew84k.ondigitalocean.app/api/comm/${id}`);
-      const responseAsar = await axios.get(`https://jellyfish-app-ew84k.ondigitalocean.app/api/asar/${responseComm.data.comm_asar}`);
+      const responseComm = await axios.get(`https://suqaya-backend.onrender.com/api/comm/${id}`);
+      const responseAsar = await axios.get(`https://suqaya-backend.onrender.com/api/asar/${responseComm.data.comm_asar}`);
       */
-      const response = await axios.get(`https://jellyfish-app-ew84k.ondigitalocean.app/api/cons/${id}`);
+      const response = await axios.get(
+        `https://suqaya-backend.onrender.com/api/cons/${id}`
+      );
       if (Array.isArray(response.data.cons_comment)) {
         setCons_comment(response.data.cons_comment);
       } else {
@@ -98,11 +108,11 @@ function Kyas_asar_show() {
       }
       console.log("CONS:", response.data.cons_comment);
       const responseAsar = await axios.get(
-        `https://jellyfish-app-ew84k.ondigitalocean.app/api/asar/${response.data.cons_asar}`
+        `https://suqaya-backend.onrender.com/api/asar/${response.data.cons_asar}`
       );
       console.log("responseASAR" + JSON.stringify(responseAsar.data.draft._id));
       const responseDraft = await axios.get(
-        `https://jellyfish-app-ew84k.ondigitalocean.app/api/draft_asar/${responseAsar.data.draft._id}`
+        `https://suqaya-backend.onrender.com/api/draft_asar/${responseAsar.data.draft._id}`
       );
       console.log("responseDraft" + JSON.stringify(responseDraft));
       localStorage.setItem(
@@ -208,67 +218,76 @@ function Kyas_asar_show() {
         <div className="asar_con_con">
           <div className="asar_form_w_btns">
             <form className="asar_form table_form" onSubmit={handlePost}>
-              <div className="cons_comment_form">
-                <div className="sign_form">
-                  <div className="sign_header">
-                    <h1 className="sign_title">محتوى الرد</h1>
-                    <img className="sign_logo" src={green_logo} alt="Logo" />
-                  </div>
-                  {cons_comment.map((cons_comment, index) => (
-                    <div className="sign_form_con">
-                      <div className="sign_element_multi">
-                        <div className="sign_element">
-                          <label className="sign_label">محل التعليق</label>
-                          <select
-                            onChange={(e) =>
-                              handleChange(index, "cons_makan", e.target.value)
-                            }
-                            value={cons_comment.cons_makan}
-                            name="cons_makan"
-                            className="sign_input"
-                          >
-                            <option value="" hidden disabled></option>
-                            <option value="عام">عام</option>
-                            <option value="معلومات المشروع">
-                              معلومات المشروع
-                            </option>
-                            <option value="الأهداف">الأهداف</option>
-                            <option value="التحليل">التحليل</option>
-                            <option value="أصحاب المصلحة">أصحاب المصلحة</option>
-                            <option value="النتائج">النتائج</option>
-                            <option value="أخري">أخري</option>
-                          </select>
-                        </div>
-                        <div className="sign_element">
-                          <label className="sign_label">التعليق</label>
-                          <textarea
-                            onChange={(e) =>
-                              handleChange(
-                                index,
-                                "cons_subject",
-                                e.target.value
-                              )
-                            }
-                            value={cons_comment.cons_subject}
-                            name="cons_subject"
-                            className="sign_input"
-                          ></textarea>
-                        </div>
-                        <button
-                          className="comment_x"
-                          onClick={() => handleRemoveComment(index)}
-                        >
-                          <i class="fa-solid fa-trash"></i>
-                        </button>
-                      </div>
+              {isMos && (
+                <div className="cons_comment_form">
+                  <div className="sign_form">
+                    <div className="sign_header">
+                      <h1 className="sign_title">محتوى الرد</h1>
+                      <img className="sign_logo" src={green_logo} alt="Logo" />
                     </div>
-                  ))}
-                  <button onClick={handleAddComment} className="add_btn">
-                    اضافة تعليق <i class="fa-solid fa-plus"></i>
-                  </button>
-                  <input className="submit_btn" type="submit" value="رد" />
+                    {cons_comment.map((cons_comment, index) => (
+                      <div className="sign_form_con">
+                        <div className="sign_element_multi">
+                          <div className="sign_element">
+                            <label className="sign_label">محل التعليق</label>
+                            <select
+                              onChange={(e) =>
+                                handleChange(
+                                  index,
+                                  "cons_makan",
+                                  e.target.value
+                                )
+                              }
+                              value={cons_comment.cons_makan}
+                              name="cons_makan"
+                              className="sign_input"
+                            >
+                              <option value="" hidden disabled></option>
+                              <option value="عام">عام</option>
+                              <option value="معلومات المشروع">
+                                معلومات المشروع
+                              </option>
+                              <option value="الأهداف">الأهداف</option>
+                              <option value="التحليل">التحليل</option>
+                              <option value="أصحاب المصلحة">
+                                أصحاب المصلحة
+                              </option>
+                              <option value="النتائج">النتائج</option>
+                              <option value="أخري">أخري</option>
+                            </select>
+                          </div>
+                          <div className="sign_element">
+                            <label className="sign_label">التعليق</label>
+                            <textarea
+                              onChange={(e) =>
+                                handleChange(
+                                  index,
+                                  "cons_subject",
+                                  e.target.value
+                                )
+                              }
+                              value={cons_comment.cons_subject}
+                              name="cons_subject"
+                              className="sign_input"
+                            ></textarea>
+                          </div>
+                          <button
+                            className="comment_x"
+                            onClick={() => handleRemoveComment(index)}
+                          >
+                            <i class="fa-solid fa-trash"></i>
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                    <button onClick={handleAddComment} className="add_btn">
+                      اضافة تعليق <i class="fa-solid fa-plus"></i>
+                    </button>
+                    <input className="submit_btn" type="submit" value="رد" />
+                  </div>
                 </div>
-              </div>
+              )}
+
               <div className="table_row">
                 <div className="table_1">
                   <h1>معلومات المشروع</h1>
@@ -670,14 +689,26 @@ function Kyas_asar_show() {
                         {asar.mod5alat || "_"}
                       </label>
                       <label className="table_2_info important">
-                        {asar.kema_mogtama3ya.toFixed(2) || "_"}
+                      {Math.round(asar.kema_mogtama3ya) || "_"}
                       </label>
+                      {asar.safy_kema_mogtama3ya > 0 ? (
+                        <label className="table_2_info important">
+                          {Math.round(asar.safy_kema_mogtama3ya) || "_"}
+                        </label>
+                      ) : (
+                        <label className="table_2_info_red important">
+                          {Math.round(asar.safy_kema_mogtama3ya)|| "_"}
+                        </label>
+                      )}
+                      {asar.aed > 1 ? (
                       <label className="table_2_info important">
-                        {asar.safy_kema_mogtama3ya.toFixed(2) || "_"}
-                      </label>
-                      <label className="table_2_info important">
+                      {asar.aed.toFixed(2) || "_"}
+                    </label>
+                      ) : (
+                        <label className="table_2_info_red important">
                         {asar.aed.toFixed(2) || "_"}
                       </label>
+                      )}
                     </div>
                   </div>
                 </div>
