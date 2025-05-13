@@ -283,7 +283,7 @@
     text-align: center; /* محاذاة النص في الوسط */
     font-size: 32px; /* حجم الخط */
     color: #fff;
-    background: linear-gradient(45deg, #006d28, #019939, #006d28);
+    background: linear-gradient(45deg, #003e6d, #007a78, #003e6d);
     font-weight: 300;
     direction: rtl; /* الاتجاه من اليمين إلى اليسار */
   }
