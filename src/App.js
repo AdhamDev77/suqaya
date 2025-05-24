@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Home from "./components/Home";
+import AboutUs from "./components/AboutUs";
 import Sign from "./components/Sign";
 import Login from "./components/Login";
 import Kyas_asar from "./components/Kyas_asar";
@@ -37,6 +38,7 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/about-us" element={<AboutUs />} />
         <Route path="/sign" element={<Sign />} />
         <Route path="/login" element={<Login />} />
         <Route path="/asar" element={<Kyas_asar />} />

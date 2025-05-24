@@ -1,6 +1,6 @@
 import React from 'react'
 import logo from "../assets/white_logo_text.svg"
-import whatsapp_qr from "../assets/whatsapp_qr.jpg"
+import whatsapp_qr from "../assets/whatsapp_qr.png"
 import "./styles/Footer.css"
 import { Link } from 'react-router-dom'
 
@@ -22,12 +22,12 @@ function Footer() {
         <div className='footer_content'>
             <div className='content_intro'>
                 <img src={logo} className=' w-80'/>
-                <p>مؤسسة مهنية غير هادفة للربح <br/>تأسست عام 2018</p>
+                <p>مؤسسة مهنية غير هادفة للربح</p>
                 <div className='social'>
-                    <a className='social_link' target='_blank' href="/"><i class="fa-brands fa-facebook-f"></i></a>
-                    <a className='social_link' target='_blank' href="https://x.com/SV_Arabia?t=n1mJ1auReoRTtQdlPLQxFg&s=09"><i class="fa-brands fa-twitter"></i></a>
-                    <a className='social_link' target='_blank' href="/"><i class="fa-brands fa-instagram"></i></a>
-                    <a className='social_link' target='_blank' href="https://wa.me/+962781808688"><i class="fa-brands fa-whatsapp"></i></a>
+                    <a className='social_link' target='_blank' href="https://www.instagram.com/sekayaorg/"><i class="fa-brands fa-instagram"></i></a>
+                    <a className='social_link' target='_blank' href="https://x.com/SEKAYAorg?s=09"><i class="fa-brands fa-twitter"></i></a>
+                    <a className='social_link' target='_blank' href="https://www.youtube.com/@SEKAYAorg"><i class="fa-brands fa-youtube"></i></a>
+                    <a className='social_link' target='_blank' href="https://wa.me/+966114533511"><i class="fa-brands fa-whatsapp"></i></a>
                 </div>
             </div>
             <div className='footer_lists'>
@@ -46,16 +46,16 @@ function Footer() {
                   <Link to="/">استشارات سقاية</Link>
                   </li>
                   <li>
-                    <Link to="/">عن المؤسسة</Link>
+                    <Link to="/about-us">عن المؤسسة</Link>
                   </li>
             </ul>
             <ul className='footer_list'>
                 <li className='list_title'>جهات الإتصال</li>
                 <li className='contact_item'><label className='contact_item_info'>البريد الإلكترونى <i class="fa-regular fa-envelope"></i></label>
-                <label className='contact_item_info'>sva@socialvaluearabia.org</label>
+                <label className='contact_item_info'>info@sekaya.org.sa</label>
                 </li>
                 <li className='contact_item'><label className='contact_item_info'>واتساب <i class="fa-brands fa-whatsapp"></i></label>
-                <label className='contact_item_info'><a target='_blank' href="https://wa.me/+962781808688">+962781808688</a></label>
+                <label className='contact_item_info'><a target='_blank' href="https://wa.me/+966114533511">+966114533511</a></label>
                 <img className='footer_qr' src={whatsapp_qr} />
                 </li>
             </ul>

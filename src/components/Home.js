@@ -31,32 +31,7 @@ function Home() {
     "كمؤسس لمؤسسة سقاية الأهلية، أرى أن المؤسسة يمثل خطوة كبيرة نحو تعزيز القياس وإدارة الأثر الاجتماعي في العالم العربي بطريقة منهجية",
     "مستشار بالمؤسسة",
   ];
-  const review3 = [
-    khalid,
-    "خالد الغنام",
-    "أعتبر المؤسسة العربي للأثر الاجتماعي منصة حيوية لنشر الوعي بالمعايير العالمية وإضافة القيمة للقطاع الاجتماعي في المنطقة",
-    "مستشار بالمؤسسة",
-  ];
-  const review4 = [
-    laith,
-    "ليث أبو جليل",
-    "كخبير في تقييم الأثر الاجتماعي، أعتبر أن أدوات ومنهجيات سقاية تسهم بشكل كبير في تحسين ممارساتنا وتقديم نتائج أكثر دقة وفعالية",
-    "مستشار بالمؤسسة",
-  ];
-  const review5 = [
-    bahaa,
-    "بهاء عبدالعظيم",
-    "مؤسسة سقاية الأهلية تساعدنا في تقديم خدمات تقييم الأثر الاجتماعي بأسلوب علمي ومتقدم، وهذا يساهم في تطوير مشاريعنا الاجتماعية",
-    "سفير المؤسسة",
-  ];
-  const review6 = [
-    ramona,
-    "رامونا الدنف",
-    "تجربتي في تقديم الاستشارات عبر سقاية أظهرت لي مدى حاجة القطاع الاجتماعي في منطقتنا لهذه الأدوات والمنهجيات",
-    "دكتورة بالمؤسسة",
-  ];
-
-  const items = [review1, review2, review3, review4, review5, review6];
+  const items = [review1, review2, review1, review2, review1, review2];
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -79,7 +54,9 @@ function Home() {
 
   useEffect(() => {
     if (carouselInnerRef.current) {
-      carouselInnerRef.current.style.transform = `translateX(-${currentIndex * 100}%)`;
+      carouselInnerRef.current.style.transform = `translateX(-${
+        currentIndex * 100
+      }%)`;
     }
   }, [currentIndex]);
 
@@ -88,37 +65,82 @@ function Home() {
       <section className="hero-section">
         <div className="container">
           <div className="hero-content">
-          
             <div className="news-carousel">
               <div className="carousel">
                 <div className="carousel-inner" ref={carouselInnerRef}>
                   <div className="carousel-item">
-                    <img src="https://i0.wp.com/www.alwatantoday.net/wp-content/uploads/2021/10/233200.jpg" alt="Social Value Measurement" />
+                    <img
+                      src="https://sekaya.org.sa/wp-content/uploads/2024/07/ثقيف1-9.jpg"
+                      alt="Social Impact News"
+                    />
                     <div className="carousel-content">
-                      <h3>قياس القيمة الاجتماعية</h3>
-                      <p>تعرف على أحدث الأدوات والمنهجيات لقياس القيمة الاجتماعية وتأثيرها على المجتمع.</p>
-                      <button>اقرأ المزيد</button>
+                      <h3>تأمين صهاريج</h3>
+                      <p>
+                        تأمين وتوفير صهاريج مخصصة لنقل وتوزيع المياه بشكل آمن
+                        وفعّال، بما يضمن إيصال المياه النظيفة إلى المستفيدين في
+                        المناطق النائية والمحرومة من شبكات المياه الرئيسية
+                      </p>
                     </div>
                   </div>
                   <div className="carousel-item">
-                    <img src="https://alsaudiapress.com/wp-content/uploads/2024/08/2381867.jpeg" alt="Non-Profit Effectiveness" />
+                    <img
+                      src="https://media.sssinstagram.com/get?__sig=KbPnM94awtgzUYknux0SaQ&__expires=1748078369&uri=https%3A%2F%2Finstagram.fphl1-1.fna.fbcdn.net%2Fv%2Ft51.29350-15%2F470910578_1357647708975730_7407777402999593986_n.jpg%3Fstp%3Ddst-jpg_e35_s1080x1080_tt6%26_nc_ht%3Dinstagram.fphl1-1.fna.fbcdn.net%26_nc_cat%3D110%26_nc_oc%3DQ6cZ2QHoOkCY8HRxkpCYiFD_9bTQoX725zlvV1AEOR8P46E3zHk5bOlipJyMVHoG9W0BZGLDhnSvYJl-5wclb-Ccm_MB%26_nc_ohc%3DcKdOFOgiEbQQ7kNvwGsd2sP%26_nc_gid%3DnV1pi-CxqVVMZdrSLCRQMg%26edm%3DANTKIIoBAAAA%26ccb%3D7-5%26oh%3D00_AfIpfZ94uB0Omsy1y4lCWLK4vTCxP7BFPuz6dv7Yi8MO8w%26oe%3D68377138%26_nc_sid%3Dd885a2&filename=470910578_1357647708975730_7407777402999593986_n.jpg"
+                      alt="Social Value Measurement"
+                    />
                     <div className="carousel-content">
-                      <h3>فعالية المنظمات غير الربحية</h3>
-                      <p>كيف يمكن للمنظمات غير الربحية تحسين فعاليتها وزيادة تأثيرها الاجتماعي؟</p>
-                      <button>اقرأ المزيد</button>
+                      <h3>فاعليات رسمية</h3>
+                      <p>
+                        ينطلق الآن اللقاء الثاني للجهات الأهلية العاملة في مجال
+                        سقيا الماء بحضور وكيل وزارة البيئة والمياه والزراعة
+                        للمياة
+                      </p>
                     </div>
                   </div>
                   <div className="carousel-item">
-                    <img src="https://vid.alarabiya.net/images/2023/07/24/68b59cf6-c42f-4622-932f-e8237b7c589e/68b59cf6-c42f-4622-932f-e8237b7c589e_16x9_1200x676.jpg?width=372&format=jpg" alt="Social Impact News" />
+                    <img
+                      src="https://sekaya.org.sa/wp-content/uploads/2024/07/%D8%A3%D8%B6%D9%85.jpg"
+                      alt="Non-Profit Effectiveness"
+                    />
                     <div className="carousel-content">
-                      <h3>أحدث الأخبار في قياس الأثر الاجتماعي</h3>
-                      <p>تعرف على آخر التطورات في مجال قياس الأثر الاجتماعي وإدارة المشاريع ذات التأثير الإيجابي.</p>
-                      <button>اقرأ المزيد</button>
+                      <h3>إقامة محطات التحلية</h3>
+                      <p>
+                        إقامة محطات التحلية والتنقية المصغرة، بالإضافة إلى تقديم
+                        خدمات الصيانة الدورية والتشغيل المستمر لضمان جودة المياه
+                        وتحقيق الاستدامة البيئية.
+                      </p>
+                    </div>
+                  </div>
+                  <div className="carousel-item">
+                    <img
+                      src="https://sekaya.org.sa/wp-content/uploads/2024/05/inside-well-scaled-1-2048x1366.jpg"
+                      alt="Social Impact News"
+                    />
+                    <div className="carousel-content">
+                      <h3>حفر الآبار الأنبوبية واليدوية</h3>
+                      <p>
+                        تنفيذ مشاريع حفر الآبار الأنبوبية واليدوية بهدف توفير
+                        مصادر مياه آمنة ومستدامة للمجتمعات المحتاجة، مع مراعاة
+                        الشروط الفنية والبيئية
+                      </p>
+                    </div>
+                  </div>
+                  <div className="carousel-item">
+                    <img
+                      src="https://sekaya.org.sa/wp-content/uploads/2024/07/%D8%A7%D9%84%D9%85%D8%B1%D9%82%D8%A8%D8%A7%D9%8611-5.jpg"
+                      alt="Social Impact News"
+                    />
+                    <div className="carousel-content">
+                      <h3>تأمين خزانات</h3>
+                      <p>
+                        تأمين وتوريد خزانات مركزية ومنزلية عالية الجودة بمواصفات
+                        فنية تضمن سلامة المياه وتلبي احتياجات الاستخدام اليومي
+                        بكفاءة وموثوقية
+                      </p>
                     </div>
                   </div>
                 </div>
                 <div className="carousel-indicators">
-                  {[0, 1, 2].map((index) => (
+                  {[4, 3, 2, 1, 0].map((index) => (
                     <span
                       key={index}
                       className={index === currentIndex ? "active" : ""}
@@ -129,18 +151,17 @@ function Home() {
               </div>
             </div>
             <div className="hero-text">
-              <h1>
-                أهلاً بك في 
-                مؤسسة سقاية الأهلية 
-              </h1>
+              <h1>أهلًا وسهلًا بكم في منصة سقاية لقياس الأثر الاجتماعي</h1>
               <p>
-                هل ترغب في معرفة الأثر الاجتماعي لمشروعك؟
-                <br /> هل تريد أن تتأكد من أن مبادرتك تترك أثراً إيجابياً في
-                المجتمع؟ <br />
-                مؤسسة سقاية الأهلية تفتح لك بوابة عالم قياس الأثر الاجتماعي وإدارته
+                التي صُممت لتكون جسرًا بين العطاء الهادف والتأثير الحقيقي في
+                حياة المستفيدين. نؤمن في مؤسسة سقاية أن كل مشروع وكل قطرة ماء
+                تصل لمستحقها تستحق أن تُقاس وتُوثّق، لتكون دافعًا نحو تحسين
+                الأداء، وزيادة الكفاءة، وتعظيم الأثر المجتمعي. ومن هذا المنطلق،
+                أطلقنا هذه المنصة لتمكينكم من مشاركة تجاربكم، وتقديم آرائكم،
+                والمساهمة في تطوير المشاريع التي تخدمكم.
               </p>
               <Link to="/sign" className="btn">
-                سجل الآن
+                كن شريكًا
               </Link>
             </div>
           </div>

@@ -179,6 +179,7 @@
     display: block;
     margin-top: 5px;
     width: 90px;
+    border-radius: 8px;
   }
   .footer_footer {
     width: 80%;
