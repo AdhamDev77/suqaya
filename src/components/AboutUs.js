@@ -34,7 +34,7 @@ function AboutUs() {
           <div className="!flex !flex-col md:!flex-row !gap-12 !items-center">
             <div className="md:!w-1/2">
               <img 
-                src="https://media.sssinstagram.com/get?__sig=KbPnM94awtgzUYknux0SaQ&__expires=1748078369&uri=https%3A%2F%2Finstagram.fphl1-1.fna.fbcdn.net%2Fv%2Ft51.29350-15%2F470910578_1357647708975730_7407777402999593986_n.jpg%3Fstp%3Ddst-jpg_e35_s1080x1080_tt6%26_nc_ht%3Dinstagram.fphl1-1.fna.fbcdn.net%26_nc_cat%3D110%26_nc_oc%3DQ6cZ2QHoOkCY8HRxkpCYiFD_9bTQoX725zlvV1AEOR8P46E3zHk5bOlipJyMVHoG9W0BZGLDhnSvYJl-5wclb-Ccm_MB%26_nc_ohc%3DcKdOFOgiEbQQ7kNvwGsd2sP%26_nc_gid%3DnV1pi-CxqVVMZdrSLCRQMg%26edm%3DANTKIIoBAAAA%26ccb%3D7-5%26oh%3D00_AfIpfZ94uB0Omsy1y4lCWLK4vTCxP7BFPuz6dv7Yi8MO8w%26oe%3D68377138%26_nc_sid%3Dd885a2&filename=470910578_1357647708975730_7407777402999593986_n.jpg" 
+                src="https://www.spa.gov.sa/_next/image?url=https%3A%2F%2Fportalcdn.spa.gov.sa%2Fbackend%2Foriginal%2F202412%2F9ywwWxHJx9YFPZXaXOPtRjrgaRm5VSblvDC1s5al.jpg&w=3840&q=75" 
                 alt="توزيع مياه نظيفة" 
                 className="!rounded-xl !shadow-2xl !w-full !h-auto !object-cover !min-h-[400px]"
               />
