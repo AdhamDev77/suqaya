@@ -13,7 +13,7 @@ import laith from "../assets/laith.jpeg";
 import ramona from "../assets/ramona.jpeg";
 import salam from "../assets/salam.jpeg";
 import saed from "../assets/saed.jpeg";
-import bahaa from "../assets/bahaa.jpeg";https://suqaya-backend.onrender.com
+import bahaa from "../assets/bahaa.jpeg";
 function Home() {
   const navigate = useNavigate();
   const carouselInnerRef = useRef(null);
